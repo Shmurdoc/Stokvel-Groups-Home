@@ -1,0 +1,57 @@
+﻿@model Stokvel_Groups_Home.Models.Deposit
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Deposit</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DepositId" />
+            <div class="form-group">
+                <label asp-for="InvoiceId" class="control-label"></label>
+                <input asp-for="InvoiceId" class="form-control" />
+                <span asp-validation-for="InvoiceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositAmount" class="control-label"></label>
+                <input asp-for="DepositAmount" class="form-control" />
+                <span asp-validation-for="DepositAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositDate" class="control-label"></label>
+                <input asp-for="DepositDate" class="form-control" />
+                <span asp-validation-for="DepositDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MethodId" class="control-label"></label>
+                <input asp-for="MethodId" class="form-control" />
+                <span asp-validation-for="MethodId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentStatusId" class="control-label"></label>
+                <select asp-for="PaymentStatusId" class="form-control" asp-items="ViewBag.PaymentStatusId"></select>
+                <span asp-validation-for="PaymentStatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositReference" class="control-label"></label>
+                <input asp-for="DepositReference" class="form-control" />
+                <span asp-validation-for="DepositReference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Stokvel_Groups_Home.Models.Deposit>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- row -->
+
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Deposit</h2>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+
+
+        <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <a class="btn btn-outline-primary" asp-controller="Accounts" asp-action="Index">Back To Accounts</a>
+
+                </div>
+                
+            </div>
+        </nav>
+
+
+         <!-- row -->
+        <div class="row column1">
+            <div class="col-md-12">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Join a Group</h2>
+                        </div>
+                    </div>
+                    <div class="full price_table padding_infor_info">
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Invoice)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.DepositAmount)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.DepositDate)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.PaymentMethod)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.PaymentStatus)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.DepositReference)
+                                        </th>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <th>
+                                                Options
+                                            </th>
+                                        }
+                                     </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.InvoiceId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DepositAmount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DepositDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MethodId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PaymentStatusId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DepositReference)
+                                            </td>
+                                            @if (User.IsInRole("Admin")) {
+                                                <td>
+                                                    <a asp-action="Edit" asp-route-id="@item.DepositId">Edit</a> |
+                                                    <a asp-action="Details" asp-route-id="@item.DepositId">Details</a> |
+                                                    <a asp-action="Delete" asp-route-id="@item.DepositId">Delete</a>
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       

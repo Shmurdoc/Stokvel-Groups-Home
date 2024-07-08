@@ -1,0 +1,64 @@
+﻿@model Stokvel_Groups_Home.Models.Account
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- row -->
+<div class="midde_cont">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Account</h2>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+        <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+            <div class="row">
+
+                <div class="col-md-6">
+                 
+                    <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
+
+                </div>
+
+            </div>
+        </nav>
+
+
+        <!-- row -->
+        <div class="row column1">
+            <div class="col-md-12">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Join a Group</h2>
+                        </div>
+                    </div>
+                    <div class="full price_table padding_infor_info">
+                        <div class="row">
+                                <form asp-action="Create">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+                                    <div class="form-group">
+                                        <label asp-for="GroupVerifyKey" class="control-label"></label>
+                                        <input asp-for="GroupVerifyKey" class="form-control" />
+                                        <span asp-validation-for="GroupVerifyKey" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        @section Scripts {
+                            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                        }
+
+                </div>
+            </div>
+        </div>
+    </div>

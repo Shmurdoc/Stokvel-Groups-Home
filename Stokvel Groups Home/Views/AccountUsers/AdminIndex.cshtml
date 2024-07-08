@@ -1,0 +1,164 @@
+﻿@model IPagedList<Stokvel_Groups_Home.Models.AccountUser>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- row -->
+<div class="midde_cont">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>AccountUsers</h2>
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+    <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                @if (User.IsInRole("Member"))
+                {
+                    <a class="btn btn-outline-danger" asp-controller="Accounts" asp-action="Create">Create New</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Index">Home</a>
+                }
+
+            </div>
+            <div class="col-md-6">
+
+                @using (Html.BeginForm("AdminIndex", "AccountUsers", FormMethod.Get))
+                {
+                    <p>
+                        Find by name: @Html.TextBox("SearchString", (object)ViewBag.CurrentFilter as string)
+
+                        <input type="submit" value="Search" />
+                    </p>
+                }
+
+            </div>
+
+            <alerts></alerts>
+
+        </div>
+    </nav>
+
+    <!-- row -->
+    <div class="row column1">
+        <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+                <div class="full graph_head">
+                    <div class="heading1 margin_0">
+                        <h2>Join a Group</h2>
+                    </div>
+                </div>
+                <div class="full price_table padding_infor_info">
+                    <div class="row">
+
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.Hidden("Id")
+                                    </th>
+                                    <th>
+                                        FirstName
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("LastName", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                                    </th>
+                                    <th>
+                                       ProfilePicture
+                                    </th>
+                                    <th>
+                                        Address
+                                    </th>
+                                    <th>
+                                        City
+                                    </th>
+                                    <th>
+                                       Province
+                                    </th>
+                                    <th>
+                                       Zip
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+                                    </th>
+                                    <th>
+                                        Options
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                   
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FirstName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LastName)
+                                        </td>
+                                        <td>
+                                           @if(Url.Content(item.MemberPhotoPath) != ViewBag.image)
+											{
+                                                <img src="@Url.Content("~/ images / MemberProfile / " + @item.MemberFileName)" height="95px" width="95px" />
+											}
+                                            else
+                                            {
+                                                <img src="@Url.Content("~/ images / Profile / " + @item.MemberFileName)" height="95px" width="95px" />
+											}
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.City)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Province)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Zip)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <br />
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+                        @Html.PagedListPager(Model, page => Url.Action("AdminIndex",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

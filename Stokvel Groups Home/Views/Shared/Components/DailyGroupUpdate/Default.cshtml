@@ -1,0 +1,24 @@
+﻿@model IEnumerable<DisplayMemberTurn>
+
+
+<div class="col-md-6 ">
+    <div class="dash_blog">
+        <div class="dash_blog_inner">
+            <div class="dash_head">
+                <h3><span><i class="fa fa-calendar"></i>Group A @DateTime.Now.Date.ToString("MM-dd-yyyy")</span></h3>
+            </div>
+            <div class="list_cont">
+                <p>Daily Group Updates From 5 Days Ago To Date</p>
+            </div>
+            <div class="task_list_main">
+                <ul class="task_list">
+
+                    @foreach (var member in Model)
+                    {
+                        <li><a href="#">@member.AccountUser.FirstName @member.AccountUser.LastName ,Has Deposited R @member.Deposit.DepositAmount.ToString("0.00") To Group</a><br><strong> @member.Deposit.DepositDate.Date</strong></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

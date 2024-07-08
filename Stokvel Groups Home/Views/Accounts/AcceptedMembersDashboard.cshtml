@@ -1,0 +1,327 @@
+﻿@model IEnumerable<UserGroupMember>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Lst = ViewBag.MemberPaid as IEnumerable<int>;
+}
+
+
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Group Members</h2>
+            </div>
+        </div>
+     </div>
+
+
+                        @if( ViewBag.StokvelActive != true)
+                        {    
+                            @if (User.IsInRole("Manager") || User.IsInRole("SuperUser"))
+                            {
+                                <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+                                @using (Html.BeginForm("StartStokvel", "Accounts", FormMethod.Get))
+                                {
+                                    @Html.Hidden("groupId", (object)ViewBag.GroupId)
+                                                @Html.Hidden("accountType", (object)ViewBag.AccountType)
+                                                @Html.Hidden("groupName", (string)ViewBag.GroupNames)
+                                                <button type="submit" class="btn btn-outline-danger">  Start Stokvel</button>
+                                }
+                 
+                                </nav>
+                            }
+    
+                        }
+
+
+
+                    @if (ViewBag.StokvelActive != false)
+                    {
+                        @await Component.InvokeAsync("MemberTurnProfile")
+                    }
+
+
+  
+<alerts></alerts>
+           
+
+           
+            <!-- row -->
+            <div class="row column1">
+                <div class="col-md-12">
+                    <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Group Members</h2>
+                            </div>
+                        </div>
+                        <div class="full price_table padding_infor_info">
+                            <div class="row">
+                                <div class="row d-flex justify-content-left align-items-center h-100">
+                                    @foreach (var item in Model)
+                                    {
+                                        <!-- column member -->
+
+                                        <div class="col-md-12 col-xl-4 mt-5">
+
+                                            <div class="card" style="border-radius: 15px;">
+                                                <div class="card-body text-center">
+                                                    <div class="mt-3 mb-4">
+                                            @if (Url.Content(item.AccountUser.MemberPhotoPath) != @ViewBag.image)
+                                            {
+                                                <img src="@Url.Content("~/images/MemberProfile/" + @item.AccountUser.MemberFileName)" height="120px" width="120px" />
+                                            }
+                                            else
+                                            {
+
+                                                <img src="@Url.Content("~/images/Profile/" + @item.AccountUser.MemberFileName)" height="120px" width="120px" />
+
+                                            }
+                                                    </div>
+                                                    <h4 class="mb-2">@Html.DisplayFor(modelItem => item.AccountUser.FirstName)  @Html.DisplayFor(modelItem => item.AccountUser.LastName)</h4>
+                                        @if (item.GroupMembers.Account.Accepted == true)
+                                        {
+                                            <p class="text-muted mb-4">
+                                                Is A Memebr Of <span class="mx-2">|</span> @Html.DisplayFor(modelItem => item.GroupMembers.Group.GroupName)
+                                            </p>
+                                        }else
+                                        {
+                                            <p class="text-muted mb-4">
+                                                Would Like To Join <span class="mx-2">|</span> @Html.DisplayFor(modelItem => item.GroupMembers.Group.GroupName)
+                                            </p>
+                                        }
+
+                                                    <p class="mb-0 text-uppercase">
+                                            
+                                            @if (item.AccountUser.Id == ViewBag.UserId && @item.GroupMembers.Account.AccountQueueStart.Month != DateTime.Now.Month)
+                                            {
+                                                @using (Html.BeginForm("Create", "Deposits", FormMethod.Get))
+                                                {
+                                                    @Html.Hidden("accountId", (object)@item.GroupMembers.AccountId)
+                                                    @Html.Hidden("accountProfileId", (object)@ViewBag.AccountProfileId)
+                                                    @Html.Hidden("accountType", (object)@ViewBag.AccountType)
+                                                    @Html.Hidden("groupName", (object)@ViewBag.GroupNames)
+                                                    @Html.Hidden("statusRank", (object)@ViewBag.StatusRank)
+                                                    @Html.Hidden("totalAmountDeposit", (object)@ViewBag.TotalAmountDeposit)
+                                                    @Html.Hidden("membershipRank", (object)@ViewBag.MembershipRank)
+
+                                                    <button type="submit" class="btn btn-primary btn-rounded btn-lg"> Deposit</button>
+                                                }
+                                                <br />
+                                                @using (Html.BeginForm("Index", "Messages", FormMethod.Get))
+                                                {
+                                                    @Html.Hidden("id", (object)@item.GroupMembers.AccountId)
+                                                    @Html.Hidden("groupId", (object)@item.Group.GroupId)
+
+                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                        <i class="fa fa-user">
+                                                        </i> <i class="fa fa-comments-o"></i>
+                                                    </button>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (@item.GroupMembers.Account.AccountQueueStart.Month != DateTime.Now.Month)
+                                                {
+                                                    @if (Lst.Any(x => x == item.GroupMembers.AccountId))
+                                                    {
+                                                        <a class="btn btn-success btn-rounded btn-lg text-white">Ready</a>
+                                                        <br />
+                                                        <br />
+
+                                                        @using (Html.BeginForm("Index", "Messages", FormMethod.Get))
+                                                        {
+                                                            @Html.Hidden("id", (object)@item.GroupMembers.AccountId)
+                                                            @Html.Hidden("groupId", (object)@item.Group.GroupId)
+
+                                                            <button type="submit" class="btn btn-success btn-xs" disabled>
+                                                                <i class="fa fa-user">
+                                                                </i> <i class="fa fa-comments-o"></i>
+                                                            </button>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-danger btn-rounded btn-lg text-white">Not Ready</a>
+                                                        <br />
+                                                        <br />
+
+                                                        @using (Html.BeginForm("Index", "Messages", FormMethod.Get))
+                                                        {
+                                                            @Html.Hidden("id", (object)@item.GroupMembers.AccountId)
+                                                            @Html.Hidden("groupId", (object)@item.Group.GroupId)
+
+                                                            <button type="submit" class="btn btn-success btn-xs" disabled>
+                                                                <i class="fa fa-user">
+                                                                </i> <i class="fa fa-comments-o"></i>
+                                                            </button>
+                                                        }
+                                                    }
+
+                                                }
+
+                                        }
+                                             @if (@item.GroupMembers.Account.AccountQueueStart.Month == DateTime.Now.Month)
+                                            {
+                                                @if (User.IsInRole("Admin") || User.IsInRole("Manager")){
+                                                    <a asp-controller="InvoiceDetails" asp-action="Create" class="btn btn-warning btn-rounded btn-lg" asp-route-id="@item.GroupMembers.AccountId">Credit</a>
+
+                                                    <br />
+                                                    <br />
+
+                                                    @using (Html.BeginForm("Index", "Messages", FormMethod.Get))
+                                                    {
+                                                        @Html.Hidden("id", (object)@item.GroupMembers.AccountId)
+                                                        @Html.Hidden("groupId", (object)@item.Group.GroupId)
+
+                                                        <button type="submit" class="btn btn-success btn-xs">
+                                                            <i class="fa fa-user">
+                                                            </i> <i class="fa fa-comments-o"></i>
+                                                        </button>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-success btn-rounded btn-lg text-white">Ready</a>
+                                                    <br />
+                                                    <br />
+
+                                                    @using (Html.BeginForm("Index", "Messages", FormMethod.Get))
+                                                    {
+                                                        @Html.Hidden("id", (object)@item.GroupMembers.AccountId)
+                                                        @Html.Hidden("groupId", (object)@item.Group.GroupId)
+
+                                                        <button type="submit" class="btn btn-success btn-xs">
+                                                            <i class="fa fa-user">
+                                                            </i> <i class="fa fa-comments-o"></i>
+                                                        </button>
+                                                    }
+                                                }}
+
+                                                       </p>
+                                                    <div class="d-flex justify-content-between text-center mt-5 mb-2">
+                                                        <div>
+                                                            <p class="mb-2 h5">5</p>
+                                                            <p class="text-muted mb-0">Groups Joind</p>
+                                                           <a asp-controller="InvoiceDetails" asp-action="Payment" class="btn btn-outline-primary  btn-rounded btn-sm " asp-route-id="@item.GroupMembers.AccountId" asp-route-name="@item.Group.GroupId">Payments</a>
+                                                        </div>
+                                           
+                                                <div class="px-3">
+                                                    <p class="mb-2 h5">@Html.DisplayFor(modelItem => item.GroupMembers.AccountId)</p>
+                                                            <p class="text-muted mb-0">Member Id</p>
+                                                            <a asp-controller="Invoices" asp-action="index" class="btn btn-outline-primary  btn-rounded btn-sm " asp-route-id="@item.GroupMembers.AccountId">Invoice</a>
+                                                         </div>
+                                                        <div>
+                                                            <p class="mb-2 h5">Gold</p>
+                                                            <p class="text-muted mb-0">Account Status</p>
+                                                            <a asp-controller="PenaltyFees" asp-action="index" class="btn btn-outline-primary  btn-rounded btn-sm" asp-route-id="@item.GroupMembers.AccountId">Fees</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end column member -->
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+    <!-- row -->
+  @if(ViewBag.StokvelActive != true)
+{
+            <div class="row column4 graph">
+                <div class="col-md-8">
+                    <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Accepted Member List</h2>
+                            </div>
+                        </div>
+                        <div class="full progress_bar_inner">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="msg_section">
+                                        <div class="msg_list_main">
+                                            <ul class="msg_list">
+                                        @foreach (var accepted in ViewBag.AccountIdList)
+                                            @foreach (var item in Model.Where(x => x.GroupMembers.AccountId == accepted))
+                                            {
+                                                <li>
+                                                    <span>
+                                                        @if (Url.Content(item.AccountUser.MemberPhotoPath) != ViewBag.image)
+                                                        {
+                                                            <img src="@Url.Content("~/images/MemberProfile/" + @item.AccountUser.MemberFileName)" height="80px" width="80px" img class="img-responsive" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@Url.Content("~/images/Profile/" + @item.AccountUser.MemberFileName)" height="80px" width="80px" img class="img-responsive" />
+                                                        }
+                                                    
+                                                    </span>
+                                                    <span>
+                                                        <div class="row">
+                                                            <div class="col-md-4 d-lg-grid">
+                                                                <span class="name_user">@Html.DisplayFor(modelItem => item.AccountUser.FirstName)  @Html.DisplayFor(modelItem => item.AccountUser.LastName)</span>
+                                                                <span class="msg_user">Has Been Accepted</span>
+                                                            </div>
+                                                            <div class="col-md-8 pl-2 pt-2 text-end">
+                                                                <p class="mb-0 text-uppercase">
+                                                                    @if ( item.AccountUser.Id == @ViewBag.UserId)
+                                                                    {
+
+                                                                        @using (Html.BeginForm("AccptedMembers", "Accounts", FormMethod.Get))
+                                                                        {
+                                                                            @Html.Hidden("id", (object)item.GroupMembers.AccountId)
+                                                                            @Html.Hidden("groupName", (object)item.GroupMembers.Group.GroupName)
+                                                                            @Html.Hidden("accountType", (object)ViewBag.AccountType)
+                                                                            @Html.Hidden("groupId", (object)item.GroupMembers.GroupId)
+                                                                            @Html.Hidden("acceptStatus", (bool)false)
+                                                                            <button type="submit" class="btn btn-danger btn-rounded btn-lg "><i class="fa fa-sign-out"></i>  Remove Member</button>
+                                                                        }
+                                                                    }
+                                                                    else{
+                                                                 @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                                                    {
+                                                                        @if(item.AccountUser.Id != ViewBag.UserId )
+                                                                     {
+                                                                            @using (Html.BeginForm("AccptedMembers", "Accounts", FormMethod.Get))
+                                                                            {
+                                                                            @Html.Hidden("id", (object)item.GroupMembers.AccountId)
+                                                                            @Html.Hidden("groupName", (object)item.GroupMembers.Group.GroupName)
+                                                                            @Html.Hidden("accountType", (object)ViewBag.AccountType)
+                                                                            @Html.Hidden("groupId", (object)item.GroupMembers.GroupId)
+                                                                            @Html.Hidden("acceptStatus", (bool)false)
+                                                                            <button type="submit" class="btn btn-danger btn-rounded btn-lg "><i class="fa fa-sign-out"></i>  Remove Member</button>
+                                                                            }
+                                                                      }
+                                                                    }}
+                                                                </p>
+
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+   }
+
+
+
+
+
+
+

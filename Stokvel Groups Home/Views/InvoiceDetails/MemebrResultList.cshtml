@@ -1,0 +1,206 @@
+﻿@model IEnumerable<Stokvel_Groups_Home.Models.DisplayPaidMember>
+
+@{
+    ViewData["Title"] = "MemebrResultList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- row -->
+<div class="midde_cont">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>MemebrResultList</h2>
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+    <alerts></alerts>
+
+<!-- row -->
+<div class="row column1">
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Contacts</h2>
+                </div>
+            </div>
+            <div class="full price_table padding_infor_info">
+                <div class="row">
+                    <div class="row d-flex justify-content-left align-items-center h-100">
+                        <div class="row">
+                            <div class="col-6">
+<header class="panel-heading">
+    All projects List
+    <span class="pull-right">
+                  <button type="button" onClick="window.location.href=window.location.href" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</button>
+                               
+        <a asp-controller="Accounts" asp-action="index" class=" btn btn-success btn-xs"> Go To Accounts</a>
+                                            
+    </span>
+</header>
+                            </div>
+                            <div class="col-6">
+<div class="panel-body">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="input-group">
+                <input type="text" placeholder="Search Here" class="input-sm form-control"> <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-xs btn-success "> Go!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+                            </div>
+                        </div>
+<table class="table p-table">
+    <thead>
+        <tr>
+            <th>Member Name</th>
+            <th>Total Amount</th>
+            <th>Member Progress</th>
+            <th>Member Status</th>
+            <th>Custom</th>
+        </tr>
+    </thead>
+    <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="p-name">
+                                                <a href="">@item.AccountUser.FirstName @item.AccountUser.LastName</a>
+                                                <br>
+                                                <small>Created @item.InvoiceDetails.CreditedDate</small>
+                                            </td>
+                                            <td class="p-team">
+                                                @* Add data total here *@
+                                            </td>
+                                            <td class="p-progress">
+                                                <div class="progress progress-xs">
+                                                    <div style="width: @((item.InvoiceDetails.CreditAmount/ item.GroupMembers.Group.AccountTarget)*100)%;" class="progress-bar progress-bar-success"></div>
+                                                </div>
+                                                <small>87% Complete </small>
+                                            </td>
+                                            <td>
+                                                @if ( item.InvoiceDetails.CreditAmount == @item.GroupMembers.Group.AccountTarget){
+                                                <span class="label label-primary">Paid</span>
+                                                }else{
+                                            <span class="label label-primary">Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-route-id="" asp-action="Index" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> View </a>
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    <a href="#" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                                                    <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }                     
+                                </tbody>
+</table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+</div>
+
+
+
+                                        <style>
+
+
+
+
+    
+
+
+    .p-table th,
+    .p-table td {
+        vertical-align: middle !important;
+    }
+
+
+    .p-team img {
+        width: 35px;
+        height: 35px;
+        border-radius: 4px;
+    }
+
+    .p-progress .progress {
+        margin-bottom: 5px;
+    }
+
+    .p-name a {
+        font-size: 14px;
+        /*font-weight:bold;*/
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .p-details .bio-row p span {
+        width: auto;
+    }
+
+        .p-details .bio-row p span.bold {
+            width: 100px;
+        }
+
+    .p-team a {
+        display: inline-block;
+    }
+
+    .project-heading {
+        font-size: 20px;
+    }
+
+    .mtop20 {
+        margin-top: 20px;
+    }
+
+    .p-files li a {
+        margin-bottom: 10px;
+        color: #949494;
+        display: block;
+    }
+
+    .p-files li i {
+        padding-right: 10px;
+        width: 20px;
+    }
+
+    .p-tag-list li {
+        display: inline-block;
+        margin: 0 5px 7px 0;
+    }
+
+        .p-tag-list li a {
+            display: inline-block;
+            border: 1px solid #ddd;
+            padding: 3px 10px;
+            color: #797979;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+            .p-tag-list li a:hover {
+                background: #ff6c60;
+                border-color: #ff6c60;
+                color: #fff;
+            }
+
+    .m-thumb img {
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+                                        </style>

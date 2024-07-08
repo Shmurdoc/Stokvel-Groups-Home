@@ -1,0 +1,160 @@
+﻿@model IEnumerable<Stokvel_Groups_Home.Models.AccountUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- row -->
+<div class="midde_cont">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Groups</h2>
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+    <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                @if (User.IsInRole("Member"))
+                {
+                    <a class="btn btn-outline-danger" asp-controller="Accounts" asp-action="Create">Create New</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-danger" asp-action="Create">Create New</a>
+
+                }
+
+            </div>
+            <div class="col-md-6">
+
+                @using (Html.BeginForm("Index", "Groups", FormMethod.Get))
+                {
+                    <p class="text-end">
+                        Find by name: @Html.TextBox("SearchString", (object)ViewBag.CurrentFilter as string)
+                        <input type="submit" value="Search" class="btn btn-outline-secondary " />
+                    </p>
+                }
+
+            </div>
+
+            <alerts></alerts>
+
+        </div>
+    </nav>
+
+    <!-- row -->
+    <div class="row column1">
+        <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+                <div class="full graph_head">
+                    <div class="heading1 margin_0">
+                        <h2>Join a Group</h2>
+                    </div>
+                </div>
+                <div class="full price_table padding_infor_info">
+                    <div class="row">
+
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.Hidden("Id")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FirstName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.LastName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ProfilePicture)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Address)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.City)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Province)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Zip)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Date)
+                                    </th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        @foreach (var item in Model) {
+                                <tr>
+                                        <td>
+                                        </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastName)
+                                    </td>
+                                    <td>
+                                            @if (Url.Content(item.MemberPhotoPath) != ViewBag.image)
+                                            {
+                                                <img src="@Url.Content("~/images/MemberProfile/" + @item.MemberFileName)" height="120px" width="120px"/>
+                                            }
+                                            else
+                                            {
+                                                <img src="@Url.Content("~/images/Profile/" + @item.MemberFileName)" height="120px" width="120px" />
+                                            }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.City)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Province)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Zip)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                        }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

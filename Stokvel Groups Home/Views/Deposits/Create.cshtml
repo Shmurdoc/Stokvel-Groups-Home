@@ -1,0 +1,97 @@
+﻿@model Stokvel_Groups_Home.Models.Deposit
+
+@{
+    ViewData["Title"] = "Create1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ <div class="midde_cont">
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Account</h2>
+            </div>
+        </div>
+    </div>
+            <!-- row -->
+            <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
+
+                    </div>
+                </div>
+            </nav>
+
+
+            <!-- row -->
+            <div class="row column1">
+                <div class="col-md-12">
+                    <div class="white_shd full margin_bottom_30">
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Join a Group</h2>
+                            </div>
+                        </div>
+                        <div class="full price_table padding_infor_info">
+                            <div class="row">
+
+
+                                
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <form asp-action="Create">
+                                    @Html.Hidden("accountId", (object)@ViewBag.accountId)
+                                    @Html.Hidden("accountProfileId", (object)@ViewBag.AccountProfileId)
+                                    @Html.Hidden("groupName", (object)@ViewBag.GroupNames)
+                                    @Html.Hidden("statusRank", (object)@ViewBag.StatusRank)
+                                    @Html.Hidden("totalAmountDeposit", (object)@ViewBag.TotalAmountDeposit)
+                                    @Html.Hidden("membershipRank", (object)@ViewBag.MembershipRank)
+                                    @Html.Hidden("memberTarget", (object)@ViewBag.MemberTarget)
+                                    @Html.Hidden("MemberAmount", (object)@ViewBag.MemberAmount)
+                                    @if (@ViewBag.MemberAmount != 0)
+                                    {
+                                        <p> Remember to not deposit beyond the Target Amount  </p>
+
+                                        <div class="form-group">
+                                            <label class="control-label"> Target Amount</label>
+                                        <input value="@ViewBag.MemberTarget" disabled class="form-control" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label"> Wallet Amount</label>
+                                            <input value="@ViewBag.MemberAmount" disabled class="form-control" />
+                                        </div>
+
+
+                                    }
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                                <label asp-for="DepositAmount" class="control-label"></label>
+                                                <input asp-for="DepositAmount" class="form-control" />
+                                                <span asp-validation-for="DepositAmount" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Create" class="btn btn-primary" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <a asp-action="Index">Back to List</a>
+                                </div>
+                                @section Scripts {
+                                    @{
+                                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+</div>
+                    

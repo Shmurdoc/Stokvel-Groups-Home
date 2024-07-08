@@ -1,0 +1,47 @@
+﻿@model Stokvel_Groups_Home.Models.InvoiceDetails
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>InvoiceDetails</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DetailedId" />
+            <div class="form-group">
+                <label asp-for="InvoiceId" class="control-label"></label>
+                <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"></select>
+                <span asp-validation-for="InvoiceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreditAmount" class="control-label"></label>
+                <input asp-for="CreditAmount" class="form-control" />
+                <span asp-validation-for="CreditAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaxID" class="control-label"></label>
+                <input asp-for="TaxID" class="form-control" />
+                <span asp-validation-for="TaxID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentId" class="control-label"></label>
+                <input asp-for="PaymentId" class="form-control" />
+                <span asp-validation-for="PaymentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

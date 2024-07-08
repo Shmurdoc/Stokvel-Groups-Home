@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="user_profile_dd">
+        <li>
+            <a id="manage" class="dropdown-toggle" data-toggle="dropdown">
+                <img class="img-responsive rounded-circle" src="@Url.Content("~/images/layout_img/user_img.jpg")" asp-area="Identity" asp-page="/Account/Manage/Index" />
+                <span class="name_user">Hello @UserManager.GetUserName(User)!</span>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="profile.html">My Profile</a>
+                <a class="dropdown-item" href="settings.html">Settings</a>
+                <a class="dropdown-item" href="help.html">Help</a>
+                <a class="dropdown-item" id="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
+            </div>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="user_profile_dd">
+        <li class="nav-item">
+            <a id="manage">
+
+            </a>
+            <a id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a id="manage" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    </ul>
+}
+
+
+
+

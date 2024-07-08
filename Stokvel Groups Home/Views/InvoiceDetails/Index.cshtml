@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Stokvel_Groups_Home.Models.DisplayPaidMember>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<div class="row column_title">
+    <div class="col-md-12">
+        <div class="page_title">
+            <h2>Invoice <small>( user invoice design )</small></h2>
+        </div>
+    </div>
+</div>
+<!-- row -->
+<div class="row">
+    <!-- invoice section -->
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2><i class="fa fa-file-text-o"></i> Invoice</h2>
+                </div>
+            </div>
+            <div class="full">
+                <div class="invoice_inner">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="full invoice_blog padding_infor_info padding-bottom_0">
+                                <h4>From</h4>
+                                <p>
+                                    <strong>Pluto Admin</strong><br>
+                                    427 Schoen Circles Suite 124<br>
+                                    Melbourne Australia<br>
+                                    <strong>Phone : </strong><a href="tel:9876543210">9876 543 210</a><br>
+                                    <strong>Email : </strong><a href="mailto:yourmail@gmail.com">Yourmail@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+                        @foreach (var item in Model)
+                        {
+                            
+                        <div class="col-md-4">
+                            <div class="full invoice_blog padding_infor_info padding-bottom_0">
+                                <h4>To</h4>
+                                <p>
+                                    <strong> @item.AccountUser.FirstName @item.AccountUser.LastName</strong><br>
+                                    @item.AccountUser.Address<br>
+                                    @item.AccountUser.Zip<br>
+                                    <strong>Phone : </strong><a href="tel:9876543210">9876 543 210</a><br>
+                                    <strong>Email : </strong><a href="mailto:yourmail@gmail.com">Yourmail@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="full invoice_blog padding_infor_info padding-bottom_0">
+                                <h4>Invoice No - #111457 </h4>
+                                <p>
+                                        <strong>Withdraw ID : </strong>@item.InvoiceDetails.InvoiceId.ToString("#00000")<br>
+                                        <strong>Payment Due : </strong>@item.InvoiceDetails.CreditedDate<br>
+                                    <strong>Account : </strong>11225511
+                                </p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="full padding_infor_info">
+                <div class="table_row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Row No:</th>
+                                    <th>Full Name</th>
+                                    <th>Description</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var member in ViewBag.MemberCreditAccountList)
+                                {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Account.AccountQueue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.AccountUser.FirstName) @Html.DisplayFor(modelItem => item.AccountUser.LastName)</td>
+                                        <td>Member paid back amount to @item.Invoice.Discription</td>
+                                        <td>@Model.Where(x=>x.Account.AccountId == member && x.Invoice.Discription !="Wallet").Sum(x=>x.Deposit.DepositAmount)</td>
+                                    </tr>
+                                }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- row -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="full white_shd">
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Payment Methods</h2>
+                </div>
+            </div>
+            <div class="full padding_infor_info">
+                <ul class="payment_option">
+                    <li><img src="images/layout_img/visa.png" alt="#" /></li>
+                    <li><img src="images/layout_img/mastercard.png" alt="#" /></li>
+                    <li><img src="images/layout_img/american-express.png" alt="#" /></li>
+                    <li><img src="images/layout_img/paypal.png" alt="#" /></li>
+                </ul>
+                <p class="note_cont">If you use this site regularly and would like to help keep the site on the Internet.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="full white_shd">
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Total Amount</h2>
+                </div>
+            </div>
+            <div class="full padding_infor_info">
+                <div class="price_table">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                @foreach (var item in Model.Where(x => x.Account.AccountId == ViewBag.AccountId)) {
+                                    <tr>
+                                        <th>Tax (9.3%)</th>
+                                        <td>R </td>
+                                    </tr> 
+                                    <tr>
+                                        <th>Total:</th>
+                                        <td>R @item.InvoiceDetails.CreditAmount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

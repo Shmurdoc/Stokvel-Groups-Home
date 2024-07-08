@@ -1,0 +1,59 @@
+﻿  <!-- Sidebar  -->
+<nav id="sidebar">
+    <div class="sidebar_blog_1">
+        <div class="sidebar-header">
+            <div class="logo_section">
+               <img class="logo_icon img-responsive" src="@Url.Content("~/images/logo/logo_icon.png")" alt="Views folder" />
+            </div> 
+           
+        </div>
+        <div class="sidebar_user_info">
+            <div class="icon_setting"></div>
+            <div class="user_profle_side">
+                <div class="user_img"><img class="img-responsive" src="@Url.Content("~/images/layout_img/user_img.jpg")" alt="#" /></div>
+                <div class="user_info">
+                    <h6></h6>
+                    <p><span class="online_animation"></span> Online</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar_blog_2">
+        <h4>General</h4>
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard yellow_color"></i> <span>Home</span></a>
+            </li>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <li><a asp-controller="AccountUsers" asp-action="AdminIndex"><i class="fa fa-table purple_color2"></i> <span>AccountUsers</span></a></li>
+            }
+
+            <li class="active">
+                <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone green_color"></i> <span>Account</span></a>
+                <ul class="collapse list-unstyled" id="additional_page">
+                    <li>
+                        <a asp-controller="Accounts" asp-action="Index">> <span>Accounts</span></a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-table purple_color2"></i> <span>Group</span></a>
+                <ul class="collapse list-unstyled" id="element">
+                    <li>
+                        <a asp-controller="Groups" asp-action="PrivateIndex">> <span>All Groups</span></a>
+                    </li>
+                    <li>
+                        <a asp-controller="Groups" asp-action="MyIndex">> <span>My Groups</span></a>
+                    </li>
+                </ul>
+            </li>
+
+            
+            <li><a href="settings.html"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+</nav>
+<!-- end sidebar -->

@@ -1,0 +1,150 @@
+﻿@model IPagedList<Stokvel_Groups_Home.Models.InvoiceGroupDetails>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- row -->
+<div class="midde_cont">
+    <div class="container-fluid">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Invoice</h2>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+
+                <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <a class="btn btn-outline-danger" asp-action="Create">Create New</a>
+
+                        </div>
+                        <div class="col-md-6 text-end">
+
+                                @using (Html.BeginForm("Index", "Invoices", FormMethod.Get))
+                                {
+                                    <p>
+                                        Find by name: @Html.TextBox("SearchString", (object)ViewBag.CurrentFilter as string)
+
+                                        <input type="submit" value="Search" />
+                                    </p>
+                                }
+                         </div>
+
+                     </div>
+                </nav>
+
+                    <!-- table section -->
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="white_shd full margin_bottom_30">
+                            <div class="full graph_head">
+                                <div class="heading1 margin_0">
+                                    <h2>Invoice</h2>
+                                </div>
+                            </div>
+                            <div class="table_section padding_infor_info">
+                                <div class="table-responsive-sm">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sno.</th>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>InvoiceDate</th>
+                                                <th>DueDate</th>
+                                                <th>TotalAmount</th>
+                                                <th>Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Sno.</th>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>InvoiceDate</th>
+                                                <th> DueDate</th>
+                                                <th> TotalAmount</th>
+                                                <th>Options</th>
+
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                    @foreach (var item in Model) {
+                                                    <tr>
+                                            <td>
+                                                @* @for (int i = 1; i <= ViewBag.MemberCount; i++)
+                                                {
+                                                    if (i == i)
+                                                    {
+                                                        @i
+                                                        break;
+                                                    }
+                                                   
+                                                  
+                                                } *@
+                                            </td>
+                                                        <td>
+                                                @Html.DisplayFor(modelItem => item.AccountUser.FirstName)
+                                                        </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AccountUser.LastName)
+                                            </td>
+                                                        <td>
+                                                @Html.DisplayFor(modelItem => item.Invoice.InvoiceDate)
+                                                        </td>
+                                                        <td>
+                                                    @Html.DisplayFor(modelItem => item.Invoice.Discription)
+                                                        </td>
+                                                        <td>
+                                                    <span>R</span>  @Html.DisplayFor(modelItem => item.Invoice.TotalAmount)
+                                                        </td>
+                                                        <td>
+                                                <a asp-action="Edit" asp-route-id="@item.Invoice.InvoiceId">Edit</a> |
+                                                <a asp-action="Details" asp-route-id="@item.Invoice.InvoiceId">Details</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Invoice.InvoiceId">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                            }
+                                        </tbody>
+                   
+                                    </table>
+                                          <div class="row ">
+                                            <div class="col-md-12 text-center">
+
+
+                  
+                                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+                                        @Html.PagedListPager(Model, page => Url.Action("Index",
+                                                 new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+                                           </div>
+                                          </div>
+                               </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        
+
+                
+
+
+
+
+
+

@@ -1,0 +1,301 @@
+﻿@model IPagedList<Stokvel_Groups_Home.Models.Group>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- row -->
+<div class="midde_cont">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Groups</h2>
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+    <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                @if (User.IsInRole("Member"))
+                {
+                    <a class="btn btn-outline-danger" asp-controller="Accounts" asp-action="Create">Create New</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-danger" asp-action="Create">Create New</a>
+
+                }
+
+            </div>
+            <div class="col-md-6">
+
+                @using (Html.BeginForm("Index", "Groups", FormMethod.Get))
+                {
+                    <p class="text-end">
+                        Find by name: @Html.TextBox("SearchString", (object)ViewBag.CurrentFilter as string)
+                        <input type="submit" value="Search" class="btn btn-outline-secondary " />
+                    </p>
+                }
+
+            </div>
+
+            <alerts></alerts>
+
+        </div>
+    </nav>
+
+    <!-- row -->
+    <div class="row column1">
+        <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+                <div class="full graph_head">
+                    <div class="heading1 margin_0">
+                        <h2>Join a Group</h2>
+                    </div>
+                </div>
+                <div class="full price_table padding_infor_info">
+                    <div class="row">
+                        @foreach (var item in Model.Where(x => x.Private == true).ToList())
+                        {
+                            <!-- column groups -->
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 profile_details margin_bottom_30">
+                                <div class="contact_blog">
+                                    <p>  @Html.Hidden("GroupId")</p>
+                                    <h4 class="brief">@Html.DisplayFor(modelItem => item.TypeAccount)</h4>
+                                    <div class="contact_inner">
+                                        <div class="left">
+                                            <h3> @Html.DisplayFor(modelItem => item.GroupName)</h3>
+                                            @if(User.IsInRole("Manager"))
+                                            {
+                                            <p><strong>Verify Key: </strong>@Html.DisplayFor(modelItem => item.VerifyKey)</p>
+                                            }
+                                            <p><strong>Play For: </strong> R @Html.DisplayFor(modelItem => item.AccountTarget) </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-envelope-o"></i> : Message Me To Get Code</li>
+                                                <br />
+                                                <p><strong>Total Member In Take: </strong> @Html.DisplayFor(modelItem => item.TotalGroupMembers)</p>
+                                            </ul>
+                                        </div>
+                                        <div class="right">
+                                            <div class="profile_contacts">
+                                                <img class="img-responsive" src="images/layout_img/msg2.png" alt="#" />
+                                            </div>
+                                        </div>
+                                        <div class="bottom_list">
+                                            <div class="left_rating">
+                                                <p class="ratings">
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star-o"></span></a>
+                                                </p>
+                                            </div>
+                                            <div class="right_button">
+                                                <button type="button" class="btn btn-success btn-xs">
+                                                    <i class="fa fa-user">
+                                                    </i> <i class="fa fa-comments-o"></i>
+                                                </button>
+
+                                                <p class="mb-0 text-uppercase mt-2">
+                                                    <a href="#myModall" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-user"> </i> join Here</a>
+                                                </p>
+
+                                                <div class="d-flex justify-content-between text-center mt-2 mb-2">
+                                                    <div>
+                                                        <a asp-action="Details" asp-route-id="@item.GroupId">Details</a>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#myModal" class="" data-toggle="modal">Delete</a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--popup waring box danger-->
+                                    <div id="myModal" class="modal fade">
+                                        <div class="modal-dialog modal-confirm">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <div class="icon-box border-danger ">
+                                                        <i class=" fa fa-times suc text-danger"></i>
+                                                    </div>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                </div>
+                                                <h4 class="modal-title">Are you sure?</h4>
+                                                <div class="modal-body">
+                                                    <p>Do you really want to delete this Group? This process cannot be undone.</p>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 text-center">
+                                                        <button type="button" class="btn btn-info btn-lg w-100" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                    <div class="col-md-6 text-center">
+                                                        <a asp-action="Delete" asp-route-id="@item.GroupId" class="btn btn-danger btn-lg w-100">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- end popup waring box danger -->
+                                </div>
+
+                                <!--popup waring box success join group-->
+                                <div id="myModall" class="modal fade">
+                                    <div class="modal-dialog modal-confirm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="icon-box border-success">
+                                                    <i class=" fa fa-check suc text-success"></i>
+                                                </div>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <h4 class="modal-title">Are you sure?</h4>
+                                            <div class="modal-body">
+                                                <p>Do you really want to Join this Group? If yes pleace click yes.</p>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 text-center">
+                                                    <button type="button" class="btn btn-info btn-lg w-100" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                                <div class="col-md-6 text-center">
+                                                    @using (Html.BeginForm("JoinGroup", "Accounts", FormMethod.Get))
+                                                    {
+
+                                                        @Html.Hidden("GroupVerifyKey", (string)item.VerifyKey)
+                                                        <button type="submit" class="btn btn-primary btn-lg w-100"> Yes</button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- end popup waring box danger -->
+                            </div>
+
+
+                        }
+
+
+                        <div class="col-md-12 text-md-center ">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+                            @Html.PagedListPager(Model, page => Url.Action("Index",
+                                     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<style>
+    body {
+        font-family: 'Varela Round', sans-serif;
+    }
+
+    .modal-confirm {
+        color: #636363;
+        width: 400px;
+        margin: 30px auto;
+    }
+
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+        }
+
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+        }
+
+        .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+
+        .modal-confirm .modal-body {
+            color: #999;
+        }
+
+        .modal-confirm .modal-footer {
+            border: none;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+        }
+
+            .modal-confirm .modal-footer a {
+                color: #999;
+            }
+
+        .modal-confirm .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid #f15e5e;
+        }
+
+            .modal-confirm .icon-box i {
+                font-size: 46px;
+                display: inline-block;
+                margin-top: 13px;
+            }
+
+        .modal-confirm .btn-info {
+            background: #c1c1c1;
+        }
+
+            .modal-confirm .btn-info:hover, .modal-confirm .btn-info:focus {
+                background: #a8a8a8;
+            }
+
+    .trigger-btn {
+        display: inline-block;
+        margin: 100px auto;
+    }
+</style>
+
+
+

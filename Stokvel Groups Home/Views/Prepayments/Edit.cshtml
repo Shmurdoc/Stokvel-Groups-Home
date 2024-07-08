@@ -1,0 +1,47 @@
+﻿@model Stokvel_Groups_Home.Models.Prepayment
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Prepayment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PrepaymentId" />
+            <div class="form-group">
+                <label asp-for="PrepaymentType" class="control-label"></label>
+                <input asp-for="PrepaymentType" class="form-control" />
+                <span asp-validation-for="PrepaymentType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrepaymentDate" class="control-label"></label>
+                <input asp-for="PrepaymentDate" class="form-control" />
+                <span asp-validation-for="PrepaymentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

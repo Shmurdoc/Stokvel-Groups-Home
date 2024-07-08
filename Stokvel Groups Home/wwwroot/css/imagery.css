@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+div#image-containerl{
+	width: 100%;
+	height: auto;
+	margin: 0px;
+}
+.responsive-image{
+	width: 100%;
+	height: auto;
+}
+div#image-container > img{
+	width: 120px;
+	height: 120px;
+	padding: 0px;
+	cursor: pointer;
+	margin-left: -4px;
+}
+.activeness{
+	border:2px solid #FFFFFF;
+}
+div#preview-container{
+	width: 37%;
+	height: 250px;
+	
+}
+
+/* Trying something out */
+div.image-container-dropdown{
+	cursor: pointer;
+	width: 50px;
+	height: 20px;
+	background-color: white;
+}
+
+.box {
+	width: 400px;
+	height: 400px;
+	overflow: hidden;
+	background: orange;
+	margin: 0 auto;
+	transition: all 0.4s ease-in-out;
+}
+
+.hide {
+	height: 0;
+}

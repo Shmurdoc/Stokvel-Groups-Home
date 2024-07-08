@@ -1,0 +1,62 @@
+﻿@model Stokvel_Groups_Home.Models.Invoice
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Invoice</h4>
+<hr />
+<!-- row -->
+<div class="row column1">
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Contacts</h2>
+                </div>
+            </div>
+            <div class="full price_table padding_infor_info">
+
+                <div class="row">
+                    <div class="row d-flex justify-content-left align-items-center h-100">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form asp-action="Create">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <label asp-for="InvoiceDate" class="control-label"></label>
+                                        <input asp-for="InvoiceDate" class="form-control" />
+                                        <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Discription" class="control-label"></label>
+                                        <input asp-for="Discription" class="form-control" />
+                                        <span asp-validation-for="Discription" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="TotalAmount" class="control-label"></label>
+                                        <input asp-for="TotalAmount" class="form-control" />
+                                        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+
+                            <div>
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+

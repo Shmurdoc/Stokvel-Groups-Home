@@ -1,0 +1,98 @@
+﻿@model Stokvel_Groups_Home.Models.Group
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Contacts</h2>
+                </div>
+            </div>
+        </div>
+
+        <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+
+
+
+    <a class="btn btn-outline-danger" asp-action="Index">Back to List</a>
+            
+
+
+    <!--alert bar auto time dismiss-->
+    <alerts></alerts>
+
+        </nav>
+
+
+        <!-- row -->
+        <div class="row column1">
+            <div class="col-md-12">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Contacts</h2>
+                        </div>
+                    </div>
+                    <div class="full price_table padding_infor_info">
+
+                        <div class="row">
+                            <div class="row d-flex justify-content-left align-items-center h-100">
+                                <div class="row">
+                                <div class="col-md-4">
+                                    <form asp-action="Create">
+                                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <label asp-for="GroupName" class="control-label"></label>
+                                            <input asp-for="GroupName" class="form-control" />
+                                            <span asp-validation-for="GroupName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="VerifyKey" class="control-label"></label>
+                                            <input asp-for="VerifyKey" class="form-control" />
+                                            <span asp-validation-for="VerifyKey" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="TypeAccount" class="control-label"></label>
+                                            <select asp-for="TypeAccount" class="form-control" asp-items="@Html.GetEnumSelectList(typeof(AccountType))"></select>
+                                            <span asp-validation-for="TypeAccount" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="TotalGroupMembers" class="control-label"></label>
+                                            <input asp-for="TotalGroupMembers" class="form-control" />
+                                            <span asp-validation-for="TotalGroupMembers" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="AccountTarget" class="control-label"></label>
+                                            <input asp-for="AccountTarget" class="form-control" />
+                                            <span asp-validation-for="AccountTarget" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Create" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div>
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

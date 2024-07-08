@@ -1,0 +1,226 @@
+﻿@model IEnumerable<DisplayMemberTurn>
+  <!-- dashboard inner -->
+@if (@ViewBag.NumberOfAccounts > 0)
+{
+<div class="row column_title">
+    <div class="col-md-12">
+        <div class="page_title">
+            <h2>Dashboard</h2>
+        </div>
+    </div>
+</div>
+<div class="row column1">
+    <div class="col-md-6 col-lg-3">
+        <div class="full counter_section margin_bottom_30">
+            <div class="couter_icon">
+                <div>
+                    <i class="fa fa-user yellow_color"></i>
+                </div>
+            </div>
+            <div class="counter_no">
+                <div> @for (int i = 0; i < 1; i++)
+                    {
+                    <p class="total_no">Acc: @(1)</p>
+                    }
+                    <p class="head_couter">Accounts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+        <div class="col-md-6 col-lg-3">
+            <div class="full counter_section margin_bottom_30">
+                <div class="couter_icon">
+                    <div>
+                        <i class="fa fa-clock-o blue1_color"></i>
+                    </div>
+                </div>
+                <div class="counter_no">
+                    <div> @for (int i = 0; i < 1; i++)
+                    {
+                        <p class="total_no">@ViewBag.DateToNextDeposit[0]</p>
+                    }
+                        <p class="head_couter">Next Deposit</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-6 col-lg-3">
+            <div class="full counter_section margin_bottom_30">
+                <div class="couter_icon">
+                    <div>
+                    <i class="fa fa-money green_color"></i>
+                    </div>
+                </div>
+                <div class="counter_no">
+                <div>
+                    @for (int i = 0; i < 1; i++)
+                    {
+                        <p class="total_no">R @ViewBag.TotalAmountOwed[0].ToString("0.#")</p>
+                       
+                        }
+                        <p class="head_couter">Total Owed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="full counter_section margin_bottom_30">
+            <div class="couter_icon">
+                <div>
+                    <i class="fa fa-hourglass red_color"></i>
+                </div>
+            </div>
+            <div class="counter_no">
+                <div>
+                    @for (int i = 0; i < 1; i++)
+                    {
+                        <p class="total_no">R @ViewBag.DepositDue[0].ToString("0.#")</p>
+                    }
+                    <p class="head_couter">Amount Due</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+@if (@ViewBag.NumberOfAccounts > 1)
+{
+<div class="row column1">
+    <div class="col-md-6 col-lg-3">
+        <div class="full counter_section margin_bottom_30">
+            <div class="couter_icon">
+                <div>
+                    <i class="fa fa-user yellow_color"></i>
+                </div>
+            </div>
+            <div class="counter_no">
+                <div>
+                    
+                       
+                        <p class="total_no">Acc: @(2)</p>
+                    
+                    <p class="head_couter">Accounts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="full counter_section margin_bottom_30">
+            <div class="couter_icon">
+                <div>
+                    <i class="fa fa-clock-o blue1_color"></i>
+                </div>
+            </div>
+            <div class="counter_no">
+                <div>
+                       
+                        <p class="total_no">@ViewBag.DateToNextDeposit[1]</p>
+                   
+                    <p class="head_couter">Next Deposit</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="full counter_section margin_bottom_30">
+            <div class="couter_icon">
+                <div>
+                    <i class="fa fa-money green_color"></i>
+                </div>
+            </div>
+            <div class="counter_no">
+                <div>
+                       
+                       
+                        <p class="total_no">R @ViewBag.TotalAmountOwed[1].ToString("0.#")</p>
+
+                   
+                    <p class="head_couter">Total Owed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="full counter_section margin_bottom_30">
+            <div class="couter_icon">
+                <div>
+                    <i class="fa fa-hourglass red_color"></i>
+                </div>
+            </div>
+            <div class="counter_no">
+                <div>
+                      
+                       
+                        <p class="total_no">R @ViewBag.DepositDue[1].ToString("0.#")</p>
+                   
+                    <p class="head_couter">Amount Due</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+<!-- Calendar section -->
+<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2><i class="fa fa-calendar" aria-hidden="true"></i> Calendar</h2>
+            </div>
+        </div>
+   
+        <div class="full progress_bar_inner m-3 position-sticky">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="full">
+                        <div class="w-75 position" id='calendar'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="row column3">
+    <!-- PaidMembers -->
+    @if( await Component.InvokeAsync("PaidMembers") == null)
+    {
+        @await Component.InvokeAsync("PaidMembers")
+    }
+   
+    <!-- end PaidMembers -->
+</div>
+<div class="row column4 graph">
+    <!--Member Queue Date -->
+    @if (ViewBag.NumberOfAccounts >=1){
+    @if (await Component.InvokeAsync("MemberQueueDate") != null)
+    {
+        @await Component.InvokeAsync("MemberQueueDate")
+    }
+
+    @if (await Component.InvokeAsync("DailyGroupUpdate") != null)
+    {
+        @await Component.InvokeAsync("DailyGroupUpdate")
+    }
+    }
+
+    @if(ViewBag.NumberOfAccounts==2){
+    @if (await Component.InvokeAsync("MemberQueueDates") != null)
+    {
+    @await Component.InvokeAsync("MemberQueueDates")
+    }
+
+    @if (await Component.InvokeAsync("DailyGroupUpdates") != null)
+    {
+        @await Component.InvokeAsync("DailyGroupUpdates")
+    }
+    }
+    
+</div>
+
