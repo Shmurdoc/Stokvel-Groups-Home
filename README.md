@@ -71,5 +71,9 @@ Monitor payments and deposits and keep track of each member's history.
 
 Features that have not yet been developed or completed are mentioned in the issues section.
 
+Repository & Services structure:
+![image](https://github.com/user-attachments/assets/656ffbb9-367c-4b68-8ed7-6f4d2f15069b)
 
+
+Database Structure:
 
