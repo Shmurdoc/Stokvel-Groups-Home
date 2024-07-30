@@ -21,11 +21,15 @@ This pre-deposit will be invested after you deposit it the month before the cycl
 Chatting areas have been created to avoid members from joining the wrong group. 
 
 Member Ranking done by point: 
-Bronz > R0 < R25 000 
-Silver > R25 000 <R50 000
-Gold > R50 000 <R75 000
-Platnum > R100 000
-PendingPayment: >0
+- Bronz > R0 < R25 000 
+
+- Silver > R25 000 <R50 000
+
+- Gold > R50 000 <R75 000
+
+- Platnum > R100 000
+
+- PendingPayment: > 0 < Pre-Deposit
 
 features:
 
