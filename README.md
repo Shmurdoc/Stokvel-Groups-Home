@@ -8,7 +8,7 @@ my email: madocmhlongo05@gmail.com
 
 The Idea:
 
-This project is a Stokvels system in which members can join a group that they know and trust. Before the members of this group can successfully join the Stokvel, they have to fill in some required information. Once they have added the data, the administrator should be able to activate the members account so that they can create or join a group. After joining or creating a group, members must pay the initial deposit for that group as an advance payment. This prepayment will be responsible for missed payments after the member's second offence of not paying the amount owed. The system will have 3 recognized methods of accepting a member which are (platinum, pendingDeposit, paidDeposit). 
+This project is a Stokvels system in which members can join a group that they know and trust. Before the members of this group can successfully join the Stokvel, they will have to fill in some required information. Once they have added the data, the administrator should be able to activate the members account so that they can create or join a group. After joining or creating a group, members must pay the initial deposit for that group as an advance payment. This prepayment will be responsible for missed payments after the member's second offence of not paying the amount owed. The system will have 3 recognized methods of accepting a member which are (platinum, pendingDeposit, paidDeposit). 
 Platinum: these are members who have deposited over R100 000.00 in total count from every group joined. These members don’t pay any pre-deposits. They are regarded as trusted members. 
 PendingDeposit: these are members who pay what they can and the rest of the payment will be paid together with the stokvel Deposit within the first four ( 4) payments of the first five members depending on length group. 
 paidDeposit: these are members who have paid the pre-Deposit for that specific account.
@@ -18,7 +18,14 @@ The system will arrange members using points. The list will be generated in desc
 Members can join up to two groups at once, either of the same or separate account types.  If a member are unable to pay within the month, their withdrawal will be subject to a penalty cost. If you have already collected your cut and do not want to pay the penalty money, you will be banned. You will then be excluded, and legal action will be taken against the member. when legal action is taken against that member, additional fees will apply.
 The purpose of the pre-deposit:
 This pre-deposit will be invested after you deposit it the month before the cycle begins. Not all members will be subjected to paying this money. This money is not taxed. Only the money invested is taxed. The money invested will be returned to you together with your dividend, provided you have paid in evenly each month. 30% of your dividend will be deducted from members for use the system.
-Chatting areas have been created to avoid members from joining the wrong group.
+Chatting areas have been created to avoid members from joining the wrong group. 
+
+Member Ranking done by point: 
+Bronz > R0 < R25 000 
+Silver > R25 000 <R50 000
+Gold > R50 000 <R75 000
+Platnum > R100 000
+PendingPayment: >0
 
 features:
 
@@ -72,6 +79,8 @@ Monitor payments and deposits and keep track of each member's history.
 Features that have not yet been developed or completed are mentioned in the issues section.
 
 Repository & Services structure:
+
+
 ![image](https://github.com/user-attachments/assets/656ffbb9-367c-4b68-8ed7-6f4d2f15069b)
 
 
