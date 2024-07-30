@@ -57,7 +57,7 @@ Members/ group manager features:
 
 17. The stokvel system will sort members based on point total, starting with the top point earner and working down to the lowest.
 To determine whether you are a platinum member, the system will check. Any group can be joined by platinum members without requiring an initial deposit. 
-nonetheless, there will be a one-time deposit required for the High Savings Club groups.
+nonetheless, there will be a one-time deposit required for every High Savings Club groups.
 
 
 
