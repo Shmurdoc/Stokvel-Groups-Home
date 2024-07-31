@@ -1,4 +1,7 @@
-﻿using Stokvel_Groups_Home.Interface.IRepo.Finance;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.EntityFrameworkCore;
+using Stokvel_Groups_Home.Data;
+using Stokvel_Groups_Home.Interface.IRepo.Finance;
 using Stokvel_Groups_Home.Interface.IRepo.UserArea;
 using Stokvel_Groups_Home.Interface.IServices.IDepositServices;
 using Stokvel_Groups_Home.Models;
@@ -20,6 +23,7 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 		private readonly IAccountUserRepository _accountUserRepository;
 		private readonly IPenaltyFeeRepository _penaltyFeeRepository;
 		private readonly IWalletRepository _walletRepository;
+		private readonly ApplicationDbContext _context;
 
 		public DepositServices(IPrepaymentsRepository prepaymentsRepository,
 			IDepositRepository depositRepository,
@@ -33,7 +37,8 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 			IAccountsRepository accountsRepository
 , IPenaltyFeeRepository penaltyFeeRepository,
 			IAccountUserRepository accountUserRepository,
-			IWalletRepository walletRepository
+			IWalletRepository walletRepository,
+			ApplicationDbContext context
 
 			)
 
@@ -51,31 +56,35 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 			_accountUserRepository = accountUserRepository;
 			_penaltyFeeRepository = penaltyFeeRepository;
 			_walletRepository = walletRepository;
+			_context = context;
 		}
 
 		public async Task<AccountProfile> Details(int accountProfileId) => await _accountProfileRepository.Details(accountProfileId);
 
 
-		public async Task<int> MemebersFirstPreDeposit(int id, Prepayment userPrepaymentDeposit, decimal DepositAmount)
+		public async Task<int> MemebersFirstPreDeposit(int id, int prePaymentId, decimal preDepoAmount, decimal DepositAmount)
 		{
-			int prepaymentId = 0;
 
-			Prepayment prepayment = new()
+            int preDepoId = 0;
+			var memberInDb = await _groupMembersRepository.GetAll();
+			var typeAccount = memberInDb.Where(x => x.AccountId == id).Select(x => x.Group.TypeAccount).FirstOrDefault();
+
+
+			PreDeposit prepayment = new()
 			{
-				PrepaymentType = "Autumn",
+                PrepaymentType = typeAccount.ToString(),
 				PrepaymentDate = DateTime.Now.ToString(),
-				Amount = Convert.ToInt32(DepositAmount),
 				Status = true,
 				AccountId = id,
 			};
 
 
-
-			if (userPrepaymentDeposit == null)
+			
+			if (prePaymentId == 0)
 			{
 				await _prepaymentsRepository.Inset(prepayment);
 				await _prepaymentsRepository.SaveAsync();
-				prepaymentId = prepayment.PrepaymentId;
+                preDepoId = prepayment.PrepaymentId;
 
 				PenaltyFee penaltyFee = new()
 				{
@@ -83,15 +92,19 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 					PenaltyAmount = 0,
 					PenaltyLevel = "Low",
 				};
-				await _penaltyFeeRepository.Insert(penaltyFee);
+				prepayment.Amount = Convert.ToInt32(DepositAmount);
+
+                await _penaltyFeeRepository.Insert(penaltyFee);
 			}
 			else
 			{
-				await _prepaymentsRepository.Edit(prepayment);
-				await _prepaymentsRepository.SaveAsync();
-
-			}
-			return prepaymentId;
+				prepayment.PrepaymentId = prePaymentId;
+				prepayment.Amount = Convert.ToInt32(DepositAmount + preDepoAmount);
+                await _prepaymentsRepository.Edit(prepayment);
+                await _prepaymentsRepository.SaveAsync();
+				preDepoId = prepayment.PrepaymentId;
+            }
+			return preDepoId;
 		}
 
 
@@ -99,20 +112,19 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 		// 
 		public async Task MemeberDepositMade(int id, string userId, Deposit deposit, int accountProfileId, int membershipRank, decimal totalAmountDeposited, MemberStatuses statusRank)
 		{
-
-			PaymentMethod paymentMethod = new()
+			DepositMethod paymentMethod = new()
 			{
 				MethodName = "Card Payment",
 				Description = "Done Sucssesful",
 			};
 
-			PaymentStatus paymentStatus = new()
+			DepositStatus paymentStatus = new()
 			{
 				PaymentStatusName = "Card Payment",
 				PaymentStatesDescription = "Done Sucssesful",
 			};
 
-			var amountDeposited = await this.MonthlyDeposit(id, deposit.DepositAmount);
+			var amountDeposited = await this.MonthlyDeposit(id, deposit.DepositAmount,0);
 
 			Invoice depositToInvoice = new()
 			{
@@ -180,7 +192,6 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 				await _accountProfileRepository.Inset(accountProfiles);
 				await _accountProfileRepository.SaveAsync();
 			}
-
 		}
 
 		public async Task Update(AccountProfile accountProfile)
@@ -197,7 +208,7 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 			}
 		}
 
-		public async Task<decimal> MonthlyDeposit(int accountId, decimal deposit)
+		public async Task<decimal> MonthlyDeposit(int accountId, decimal deposit, decimal preDepoAmount)
 		{
 			List<Account> accounts = await _accountsRepository.GetAll();
 			List<GroupMembers> groupMembers = await _groupMembersRepository.GetAll();
@@ -215,10 +226,13 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 								   g.AccountTarget
 							   }).FirstOrDefault();
 
-			var numOfMembers = groupMember.TotalGroupMembers;
+			var numOfMembers = groupMember.TotalGroupMembers-1;
 			decimal members = Convert.ToDecimal(numOfMembers);
 			var totalDepositCal = groupMember.AccountTarget;
-			var limitDeposit = totalDepositCal / numOfMembers;
+
+			var totalPreDepo = totalDepositCal / (numOfMembers);
+
+			var limitDeposit = (totalDepositCal / numOfMembers - preDepoAmount);
 
 
 			List<MemberInvoice> memberInvoices = await _memberInvoiceRepository.GetAll();
@@ -236,13 +250,13 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 										   d.DepositAmount
 									   }).ToList();
 
-			PaymentMethod paymentMethod = new()
+			DepositMethod paymentMethod = new()
 			{
 				MethodName = "wallet",
 				Description = "Done Sucssesful",
 			};
 
-			PaymentStatus paymentStatus = new()
+			DepositStatus paymentStatus = new()
 			{
 				PaymentStatusName = "wallet",
 				PaymentStatesDescription = "Done Sucssesful",
@@ -250,8 +264,10 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 
 			// get the total amount of money paid this month
 			var totalPaid = depositMonthlyTotal.Sum(x => x.DepositAmount);
+			decimal roundedLimitDeposit = Math.Round(limitDeposit, 0);
 
-			if (deposit > limitDeposit || totalPaid > limitDeposit)
+
+			if (deposit > limitDeposit || limitDeposit < 0)
 			{
 				var excess = deposit - limitDeposit;
 
@@ -317,5 +333,25 @@ namespace Stokvel_Groups_Home.Services.DepositServices
 
 			return memberStatuses;
 		}
-	}
+		
+		public	async Task<List<PreDeposit>> PreDeposit(int accountId)
+		{
+
+			var members = await _prepaymentsRepository.GetAll();
+			var memberDepositList = members.Where(x => x.AccountId == accountId).ToList();
+
+			return memberDepositList;
+        }
+        public IQueryable<PreDeposit> GetAll()
+        {
+			return _context.PreDeposit.Include(a => a.AccountId);
+}
+
+        public async Task<PreDeposit> GetAnomaly(int accountId)
+        {
+            var anomaly = await GetAll()
+                .FirstOrDefaultAsync(a => a.AccountId == accountId);
+            return anomaly;
+        }
+    }
 }

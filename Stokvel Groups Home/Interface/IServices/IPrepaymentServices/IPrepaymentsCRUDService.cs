@@ -6,15 +6,15 @@ namespace Stokvel_Groups_Home.Interface.IServices.IPrepaymentServices
 	public interface IPrepaymentsCRUDService
 	{
 
-		Task<List<Prepayment>>? GetAll();
+        Task<List<PreDeposit>>? GetAll();
 
-		Task<Prepayment>? GetById(int? id);
-		Task<Prepayment>? Detail(int? id);
+		Task<PreDeposit>? GetById(int? id);
+		Task<PreDeposit>? Detail(int? id);
 		List<SelectListItem>? PaymentStatusExtendInclude();
 
-		Task Inset(Prepayment? prepayment);
+		Task Inset(PreDeposit? prepayment);
 
-		Task Edit(Prepayment? prepayment);
+		Task Edit(PreDeposit? prepayment);
 
 		Task Delete(int? id);
 

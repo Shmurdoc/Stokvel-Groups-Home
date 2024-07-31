@@ -2,7 +2,7 @@
 
 namespace Stokvel_Groups_Home.Interface.IServices.IAccountServices
 {
-	public interface IAccountServices
+    public interface IAccountServices
 	{
 		Task<bool> GroupNamesExists(string? id, AccountType typeAccont);
 

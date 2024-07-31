@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Stokvel_Groups_Home.Interface.IRepo.UserArea;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices.IAccountRequestService;
 using Stokvel_Groups_Home.Interface.IServices.IAccountUserServices;
+using Stokvel_Groups_Home.Interface.IServices.ICalendarServices;
 using Stokvel_Groups_Home.Interface.IServices.IDepositServices;
 using Stokvel_Groups_Home.Interface.IServices.IHomeService;
 using Stokvel_Groups_Home.Models;
@@ -12,32 +16,41 @@ namespace Stokvel_Groups_Home.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
-	private readonly ILogger<HomeController> _logger;
+	
 
 
 	private readonly IHomeRequestService _homeRequestService;
 	private readonly IAccountUserCRUDService _accountUserCRUDService;
 	private readonly IAccountRequestService _accountRequestService;
+	private readonly ICalendarRequestServices _calendarRequestServices;
+	private readonly ICalendarRepository _calendarRepository;
+	private readonly IMemoryCache _cache;
+    private readonly ILogger<HomeController> _logger;
+
+    private readonly string cacheKey = "memberDisplayCacheKey";
+
 	public HomeController(ILogger<HomeController> logger,
-		IDepositServices depositServices, IHomeRequestService homeRequestService, IAccountRequestService accountRequestService, IAccountUserCRUDService accountUserCRUDService)
+		IDepositServices depositServices, IHomeRequestService homeRequestService,
+		IAccountRequestService accountRequestService,
+		IAccountUserCRUDService accountUserCRUDService,
+		IMemoryCache cache,
+		ICalendarRequestServices calendarRequestServices,
+		ICalendarRepository calendarRepository)
 	{
 		_logger = logger;
 		_homeRequestService = homeRequestService;
 		_accountRequestService = accountRequestService;
 		_accountUserCRUDService = accountUserCRUDService;
+		_calendarRequestServices = calendarRequestServices;
+		_cache = cache;
+		_calendarRepository = calendarRepository;
 	}
 
-	/*public string GetData()
-	{
-		IEnumerable<Calendar> events = .calendars;
-
-		var eventData = events.Select(x => new Calendar { Id = x.Id, userId = x.userId, title = x.title, start = x.start, allDay = x.allDay, className = x.className, end = x.end, }).ToList();
-		return Newtonsoft.Json.JsonConvert.SerializeObject(eventData);
-
-	}*/
 
 	public async Task<IActionResult> Index()
 	{
+		
+
 		List<DisplayMemberTurn> memberTurn = new();
 
 
@@ -45,11 +58,13 @@ public class HomeController : Controller
 		var userId = User.Identity.GetUserId();
 
 
-		var account = await _homeRequestService.NumberOfAccounts(userId);
+        var account = await _homeRequestService.NumberOfAccounts(userId);
 		var dateToNextDeposit = await _homeRequestService.DateToNextDeposit(userId);
 		var totalAmountOwed = await _homeRequestService.TotalOwed(userId);
 		var depositDue = await _homeRequestService.TotalAmountDue(userId);
 
+		
+	
 
 		if (account > 0 && dateToNextDeposit != null)
 		{
@@ -85,11 +100,15 @@ public class HomeController : Controller
 		{
 			return RedirectToAction("AdminIndex");
 		}
-		return View(await _accountRequestService.DisplayMemberTurnProfile());
+		return View();
 	}
 
-
-
+	public async Task<string> GetData()
+	{
+		IEnumerable<Calendar> events = await _calendarRepository.GetAll();
+		var eventData = events.Select(x => new Calendar { CalendarId = x.CalendarId, Title = x.Title, Start = x.Start, AllDay = x.AllDay, ClassName = x.ClassName, End = x.End, GroupId = x.GroupId, }).ToList();
+		return Newtonsoft.Json.JsonConvert.SerializeObject(eventData);
+	}
 
 	[Authorize(Roles = "Admin")]
 	public IActionResult AdminIndex()

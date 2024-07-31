@@ -4,12 +4,12 @@ namespace Stokvel_Groups_Home.Interface.IRepo.Finance
 {
 	public interface IWithdrawRepository
 	{
-		Task<List<InvoiceDetails>>? GetAll();
+		Task<List<WithdrawDetails>>? GetAll();
 
-		Task<InvoiceDetails>? Details(int? id);
-		Task Insert(InvoiceDetails? invoiceDetails);
+		Task<WithdrawDetails>? Details(int? id);
+		Task Insert(WithdrawDetails? invoiceDetails);
 
-		Task Edit(InvoiceDetails? invoiceDetails);
+		Task Edit(WithdrawDetails? invoiceDetails);
 
 		Task Delete(int? id);
 

@@ -6,7 +6,7 @@ using Stokvel_Groups_Home.Models;
 
 namespace Stokvel_Groups_Home.Services.HomeService
 {
-	public class HomeRequestService : IHomeRequestService
+    public class HomeRequestService : IHomeRequestService
 	{
 
 		private readonly IAccountServices _accountServices;

@@ -20,44 +20,41 @@
 
 </nav>
 
+<alerts></alerts>
 
 <div class="row">
 @foreach (var accountType in ViewBag.AccountType)
 {
 
         @foreach (var item in Model.Where(x => x.GroupMembers.Group.TypeAccount == accountType))
-{
-        <div class="col-md-6">
-            <div class="card mb-5" style="border-radius: 15px;">
-                <div class="card-body p-4">
-                        <h3 class="mb-3">@Html.DisplayFor(modelItem => item.GroupMembers.Group.TypeAccount)  Account</h3>
-                    <p class="small mb-0">
-                        <i class="fa fa-star fa-lg"></i> <span class="mx-2">|</span> You Have
-                        <strong>MDBootstrap</strong>
-                    </p>
-                    <hr class="my-4">
-                    <div class="d-flex justify-content-start align-items-center">
-                        
-                        <p class="mb-0 text-uppercase">
-                                @using (Html.BeginForm("Index2", "Accounts", FormMethod.Get))
-                            {
-                                    @Html.Hidden("AccountType", (object)accountType)
-                                <button type="submit" class="btn border-0 bg-white mb-0 text-muted small"><i class="fa fa-external-link ms-4 me-2 text-black"></i>  Group link</button>
-                            }
+        {
+            <div class="col-md-6">
+                <div class="card mb-5" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+                            <h3 class="mb-3">@Html.DisplayFor(modelItem => item.GroupMembers.Group.TypeAccount)  Account</h3>
+                        <p class="small mb-0">
+                                <i class="fa fa-users text-primary fa-lg"></i> <span class="mx-2">|</span> You Have
+                            <strong>An Account Here</strong>
                         </p>
+                        <hr class="my-4">
+                        <div class="d-flex justify-content-start align-items-center">
                         
-                        <a type="button" asp-action="Create" class="btn btn-outline-light btn-sm btn-floating">
-                            <i class="bi bi-plus-circle orange_color  fa-3x"></i>
-                        </a>
+                            <p class="mb-0 text-uppercase">
+                                    @using (Html.BeginForm("Index2", "Accounts", FormMethod.Get))
+                                {
+                                        @Html.Hidden("AccountType", (object)accountType)
+                                    <button type="submit" class="btn btn-outline-primary "><i class="fa fa-external-link ms-4 me-2 text-black"></i>  Group link</button>
+                                }
+                            </p>
+                        
+                            <a type="button" asp-action="Create" class="btn btn-outline-light btn-sm btn-floating">
+                                <i class="bi bi-plus-circle orange_color  fa-3x"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-      
-      
-
-
-}
+        }
 
 }
 
@@ -66,7 +63,7 @@
         <div class="white_shd full margin_bottom_30">
             <div class="full graph_head">
                 <div class="heading1 margin_0">
-                    <h2>Tab Bar Style 2</h2>
+                    <h2>Account Info</h2>
                 </div>
             </div>
             <div class="full inner_elements">
@@ -77,30 +74,24 @@
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home_s2" role="tab" aria-controls="nav-home_s2" aria-selected="true">Home</a>
-                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile_s2" role="tab" aria-controls="nav-profile_s2" aria-selected="false">Profile</a>
-                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact_s2" role="tab" aria-controls="nav-contact1_s2" aria-selected="false">Contact</a>
+                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile_s2" role="tab" aria-controls="nav-profile_s2" aria-selected="false">Join Info</a>
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-home_s2" role="tabpanel" aria-labelledby="nav-home-tab">
                                         <p>
-                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et
-                                            quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-                                            qui ratione voluptatem sequi nesciunt.
+                                            This is the account type page. Welcome. Please take the time to read all that is on this page.
+                                            It is important that you understand how to get started and what to expect. 
+                                            Everything will be explained in depth so that you can understand exactly what you need to do. 
+                                            We're with you every step of the way.
                                         </p>
                                     </div>
                                     <div class="tab-pane fade" id="nav-profile_s2" role="tabpanel" aria-labelledby="nav-profile-tab">
                                         <p>
-                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et
-                                            quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-                                            qui ratione voluptatem sequi nesciunt.
-                                        </p>
-                                    </div>
-                                    <div class="tab-pane fade" id="nav-contact_s2" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                        <p>
-                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et
-                                            quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-                                            qui ratione voluptatem sequi nesciunt.
+                                            Members can join up to two groups at once, either of the same or separate account types.
+                                            Please keep in mind that members should only join groups they are familiar with and have agreed to as a group.
+                                            <br />
+                                            On this page, you can add a new group or click the blue button (Group Link) to continue to next page.
                                         </p>
                                     </div>
                                 </div>

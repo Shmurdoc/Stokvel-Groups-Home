@@ -17,8 +17,7 @@ namespace Stokvel_Groups_Home.Controllers
 	{
 
 
-		private readonly IPaymentStatusRepository _paymentStatusRepository;
-		private readonly IPaymentMethodsRepository _paymentMethodsRepository;
+	
 		private readonly IPrepaymentsCRUDService _prepaymentsCRUDService;
 		private readonly IWalletRequestServices _walletRequestServices;
 
@@ -28,9 +27,7 @@ namespace Stokvel_Groups_Home.Controllers
 		private readonly IWalletCRUDService _walletCRUDService;
 
 		public DepositsController(
-			IPaymentStatusRepository paymentStatusRepository,
-			IPaymentMethodsRepository paymentMethodsRepository,
-
+			
 			IDepositRequestService depositRequestService,
 			IDepositCRUDService depositCRUDService,
 			IPrepaymentsCRUDService prepaymentsCRUDService,
@@ -41,9 +38,7 @@ namespace Stokvel_Groups_Home.Controllers
 			)
 		{
 
-			_paymentStatusRepository = paymentStatusRepository;
-			_paymentMethodsRepository = paymentMethodsRepository;
-
+			
 			_prepaymentsCRUDService = prepaymentsCRUDService;
 			_depositRequestService = depositRequestService;
 			_depositCRUDService = depositCRUDService;
@@ -76,9 +71,8 @@ namespace Stokvel_Groups_Home.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Create(int accountId, int accountProfileId, string groupName)
 		{
-
-			ViewBag.accountId = accountId;
-			ViewBag.AccountProfileId = accountProfileId;
+            decimal preDeposit = 0;
+			var memberPrepaymentDeposit = await _depositRequestService.PreDeposit(accountId);
 			var AccountProfile = await _depositRequestService.Details(accountProfileId);
 			if (AccountProfile != null)
 			{
@@ -106,13 +100,26 @@ namespace Stokvel_Groups_Home.Controllers
 
 			var totalMembers = groupMembers.Where(x => x.Account.AccountId == accountId).Select(x => x.Group.TotalGroupMembers).FirstOrDefault();
 			var groupTarget = groupMembers.Where(x => x.Account.AccountId == accountId).Select(x => x.Group.AccountTarget).FirstOrDefault() / (totalMembers-1);
+			var groupStatus = groupMembers.Where(x => x.Account.AccountId == accountId).Select(x => x.Group.Active).FirstOrDefault();
+            if (memberPrepaymentDeposit != null)
+			{
+				ViewBag.PreDepoAmount = memberPrepaymentDeposit.Select(x => x.Amount).FirstOrDefault();
+                ViewBag.PrepaymentId = memberPrepaymentDeposit.Select(x => x.PrepaymentId).FirstOrDefault();
+            }
+			else
+			{
+				ViewBag.PreDepoAmount = 0;
+                ViewBag.PrepaymentId = 0;
+            }
+            ViewBag.accountId = accountId;
+            ViewBag.AccountProfileId = accountProfileId;
+            ViewBag.MemberTarget = groupTarget;
+            ViewBag.GroupNames = groupName;
+			ViewBag.GroupStatus = groupStatus;
 
-			ViewBag.MemberTarget = groupTarget;
-			ViewBag.GroupNames = groupName;
 
-			ViewData["PaymentStatusId"] = _paymentStatusRepository.PaymentStatusExtendInclude();
-			ViewData["PrepaymentId"] = _paymentMethodsRepository.PaymentMethodExtendInclude();
-			return View();
+
+            return View();
 		}
 
 		
@@ -122,18 +129,19 @@ namespace Stokvel_Groups_Home.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("DepositId,InvoiceId,DepositAmount,DepositDate,MethodId,PaymentStatusId,DepositReference,GroupVerifyKey")] int accountId, Deposit deposit, int accountProfileId, AccountType accountType, string groupName, int membershipRank, decimal totalAmountDeposit, MemberStatuses statusRank, decimal memberTarget, decimal MemberAmount)
+		public async Task<IActionResult> Create([Bind("DepositId,InvoiceId,DepositAmount,DepositDate,MethodId,PaymentStatusId,DepositReference,GroupVerifyKey")] int accountId, Deposit deposit, int accountProfileId, AccountType accountType, string groupName, int membershipRank, decimal totalAmountDeposit, MemberStatuses statusRank, decimal memberTarget, decimal MemberAmount, int prePaymentId, decimal preDepoAmount)
 		{
 			var userId = User.Identity.GetUserId();
-			int prepaymentId = 0;
-
+			int preDepoId = 0;
+			decimal preDepositTotal = 0;
 
 
 
 		repeat:
-			var userPrepaymentDeposit = await _prepaymentsCRUDService.GetById(accountId);
+			
 
-			if (userPrepaymentDeposit != null)
+
+			if (memberTarget == preDepoAmount || preDepoId > 0)
 			{
 
 
@@ -155,9 +163,6 @@ namespace Stokvel_Groups_Home.Controllers
 								Wallet? wallet = new Wallet();
 								Deposit walletTodeposit = new Deposit();
 
-
-
-
 								if (MemberAmount > memberTarget)
 								{
 									newAmount = MemberAmount - memberTarget;
@@ -167,7 +172,7 @@ namespace Stokvel_Groups_Home.Controllers
 
 									await _walletCRUDService.Edit(wallet);
 
-									var walletDepo = await _depositRequestService.DepositMonthly(accountId, -memberTarget);
+									var walletDepo = await _depositRequestService.DepositMonthly(accountId, -memberTarget, preDepoAmount);
 									deposit.DepositAmount = walletDepo;
 
 								}
@@ -180,25 +185,32 @@ namespace Stokvel_Groups_Home.Controllers
 
 									await _walletCRUDService.Edit(wallet);
 
-									var walletDepo = await _depositRequestService.DepositMonthly(accountId, -newAmount);
+									var walletDepo = await _depositRequestService.DepositMonthly(accountId, -newAmount, preDepoAmount);
 									deposit.DepositAmount = walletDepo;
 
 								}
-
 								//get deposit reference 
 								deposit.DepositReference = await _depositRequestService.ReferenceName(accountId);
-								await _depositRequestService.MemberDepositMade(accountId, userId, deposit, accountProfileId, membershipRank, totalAmountDeposit, statusRank);
-
-
+								await _depositRequestService.MemberDepositMade(accountId, userId, deposit, accountProfileId, membershipRank, totalAmountDeposit, statusRank, preDepoAmount);
 
 							}
 							else
 							{
 								//get deposit reference 
 								deposit.DepositReference = await _depositRequestService.ReferenceName(accountId);
-								await _depositRequestService.MemberDepositMade(accountId, userId, deposit, accountProfileId, membershipRank, totalAmountDeposit, statusRank);
-
+							if (deposit.DepositReference != null)
+							{
+                                string status = "Success!";
+                                this.AddAlertSuccess($"{status} Your Deposit was successful.");
+                                await _depositRequestService.MemberDepositMade(accountId, userId, deposit, accountProfileId, membershipRank, totalAmountDeposit, statusRank, preDepoAmount);
 							}
+							else
+							{
+                                string status = "Failed!";
+                                this.AddAlertDanger($"{status} The Stokvel has not yet begun; please try again when it is active.");
+                                return RedirectToAction(nameof(Index));
+                            }
+                        }
 						
 					}
 					catch (DbUpdateConcurrencyException)
@@ -219,24 +231,25 @@ namespace Stokvel_Groups_Home.Controllers
 			}
 			else
 			{
-				if (userPrepaymentDeposit == null && accountId != 0)
+				if (memberTarget != preDepositTotal && accountId != 0)
 					try
 					{
-						var depo = await _depositRequestService.MembersFirstPreDeposit(accountId, userPrepaymentDeposit, deposit.DepositAmount);
-						prepaymentId = depo.DepositId;
-						deposit.DepositAmount = depo.DepositAmount;
+						var depo = await _depositRequestService.MembersFirstPreDeposit(accountId, prePaymentId, preDepoAmount, deposit.DepositAmount);
+						preDepoId = depo.PrepaymentId;
+						deposit.DepositAmount = depo.Amount;
 						goto repeat;
 					}
 					catch (DbUpdateConcurrencyException)
 					{
 						if (!DepositExists(deposit.DepositId))
 						{
-							return NotFound();
-						}
+                            return RedirectToAction(nameof(Index));
+                        }
 						else
 						{
-							throw;
-						}
+							
+                            return RedirectToAction(nameof(Index));
+                        }
 					}
 				else
 				{
@@ -247,8 +260,7 @@ namespace Stokvel_Groups_Home.Controllers
 				}
 
 			}
-			ViewData["PaymentStatusId"] = _paymentStatusRepository.PaymentStatusExtendInclude();
-			ViewData["PrepaymentId"] = _paymentMethodsRepository.PaymentMethodExtendInclude();
+			
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -263,8 +275,7 @@ namespace Stokvel_Groups_Home.Controllers
 				return NotFound();
 			}
 
-			ViewData["PaymentStatusId"] = _paymentStatusRepository.PaymentStatusExtendInclude();
-			ViewData["PrepaymentId"] = _paymentMethodsRepository.PaymentMethodExtendInclude();
+			
 			return View(editDepositInDb);
 		}
 
@@ -300,8 +311,7 @@ namespace Stokvel_Groups_Home.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["PaymentStatusId"] = _paymentStatusRepository.PaymentStatusExtendInclude();
-			ViewData["PrepaymentId"] = _paymentMethodsRepository.PaymentMethodExtendInclude();
+			
 			return View(deposit);
 		}
 

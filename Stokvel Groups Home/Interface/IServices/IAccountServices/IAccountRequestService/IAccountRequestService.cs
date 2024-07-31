@@ -35,6 +35,7 @@ public interface IAccountRequestService
 	Task StartStokvel(List<int> AccountId, int groupid);
 	Task<List<DisplayMemberTurn>> DisplayMemberTurnProfile();
 	Task<decimal> DisplayMemberTurnFinance();
+	Task<List<int>> accountIdList(string userId);
 
 }
 

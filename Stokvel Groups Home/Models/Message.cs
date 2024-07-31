@@ -14,6 +14,8 @@ namespace Stokvel_Groups_Home.Models
 		public string? MemberIdPath { get; set; }
 		public string? MemberIdFileName { get; set; }
 
+		public string? Status { get; set; } 
+
 		[Required]
 		public string? Text { get; set; }
 		public DateTime When { get; set; }

@@ -4,12 +4,12 @@ namespace Stokvel_Groups_Home.Interface.IRepo.Finance
 {
 	public interface IPaymentLogsRepository
 	{
-		Task<List<PaymentLog>>? GetAll();
+		Task<List<DepositLog>>? GetAll();
 
-		Task<PaymentLog>? GetById(int? id);
-		Task Insert(PaymentLog? paymentLog);
+		Task<DepositLog>? GetById(int? id);
+		Task Insert(DepositLog? paymentLog);
 
-		Task Edit(PaymentLog? paymentLog);
+		Task Edit(DepositLog? paymentLog);
 
 		Task Delete(string? id);
 

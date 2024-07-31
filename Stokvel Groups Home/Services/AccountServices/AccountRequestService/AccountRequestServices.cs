@@ -79,7 +79,6 @@ public class AccountRequestServices : IAccountRequestService
 
 			if (profile.Where(x => x.GroupMembers.Group.TypeAccount == accountType).FirstOrDefault() == null) continue;
 			profileFilter.Add(profile.Where(x => x.GroupMembers.Group.TypeAccount == accountType).FirstOrDefault());
-
 		}
 		return profileFilter;
 	}
@@ -92,7 +91,7 @@ public class AccountRequestServices : IAccountRequestService
 		var groupId = await _accountServices.CollectGroupId(
 			await _accountServices.AccountIdForMemeberInGroups(userId, accountType),
 			groupName
-			);
+		);
 
 		var maxMember = maxMembersInGroup.Where(x => x.GroupMembers.GroupId == groupId && x.GroupMembers.Account.Accepted == true).ToList().Count;
 
@@ -111,9 +110,10 @@ public class AccountRequestServices : IAccountRequestService
 		return result;
 	}
 
+    // get groupId List
+    public async Task<List<int>> accountIdList(string userId) => await _accountServices.AccountId(userId);
 
-
-	public async Task<int> CollectGroupIdInDb(List<int> accountIdOfGroups, string groupName)
+    public async Task<int> CollectGroupIdInDb(List<int> accountIdOfGroups, string groupName)
 	{
 
 		var CollectGroupId = await _accountServices.CollectGroupId(accountIdOfGroups, groupName);
@@ -157,7 +157,7 @@ public class AccountRequestServices : IAccountRequestService
 		List<int> memberQueue = new();
 
 		bool platinum = false;
-		bool pendingPay = false;
+		bool pendingDeposit = false;
 		bool paidDeposit = false;
 
 
@@ -169,7 +169,7 @@ public class AccountRequestServices : IAccountRequestService
 		//get who paid the deposit and who did not
 		var accountIdInDb = membersInDb.Select(x => x.GroupMembers.AccountId).ToList();
 
-		// add accountIdList by if statement
+		// add accountIdOfGroups for paid members && depositNotPaid for members
 		List<int> accountIdOfGroups = new();
 		List<int> depositNotPaid = new();
 
@@ -180,16 +180,17 @@ public class AccountRequestServices : IAccountRequestService
 		foreach (var member in accountIdInDb)
 		{
 
-			// get deposit per member as to decimal (Dec)
+			// get deposit per member 
 			var memberCheckDeposit = await _prepaymentServices.PrepaymentDeposit(member);
-			int depositAmountPerMember = Convert.ToInt32(memberCheckDeposit);
+			decimal depositAmountPerMember = memberCheckDeposit;
 			// get expected deposit per member from target amount
 			var groupTotalPayoutInDb = await _prepaymentServices.DepositTotal(groupId);
-			int amountMemberDeposited = Convert.ToInt32(groupTotalPayoutInDb);
+			decimal amountMemberDeposited = groupTotalPayoutInDb;
 
+			// check to see if preDeposit is paid
 			if (depositAmountPerMember == amountMemberDeposited)
 			{
-
+				//check status of member to confirm 
 				paidDeposit = await _accountProfileServices.MemberStatusPaidDepo(member);
 				if (paidDeposit)
 				{
@@ -197,18 +198,22 @@ public class AccountRequestServices : IAccountRequestService
 					memberPaid.Add(member);
 				}
 			}
+			// check to see if preDeposit is paid
 			if (depositAmountPerMember <= amountMemberDeposited)
 			{
-				pendingPay = await _accountProfileServices.MemberStatusPending(member);
-				if (pendingPay)
+				//check status of member to confirm 
+				pendingDeposit = await _accountProfileServices.MemberStatusPending(member);
+				if (pendingDeposit)
 				{
 					accountIdOfGroups.Add(member);
 					memberPending.Add(member);
 				}
 
 			}
+			// check to see if preDeposit is paid
 			if (depositAmountPerMember == 0)
 			{
+				//check status of member to confirm 
 				platinum = await _accountProfileServices.MemberStatusPlat(member);
 				if (platinum)
 				{
@@ -221,6 +226,11 @@ public class AccountRequestServices : IAccountRequestService
 					userNames.Add(membersInDb.Where(x => x.GroupMembers.AccountId == member).Select(x => x.AccountUser.FirstName).FirstOrDefault().ToString() + " " +
 					  membersInDb.Where(x => x.GroupMembers.AccountId == member).Select(x => x.AccountUser.LastName).FirstOrDefault());
 				}
+			}else if(depositAmountPerMember != amountMemberDeposited)
+			{
+				depositNotPaid.Add(member);
+				userNames.Add(membersInDb.Where(x => x.GroupMembers.AccountId == member).Select(x => x.AccountUser.FirstName).FirstOrDefault().ToString() + " " +
+				  membersInDb.Where(x => x.GroupMembers.AccountId == member).Select(x => x.AccountUser.LastName).FirstOrDefault());
 			}
 		}
 
@@ -238,7 +248,6 @@ public class AccountRequestServices : IAccountRequestService
 	//displays only members in group that have been accepted by Manager of group
 	public async Task<IEnumerable<UserGroupMember>> MembersInGroup()
 	{
-
 		var membersInGroup = await _accountServices.Profile();
 		membersInGroup = membersInGroup.Where(x => x.Account.Accepted == true).ToList();
 		return membersInGroup;
@@ -255,9 +264,7 @@ public class AccountRequestServices : IAccountRequestService
 	{
 
 		var memberFinace = await _accountServices.NextPaidMember();
-
 		var depositedAmount = memberFinace.Where(x => x.Deposit.DepositReference == "Wallet" && x.Deposit.DepositDate.Month == DateTime.Now.Month).Sum(x => x.Deposit.DepositAmount);
-
 		return depositedAmount;
 
 	}

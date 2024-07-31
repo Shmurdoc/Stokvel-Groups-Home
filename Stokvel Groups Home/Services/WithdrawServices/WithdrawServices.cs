@@ -42,7 +42,7 @@ public class WithdrawServices : IWithdrawServices
 		List<MemberInvoice> memberInvoices = await _memberInvoiceRepository.GetAll();
 		List<Invoice> invoices = await _invoicesRepository.GetAll();
 		List<Deposit> depositList = await _depositRepository.GetAll();
-		List<InvoiceDetails> invoiceDetails = await _withdrawRepository.GetAll();
+		List<WithdrawDetails> invoiceDetails = await _withdrawRepository.GetAll();
 		List<PenaltyFee> penaltyFees = await _penaltyFeeRepository.GetAll();
 
 
@@ -81,7 +81,7 @@ public class WithdrawServices : IWithdrawServices
 
 
 
-	public async Task<int> CreditAccount(InvoiceDetails invoiceDetails)
+	public async Task<int> CreditAccount(WithdrawDetails invoiceDetails)
 	{
 		Invoice CreditFromInvoice = new()
 		{

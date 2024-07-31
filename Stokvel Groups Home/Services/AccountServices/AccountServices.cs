@@ -211,7 +211,7 @@ public class AccountServices : IAccountServices
 		List<MemberInvoice> memberInvoices = await _memberInvoiceRepository.GetAll();
 		List<Invoice> invoices = await _invoicesRepository.GetAll();
 		List<Deposit> depositList = await _depositRepository.GetAll();
-		List<InvoiceDetails> invoiceDetails = await _invoiceDetailsRepository.GetAll();
+		List<WithdrawDetails> invoiceDetails = await _invoiceDetailsRepository.GetAll();
 
 
 		var groupMember = (from au in accountUsers
@@ -246,7 +246,6 @@ public class AccountServices : IAccountServices
 		List<Account> accounts = await _accountsRepository.GetAll();
 
 
-
 		for (int i = 0; i < AccountId.Count; i++)
 		{
 			var account = accounts.Where(x => x.AccountId == AccountId[i]).FirstOrDefault();
@@ -257,12 +256,7 @@ public class AccountServices : IAccountServices
 
 			await _accountsRepository.Edit(account);
 			await _accountsRepository.SaveAsync();
-			;
-
 		}
-
-
-
 	}
 
 	public async Task<DateTime> GenerateDateStart(int numberOfMembers, int QueueNumber)

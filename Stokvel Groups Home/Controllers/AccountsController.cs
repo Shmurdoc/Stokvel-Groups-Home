@@ -2,31 +2,40 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Stokvel_Groups_Home.common.Alert.TempData;
+using Stokvel_Groups_Home.Interface.Infrastructure;
 using Stokvel_Groups_Home.Interface.IService;
 using Stokvel_Groups_Home.Interface.IServices.AccountProfileServices;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices.IAccountRequestService;
 using Stokvel_Groups_Home.Interface.IServices.IGroupServices;
 using Stokvel_Groups_Home.Models;
+using System.Diagnostics.Metrics;
 using X.PagedList;
 
 namespace Stokvel_Groups_Home.Controllers
 {
-	public class AccountsController : Controller
+    public class AccountsController : Controller
 	{
 		private readonly IAccountRequestService _accountRequestService;
 		private readonly IAccountProfileRequestServices _accountProfileRequestServices;
 		private readonly IAccountsCRUDService _accountsCRUDService;
 		private readonly IAccountProfileCRUDService _accountProfileCRUDService;
 		private readonly IGroupsCRUDService _groupsCRUDService;
+        private readonly IMemoryCache _cache;
+        private readonly ILogger<AccountsController> _logger;
 
-		public AccountsController(
+        private readonly string cacheKey = "memberDisplayCacheKey";
+
+        public AccountsController(
 			IAccountRequestService accountRequestService,
 			IAccountProfileRequestServices accountProfileRequestServices,
 			IAccountsCRUDService accountsCRUDService,
 			IAccountProfileCRUDService accountProfileCRUDService,
-			IGroupsCRUDService groupsCRUDService
+			IGroupsCRUDService groupsCRUDService,
+			IMemoryCache memoryCache,
+			ILogger<AccountsController> logger
 			)
 		{
 
@@ -35,6 +44,8 @@ namespace Stokvel_Groups_Home.Controllers
 			_accountsCRUDService = accountsCRUDService;
 			_accountProfileCRUDService = accountProfileCRUDService;
 			_groupsCRUDService = groupsCRUDService;
+			_cache = memoryCache;
+			_logger = logger;
 		}
 
 		// GET: Accounts
@@ -84,9 +95,11 @@ namespace Stokvel_Groups_Home.Controllers
 
 			ViewBag.AccountExists = await _accountRequestService.TypeAccountExists(userId);
 			var validAccounts = await _accountRequestService.ValidAccountTypesAdded(userId);
-			var profile = await _accountRequestService.CleanListAccountTypesAdded(validAccounts);
+			
+                var profile = await _accountRequestService.CleanListAccountTypesAdded(validAccounts);
 
-			return profile != null ?
+         
+            return profile != null ?
 						  View(profile) :
 						  Problem("Entity set 'ApplicationDbContext.Accounts'  is null.");
 		}
@@ -139,10 +152,13 @@ namespace Stokvel_Groups_Home.Controllers
 				return LocalRedirect(resultLocalPage);
 			}
 
-			var membersInGroup = await _accountRequestService.PendingMembersInGroup();
-			membersInGroup = membersInGroup.Where(x => x.GroupMembers.Group.GroupId == memberGroupId).ToList();
+            var membersInGroup = await _accountRequestService.PendingMembersInGroup();
+                membersInGroup = membersInGroup.Where(x => x.GroupMembers.Group.GroupId == memberGroupId).ToList();
+
 			return View(membersInGroup);
 		}
+
+
 		[HttpGet]
 		public async Task<IActionResult> AcceptedMembersDashboard(AccountType? accountType, String groupName)
 		{
@@ -232,7 +248,6 @@ namespace Stokvel_Groups_Home.Controllers
 					{
 						this.AddAlertDanger($"{member} Has Not Yet Paid The Deposit, Please Remind Member To Pay");
 					}
-
 					var resultStart = "/Accounts" + "/AcceptedMembersDashboard?" + "AccountType=" + accountType.ToString() + "&" + "GroupName=" + groupName;
 					return LocalRedirect(resultStart);
 				}
@@ -244,7 +259,6 @@ namespace Stokvel_Groups_Home.Controllers
 
 					//start stokvel after all conditions are met
 					await _accountRequestService.StartStokvel(memberQueue, groupId);
-
 				}
 			}
 			else
@@ -571,40 +585,19 @@ namespace Stokvel_Groups_Home.Controllers
 			if (exists)
 			{
 				await this.Create(account);
-
 			}
 			else
 			{
 				// Add Error message
 				string status = status = "Failed!";
 				this.AddAlertDanger($"{status} Something went wrong, Please try again.");
-
 			}
-
-
-
 			return RedirectToAction("Index", "Groups");
 
 		}
 
-
-		public class MyModel
-		{
-			public int Id { get; set; }
-			public string Name { get; set; }
-		}
-
-		[HttpPost]
-		public JsonResult SaveMyModel([FromBody] MyModel model)
-		{
-			var b = model;
-			// Process and save the model data
-			return Json(new { success = true, message = "Data saved successfully" });
-		}
-
-
-
-
 	}
 
 }
+
+

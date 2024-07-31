@@ -52,7 +52,7 @@ namespace Stokvel_Groups_Home.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("PrepaymentId,PrepaymentType,PrepaymentDate,Amount,Status,AccountId")] Prepayment prepayment)
+		public async Task<IActionResult> Create([Bind("PrepaymentId,PrepaymentType,PrepaymentDate,Amount,Status,AccountId")] PreDeposit prepayment)
 		{
 			if (ModelState.IsValid)
 			{
@@ -84,7 +84,7 @@ namespace Stokvel_Groups_Home.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Admin")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("PrepaymentId,PrepaymentType,PrepaymentDate,Amount,Status,AccountId")] Prepayment prepayment)
+		public async Task<IActionResult> Edit(int id, [Bind("PrepaymentId,PrepaymentType,PrepaymentDate,Amount,Status,AccountId")] PreDeposit prepayment)
 		{
 			if (id != prepayment.PrepaymentId)
 			{

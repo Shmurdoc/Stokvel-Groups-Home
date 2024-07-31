@@ -2,11 +2,11 @@
 
 
 	@foreach(var member in Model){
-<a href="#" class="list-group-item list-group-item-action border-0">
+<a class="list-group-item list-group-item-action border-0">
 	@* <div class="badge bg-success float-right">5</div> *@
 	<div class="d-flex align-items-start">
 
-			@if (Url.Content(member.AccountUser.MemberPhotoPath) != ViewBag.image)
+			@if (Url.Content(member.AccountUser.MemberPhotoPath) != @ViewBag.image)
 			{
 				<img src="@Url.Content("~/images/MemberProfile/" + @member.AccountUser.MemberFileName)" class="rounded-circle mr-1" width="40" height="40" />
 			}

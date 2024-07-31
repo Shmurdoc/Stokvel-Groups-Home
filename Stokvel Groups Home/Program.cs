@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Stokvel_Groups_Home.Data;
 using Stokvel_Groups_Home.Hubs;
 using Stokvel_Groups_Home.Interface.Infrastructure;
@@ -10,11 +11,13 @@ using Stokvel_Groups_Home.Interface.IServices.AccountProfileServices;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices.IAccountRequestService;
 using Stokvel_Groups_Home.Interface.IServices.IAccountUserServices;
+using Stokvel_Groups_Home.Interface.IServices.ICalendarServices;
 using Stokvel_Groups_Home.Interface.IServices.IDepositServices;
 using Stokvel_Groups_Home.Interface.IServices.IGroupMembersServices;
 using Stokvel_Groups_Home.Interface.IServices.IGroupServices;
 using Stokvel_Groups_Home.Interface.IServices.IHomeService;
 using Stokvel_Groups_Home.Interface.IServices.IInvoiceServices;
+using Stokvel_Groups_Home.Interface.IServices.IMessageServices;
 using Stokvel_Groups_Home.Interface.IServices.IPrepaymentServices;
 using Stokvel_Groups_Home.Interface.IServices.IWalletServices;
 using Stokvel_Groups_Home.Interface.IServices.IWithdrawServices;
@@ -25,11 +28,13 @@ using Stokvel_Groups_Home.Services.AccountProfileServices;
 using Stokvel_Groups_Home.Services.AccountServices;
 using Stokvel_Groups_Home.Services.AccountServices.AccountRequestService;
 using Stokvel_Groups_Home.Services.AccountUserServices;
+using Stokvel_Groups_Home.Services.CalendarServices;
 using Stokvel_Groups_Home.Services.DepositServices;
 using Stokvel_Groups_Home.Services.GroupMembersServices;
 using Stokvel_Groups_Home.Services.GroupServices;
 using Stokvel_Groups_Home.Services.HomeService;
 using Stokvel_Groups_Home.Services.InvoiceServices;
+using Stokvel_Groups_Home.Services.MessageServices;
 using Stokvel_Groups_Home.Services.PrepaymentServices;
 using Stokvel_Groups_Home.Services.PrepaymentsServices;
 using Stokvel_Groups_Home.Services.UnitOfWork;
@@ -50,10 +55,14 @@ namespace Stokvel_Groups_Home.Controllers
 
 
 
-			builder.Services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnetion")));
+			builder.Services.AddDbContext<ApplicationDbContext>(options => {
+				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnetion"));
+				options.EnableSensitiveDataLogging();
+				});
+           
 
-			builder.Services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
+
+            builder.Services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
 						.AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -105,12 +114,19 @@ namespace Stokvel_Groups_Home.Controllers
 			builder.Services.AddTransient<IAccountRequestService, AccountRequestServices>();
 			builder.Services.AddTransient<IDepositCRUDService, DepositCRUDService>();
 			builder.Services.AddTransient<IWalletRepository, WalletRepository>();
-			builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+			builder.Services.AddTransient<IInputFoldersRepository, InputFolders>();
 			builder.Services.AddTransient<IPrepaymentsCRUDService, PrepaymentsCRUDService>();
 
 			builder.Services.AddTransient<IWalletCRUDService, WalletCRUDService>();
 			builder.Services.AddTransient<IWalletRequestServices, WalletRequestServices>();
 			builder.Services.AddTransient<IWalletServices, WalletServices>();
+			builder.Services.AddTransient<IMessageRepository, MessagesRepository>();
+			builder.Services.AddTransient<IMessageRequestService, MessageRequestService>();
+			builder.Services.AddTransient<IMessageServices, MessageServices>();
+			builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
+			builder.Services.AddTransient<ICalendarServices, CalendarServices>();
+			builder.Services.AddTransient<ICalendarRequestServices, CalendarRequestServices>();
+
 
 			builder.Services.AddDistributedMemoryCache();
 			builder.Services.AddSession(options =>

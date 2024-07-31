@@ -6,8 +6,6 @@
 	var userName = User.Identity.Name;
 }
 
-
-
 <style>
 	#myDIV {
 		width: 100%;
@@ -47,13 +45,29 @@
 	</div>
 </div>
 
-
+@if(@ViewBag.AccountId != 0){
 <div id="hideBtn">
 	<button id="joinGroup" class="btn btn-outline-primary w-100" onclick="myFunction(),btnHide()"> Start Chat</button>
 </div>
+}else{
+	<div id="hideBtn">
+	<button  class="btn btn-outline-primary w-100" onclick="myFunction(),btnHide()"> Start Chat</button>
+</div>
+
+}
+<select id="group" hidden>
+	<option value="All">Everyone</option>
+	<option value="Myself">Myself</option>
+	<option value="PrivateGroup">Private Group</option>
+</select>
+<div id="id" hidden>@ViewBag.MemberId</div>
+
+<div hidden>
+	<input type="button" id="joinGroup" value="Join Private Group" />
+</div>
 
 <!-- row -->
-<div id="myDIV" class="hidden">
+<div id="myDIV" class="hidden dash_head">
 	<div class="row column1">
 		<div class="col-md-12">
 			<div class="white_shd full margin_bottom_30">
@@ -79,7 +93,13 @@
 
 										@if (await Component.InvokeAsync("GroupChatMember") != null)
 										{
-											@await Component.InvokeAsync("GroupChatMember")
+											@if(@ViewBag.AccountId !=0){
+												@await Component.InvokeAsync("GroupChatMember")
+											}
+											else
+											{
+												@await Component.InvokeAsync("Chat")
+											}
 										}
 
 										<hr class="d-block d-lg-none mt-1 mb-0">
@@ -88,14 +108,15 @@
 										<div class="py-2 px-4 border-bottom d-none d-lg-block">
 											<div class="d-flex align-items-center py-1">
 												<div class="position-relative">
-													@if (@ViewBag.PathName == ViewBag.image)
-													{
-														<img src="@Url.Content("~/images/MemberProfile/" + @ViewBag.FileName)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
-													}
-													else
-													{
-														<img src="@Url.Content("~/images/Profile/" + @ViewBag.FileName)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
-													}
+													
+														@if (@ViewBag.PathName == @TempData["memberPath"] as string)
+														{
+															<img src="@Url.Content("~/images/MemberProfile/" + @ViewBag.FileName)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
+														}
+														else
+														{
+															<img src="@Url.Content("~/images/Profile/" + @ViewBag.FileName)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
+														}
 												</div>
 												<div class="flex-grow-1 pl-3">
 													<strong>@ViewBag.MemberName</strong>
@@ -110,38 +131,42 @@
 										<div class="position-relative ">
 											<div class="chat-messages p-4 " style="height: 500px;" id="chat">
 
-
+												@if ((ViewBag.Option != "userMessages") || (ViewBag.MemberId != @ViewBag.ManagerId))
+													{
 												@if (Model != null)
 												{
-													@foreach (var message in Model.OrderBy(m => m.When))
-													{
-														string textAlign, offset, image;
-														if (userName == message.UserName)
+														@foreach (var message in Model.OrderBy(m => m.When))
 														{
-															textAlign = "chat-message-right pb-4";
-															offset = "You";
-															@if (Url.Content(message.MemberIdPath) != ViewBag.image)
+															string textAlign, offset, image;
+															if (userName == message.UserName)
 															{
-																image = "~/images/MemberProfile/" + message.MemberIdFileName;
+																textAlign = "chat-message-right pb-4";
+																offset = "You";
+																@if (Url.Content(message.MemberIdPath) != ViewBag.image)
+																{
+																	
+																	image = "~/images/Profile/" + message.MemberIdFileName;
+																}
+																else
+																{
+																	image = "~/images/MemberProfile/" + message.MemberIdFileName;
+																}
 															}
 															else
 															{
-																image = "~/images/Profile/" + message.MemberIdFileName;
+																textAlign = "chat-message-left pb-4";
+																offset = message.UserName;
+																@if (Url.Content(message.MemberIdPath) != ViewBag.image)
+																{
+																	image = "~/images/Profile/" + message.MemberIdFileName;
+																}
+																else
+																{
+																	
+																	image = "~/images/MemberProfile/" + message.MemberIdFileName;
+																}
 															}
-														}
-														else
-														{
-															textAlign = "chat-message-left pb-4";
-															offset = message.UserName;
-															@if (Url.Content(message.MemberIdPath) != ViewBag.image)
-															{
-																image = "~/images/MemberProfile/"+message.MemberIdFileName;
-															}
-															else
-															{
-																image = "~/images/Profile/"+message.MemberIdFileName;
-															}
-														}
+														
 
 
 														<div class="@textAlign">
@@ -156,6 +181,7 @@
 														</div>
 													}
 												}
+												}
 											</div>
 
 											<div class="col-md-12">
@@ -167,7 +193,10 @@
 													<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 													<div class="flex-grow-0 py-3 px-4 border-top">
 														<div class="input-group">
+															<input name="Status" class="form-control" id="status" hidden value="@ViewBag.Option"/>
 															<input name="Group" class="form-control" id="groupId" hidden value="@ViewBag.GroupId"/>
+															<input name="MemberIdFileName" class="form-control" id="memberIdFileName" hidden value="@ViewBag.FileName" />
+															<input name="MemberIdFileName" class="form-control" id="memberIdFileName" hidden value="@ViewBag.FileName" />
 															<input name="MemberIdFileName" class="form-control" id="memberIdFileName" hidden value="@ViewBag.FileName" />
 															<input name="MemberIdPath" class="form-control" id="memberIdPath" hidden value="@ViewBag.PathName" />
 															<input name="Text" class="form-control" id="messageText" placeholder="Type your message" />

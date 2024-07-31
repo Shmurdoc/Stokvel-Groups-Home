@@ -1,0 +1,28 @@
+﻿@model IEnumerable<AccountUser>
+
+
+	@foreach(var member in Model){
+	<a class="list-group-item list-group-item-action border-0" asp-action="Index"  asp-route-groupId="@ViewBag.GroupId" asp-route-userIdEx="@member.Id">
+	@* <div class="badge bg-success float-right">5</div> *@
+	<div class="d-flex align-items-start">
+
+			@if (Url.Content(member.MemberPhotoPath) != @ViewBag.image)
+			{
+				<img src="@Url.Content("~/images/MemberProfile/" + @member.MemberFileName)" class="rounded-circle mr-1" width="40" height="40" />
+			}
+			else
+			{
+				<img src="@Url.Content("~/images/Profile/" + @member.MemberFileName)" class="rounded-circle mr-1" width="40" height="40"/>
+			}
+
+		<div class="flex-grow-1 ml-3">
+				@Html.DisplayFor(modelItem => member.FirstName) @Html.DisplayFor(modelItem => member.LastName)
+				
+			@* <div class="small"><span class="fas fa-circle chat-online"></span> Online</div> *@
+		</div>
+	</div>
+</a>
+	}
+
+
+

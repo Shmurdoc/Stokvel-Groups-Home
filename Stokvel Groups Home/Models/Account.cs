@@ -39,7 +39,7 @@ public class Account
 
 	public virtual ICollection<MemberInvoice>? MemberInvoices { get; set; }
 	public virtual ICollection<GroupMembers>? GroupMembers { get; set; }
-	public virtual ICollection<Prepayment>? Prepayments { get; set; }
+	public virtual ICollection<PreDeposit>? Prepayments { get; set; }
 	public virtual ICollection<Wallet>? Wallets { get; set; }
 
 }

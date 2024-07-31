@@ -1,0 +1,232 @@
+﻿@model IEnumerable<Stokvel_Groups_Home.Models.Message>
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var userName = User.Identity.Name;
+}
+
+
+
+<style>
+	#myDIV {
+		width: 100%;
+		padding: 50px 0;
+		background-color: #214162;
+		border-radius: 30px;
+		margin-top: 10px;
+	}
+</style>
+
+
+<script>
+	function myFunction() {
+		var x = document.getElementById('myDIV');
+		if (x.style.visibility === 'hidden') {
+			x.style.visibility = 'visible';
+		} else {
+			x.style.visibility = 'hidden';
+		}
+	}
+
+	function btnHide() {
+		document.getElementById('hideBtn').style.display = 'none';
+
+	}
+
+</script>
+
+
+
+<div class="row column_title">
+	<div class="col-md-12">
+		<div class="page_title">
+			<h2>Group Chat</h2>
+		</div>
+	</div>
+</div>
+
+
+<div id="hideBtn">
+	<button id="joinGroupy" class="btn btn-outline-primary w-100" onclick="myFunction(),btnHide()"> Start Chat</button>
+</div>
+
+<select id="group">
+	<option value="All">Everyone</option>
+	<option value="Myself">Myself</option>
+	<option value="PrivateGroup">Private Group</option>
+</select>
+<div id="status">@ViewBag.Option</div>
+<div id="id">@ViewBag.MemberId</div>
+
+<div>
+	<input type="button" id="joinGroup" value="Join Private Group" />
+</div>
+
+<!-- row -->
+<div id="myDIV" class="hidden dash_head">
+	<div class="row column1">
+		<div class="col-md-12">
+			<div class="white_shd full margin_bottom_30">
+				<div class="full graph_head">
+					<div class="heading1 margin_0">
+						<h2>Messages</h2>
+					</div>
+				</div>
+				<div class="full price_table padding_infor_info">
+					<div class="row">
+						<div class="row d-flex justify-content-left align-items-center h-100">
+							<div class="card">
+								<div class="row g-0">
+									<div class="col-12 col-lg-5 col-xl-3 border-right">
+
+										<div class="px-4 d-none d-md-block">
+											<div class="d-flex align-items-center">
+												<div class="flex-grow-1">
+													<input type="text" class="form-control my-3" placeholder="Search...">
+												</div>
+											</div>
+										</div>
+
+										@if (await Component.InvokeAsync("GroupChatMember") != null)
+										{
+											@await Component.InvokeAsync("GroupChatMember")
+										}
+
+										<hr class="d-block d-lg-none mt-1 mb-0">
+									</div>
+									<div class="col-12 col-lg-7 col-xl-9">
+										<div class="py-2 px-4 border-bottom d-none d-lg-block">
+											<div class="d-flex align-items-center py-1">
+												<div class="position-relative">
+													@if (@ViewBag.PathName == @TempData["memberPath"] as string)
+													{
+														<img src="@Url.Content("~/images/MemberProfile/" + @ViewBag.FileName)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
+													}
+													else
+													{
+														<img src="@Url.Content("~/images/Profile/" + @ViewBag.FileName)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
+													}
+												</div>
+												<div class="flex-grow-1 pl-3">
+													<strong>@ViewBag.MemberName</strong>
+													@* <div class="text-muted small"><em>Typing...</em></div> *@
+												</div>
+												<div>
+													<button class="btn btn-light border btn-lg px-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal feather-lg"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
+												</div>
+											</div>
+										</div>
+
+										<div class="position-relative ">
+											<div class="chat-messages p-4 " style="height: 500px;" id="chat">
+
+
+												@if (Model != null)
+												{
+													@foreach (var message in Model.OrderBy(m => m.When))
+													{
+														string textAlign, offset, image;
+														if (userName == message.UserName)
+														{
+															textAlign = "chat-message-right pb-4";
+															offset = "You";
+															@if (Url.Content(message.MemberIdPath) != ViewBag.image)
+															{
+																image = "~/images/MemberProfile/" + message.MemberIdFileName;
+															}
+															else
+															{
+																image = "~/images/Profile/" + message.MemberIdFileName;
+															}
+														}
+														else
+														{
+															textAlign = "chat-message-left pb-4";
+															offset = message.UserName;
+															@if (Url.Content(message.MemberIdPath) != ViewBag.image)
+															{
+																image = "~/images/MemberProfile/" + message.MemberIdFileName;
+															}
+															else
+															{
+																image = "~/images/Profile/" + message.MemberIdFileName;
+															}
+														}
+
+
+														<div class="@textAlign">
+															<div>
+																<img src="@Url.Content(@image)" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+																<div class="text-muted small text-nowrap mt-2">@message.When.ToString("M/dd/yyyy hh:MM tt")</div>
+															</div>
+															<div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+																<div class="font-weight-bold mb-1">@offset </div>
+																<p>@message.Text </p>
+															</div>
+														</div>
+													}
+												}
+											</div>
+
+											<div class="col-md-12">
+												<form asp-action="Create"
+													  data-ajax-begin="clearInputField" data-ajax-complete=""
+													  data-ajax-failure="alert('Fail')" data-ajax-success="sendMessage"
+													  data-ajax="true" data-ajax-method="POST">
+
+													<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+													<div class="flex-grow-0 py-3 px-4 border-top">
+														<div class="input-group">
+															<input name="Group" class="form-control" id="groupId" hidden value="@ViewBag.GroupId" />
+															<input name="MemberIdFileName" class="form-control" id="memberIdFileName" hidden value="@ViewBag.FileName" />
+															<input name="MemberIdPath" class="form-control" id="memberIdPath" hidden value="@ViewBag.PathName" />
+															<input name="Text" class="form-control" id="messageText" placeholder="Type your message" />
+														</div>
+														<input type="submit" value="Send" id="submitButton" class="btn btn-outline-primary btn-block" />
+													</div>
+													<input type="hidden" value="@userName" name="username" />
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end row -->
+@if (User.Identity.IsAuthenticated)
+{
+	<script>
+		const userName = "@ViewBag.CurrentUserName";
+	</script>
+}
+
+
+
+@section scripts {
+	<script src="~/signalr/signalr.min.js"></script>
+	<script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+	<script src="~/js/chat.js"></script>
+	<script src="~/js/signalrReqHandler.js"></script>
+	<script>
+
+		window.addEventListener("DOMContentLoaded", myttunction, true);
+
+		function myttunction() {
+			var x = document.getElementById("myDIV");
+			if (x.style.visibility === "hidden") {
+				x.style.visibility = "hidden";
+			} else {
+				x.style.visibility = "hidden";
+			}
+		}
+	</script>
+}

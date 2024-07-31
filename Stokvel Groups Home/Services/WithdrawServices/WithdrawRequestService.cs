@@ -41,7 +41,7 @@ public class WithdrawRequestService : IWithdrawRequestService
 		return memberList;
 	}
 
-	public async void CreditMember(InvoiceDetails invoiceDetails)
+	public async void CreditMember(WithdrawDetails invoiceDetails)
 	{
 		await _withdrawServices.CreditAccount(invoiceDetails);
 	}

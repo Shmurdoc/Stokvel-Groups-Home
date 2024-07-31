@@ -59,7 +59,7 @@
 		},
 		select: function (startDate, endDate, allDay) {
 			if (!allDay) {
-				swal({
+				/*swal({
 					input: 'text',
 					title: 'Event title:',
 					showCancelButton: true
@@ -90,7 +90,7 @@
 					}
 					calendar.fullCalendar('unselect');
 
-				});
+				});*/
 			}
 		},
 		droppable: true, // this allows things to be dropped onto the calendar !!!
@@ -133,13 +133,12 @@
 					$.each(data, function (i, v) {
 						events.push({
 
-							Id: v.Id,
-							userId: v.userId,
-							title: v.title,
-							start: v.start,
-							allDay: v.allDay,
-							className: v.className,
-							end: v.end,
+							Id: v.CalendarId,
+							title: v.Title,
+							start: v.Start,
+							allDay: v.AllDay,
+							className: v.ClassName,
+							end: v.End,
 
 						});
 					})

@@ -5,65 +5,282 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
 
-<h4>AccountUser</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfilePicture" class="control-label"></label>
-                <input asp-for="ProfilePicture" class="form-control" />
-                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Province" class="control-label"></label>
-                <input asp-for="Province" class="form-control" />
-                <span asp-validation-for="Province" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Zip" class="control-label"></label>
-                <input asp-for="Zip" class="form-control" />
-                <span asp-validation-for="Zip" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<!-- row -->
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Settings</h2>
+                </div>
+
+                <alerts></alerts>
+            </div>
+        </div>
+        <!-- row -->
+<form asp-action="Edit">
+    <div class="row column4 graph">
+            <!-- Create -->
+            <div class="col-md-6">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Create</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="full progress_bar_inner">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="full">
+                                    <div class="padding_infor_info">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                        
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                                <div class="col-md-10">                                                    <p>@Html.HiddenFor(model => model.Id)</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="FirstName" class="control-label"></label>
+                                                <input asp-for="FirstName" class="form-control" />
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="LastName" class="control-label"></label>
+                                                <input asp-for="LastName" class="form-control" />
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="text-align:center">
+                                                    
+                                                        <div id="test" style="height: auto; width:auto; background-color: mintcream; display:none" class="img-fluid">
+
+                                                            <label asp-for="ProfilePicture" class="control-label">Female ProfilePicture</label>
+                                                            <br />
+                                                            <div id="image-container">
+                                                                @for (int i = 1; i <= 11; i++)
+                                                                {
+                                                               <span onclick="upDateOutput(); insertText(this);"> <img src="/images/profile/F (@i).png" name="F (@i).png" alt="avatar" data-src="/images/profile/F (@i).png" class="img-fluid rounded-circle me-3" width="50" onclick="slideUp(document.getElementById('test'));"></span>
+                                                                }
+                                                             </div>
+
+                                                        <label asp-for="ProfilePicture" class="control-label">Male ProfilePicture</label>
+                                                        <div class="form-group">
+                                                            <div id="image-container">
+                                                                @for (int i = 1; i <= 7; i++)
+                                                                {
+                                                              <a onclick="upDateOutput(); insertText(this);">  <img src="/images/profile/M (@i).png" name="M (@i).png" alt="avatar" data-src="/images/profile/M (@i).png" class="img-fluid rounded-circle me-3" width="50" onclick=" slideUp(document.getElementById('test')); insertText(this);"></a>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                            <div class="row">
+                                            <div class="col-6">
+                                            <div class="form-group" >
+                                               <div class="btn btn-outline-primary btn" onclick="slideDown(document.getElementById('test'))">Select Profile Icon</div>                                          
+                                            </div>
+                                            </div>
+                                            <div class="col-6">
+                                            <div class="form-group" >
+                                             <div class="btn btn-outline-primary" onclick=" slideUp(document.getElementById('test'))">Close Profile Icon</div>                                 
+                                            </div>
+                                            </div>
+                                            </div>
+                                            <div class="form-group" hidden >
+                                                <label asp-for="MemberFileName" class="control-label"></label>
+                                                <input asp-for="MemberFileName" type="text" id="imgname" class="form-control"/>
+                                                <span asp-validation-for="MemberFileName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="ProfilePicture" class="control-label"></label>
+                                                <input asp-for="ProfilePicture" type="file" id="imageInput" class="form-control"/>
+                                                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                                            </div>
+                                            <img id="previewImage" alt="Preview" style="border:1px solid; border-radius:50%; width:200px; height:200px;" class="" onclick="">
+                                            <br>
+                                            <div class="form-group">
+                                                <label asp-for="Address" class="control-label"></label>
+                                                <input asp-for="Address" class="form-control" />
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="City" class="control-label"></label>
+                                                <input asp-for="City" class="form-control" />
+                                                <span asp-validation-for="City" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Province" class="control-label"></label>
+                                                <input asp-for="Province" class="form-control" />
+                                                <span asp-validation-for="Province" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Zip" class="control-label"></label>
+                                                <input asp-for="Zip" class="form-control" />
+                                                <span asp-validation-for="Zip" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Edit" class="btn btn-primary" />
+                                            </div>
+                                        
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                                    <div id="get-value" class="text-black"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+           
+                </div>
+            </div>
+            
+        </div>
+        <!-- end row -->
+</form>
+
+
+<script>
+    // script range
+function myFunction() {
+  var x = document.getElementById("myRange").value;
+  document.getElementById("demo").innerHTML = x;
+}
+</script>
+
+<script>
+
+function insertText(txt)
+{ 
+     var image = txt.getElementsByTagName('img')[0]; // find the image
+     var text = image.getAttribute('name'); // get it's name attribute value
+     var path = image.getAttribute('src');
+     document.getElementById('imageInput').value = null;
+     document.getElementById('imgname').value = text;
+        document.getElementById('previewImage').src = path;
+}
+</script>
+
+
+<script src="~/https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/imagery.js"></script>
+
+
+
+
+<script>
+    function upDateOutput() {
+       
+        var elem = document.getElementById("box");
+        function slide() {
+            elem.classList.toggle('hide');
+        }
+    }
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#btn-slidetoggle").click(function () {
+            $("#para-slidetoggle").slideToggle();
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    function slideDown(obj, speed) {
+        var mySpeed = speed || 300;
+        var intervals = mySpeed / 30; // we are using 30 ms intervals
+
+        var holder = document.createElement('div');//
+        var parent = obj.parentNode;
+        holder.setAttribute('style', 'height: 0px; overflow:hidden');
+        parent.insertBefore(holder, obj);
+        parent.removeChild(obj);
+        holder.appendChild(obj);
+        obj.style.display = obj.getAttribute("data-original-display") || "";
+        var height = obj.offsetHeight;
+        var sepHeight = height / intervals;
+        //  alert(sepHeight)
+        var timer = setInterval(function () {
+            var holderHeight = holder.offsetHeight;
+            if (holderHeight + sepHeight < height) {
+                holder.style.height = (holderHeight + sepHeight) + 'px';
+            } else {
+                // clean up
+                holder.removeChild(obj);
+                parent.insertBefore(obj, holder);
+                parent.removeChild(holder);
+                clearInterval(timer);
+            }
+        }, 30);
+    }
+
+    function slideUp(obj, speed) {
+        var mySpeed = speed || 300;
+        var intervals = mySpeed / 30; // we are using 30 ms intervals
+        var height = obj.offsetHeight;
+        var holder = document.createElement('div');//
+        var parent = obj.parentNode;
+        holder.setAttribute('style', 'height: ' + height + 'px; overflow:hidden');
+        parent.insertBefore(holder, obj);
+        parent.removeChild(obj);
+        holder.appendChild(obj);
+        var originalDisplay = (obj.style.display !== 'none') ? obj.style.display : '';
+        obj.setAttribute("data-original-display", originalDisplay);
+        var sepHeight = height / intervals;
+        //  alert(sepHeight)
+        var timer = setInterval(function () {
+            var holderHeight = holder.offsetHeight;
+            console.log(holderHeight);
+            if (holderHeight - sepHeight > 0) {
+                holder.style.height = (holderHeight - sepHeight) + 'px';
+            } else {
+                // clean up
+                obj.style.display = 'none';
+                holder.removeChild(obj);
+                parent.insertBefore(obj, holder);
+                parent.removeChild(holder);
+                clearInterval(timer);
+            }
+        }
+            , 30);
+    }
+
+</script>
+
+
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

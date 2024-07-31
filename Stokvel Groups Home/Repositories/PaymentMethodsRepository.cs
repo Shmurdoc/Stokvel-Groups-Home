@@ -16,30 +16,30 @@ namespace Stokvel_Groups_Home.Repositories
 			_context = context;
 		}
 
-		public async Task<List<PaymentMethod>>? GetAll()
+		public async Task<List<DepositMethod>>? GetAll()
 		{
-			var allInvoices = await _context.PaymentMethods.ToListAsync();
+			var allInvoices = await _context.DepositMethod.ToListAsync();
 			return allInvoices;
 
 		}
 
 		public List<SelectListItem> PaymentMethodExtendInclude()
 		{
-			var FatchExtendedData = new SelectList(_context.PaymentMethods, "MethodId", "MethodId").ToList();
+			var FatchExtendedData = new SelectList(_context.DepositMethod, "MethodId", "MethodId").ToList();
 			return FatchExtendedData;
 		}
 
-		public async Task<PaymentMethod>? Details(int? id)
+		public async Task<DepositMethod>? Details(int? id)
 		{
-			return await _context.PaymentMethods.FirstOrDefaultAsync(m => m.MethodId == id);
+			return await _context.DepositMethod.FirstOrDefaultAsync(m => m.MethodId == id);
 		}
 
-		public async Task Inset(PaymentMethod? paymentMethod)
+		public async Task Inset(DepositMethod? paymentMethod)
 		{
-			await _context.PaymentMethods.AddAsync(paymentMethod);
+			await _context.DepositMethod.AddAsync(paymentMethod);
 		}
 
-		public async Task Edit(PaymentMethod? paymentMethod)
+		public async Task Edit(DepositMethod? paymentMethod)
 		{
 			_context.Update(paymentMethod);
 		}
@@ -48,7 +48,7 @@ namespace Stokvel_Groups_Home.Repositories
 		{
 			var paymentMethod = await this.Details(id);
 
-			_context.PaymentMethods.Remove(paymentMethod);
+			_context.DepositMethod.Remove(paymentMethod);
 		}
 
 		public async Task SaveAsync()
@@ -58,7 +58,7 @@ namespace Stokvel_Groups_Home.Repositories
 
 		public bool PaymentMethodExists(int? id)
 		{
-			return (_context.PaymentMethods?.Any(e => e.MethodId == id)).GetValueOrDefault();
+			return (_context.DepositMethod?.Any(e => e.MethodId == id)).GetValueOrDefault();
 		}
 
 	}

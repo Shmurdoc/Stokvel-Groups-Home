@@ -2,7 +2,7 @@
 
 namespace Stokvel_Groups_Home.Services.InvoiceServices
 {
-	public class InvoiceRequestServices : IInvoiceRequestServices
+    public class InvoiceRequestServices : IInvoiceRequestServices
 	{
 		private readonly IInvoiceServices _invoiceServices;
 

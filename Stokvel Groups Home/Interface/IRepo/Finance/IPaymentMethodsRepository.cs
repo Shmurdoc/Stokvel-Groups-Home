@@ -6,14 +6,14 @@ namespace Stokvel_Groups_Home.Interface.IRepo.Finance
 	public interface IPaymentMethodsRepository
 	{
 
-		Task<List<PaymentMethod>>? GetAll();
-		Task<PaymentMethod>? Details(int? id);
+		Task<List<DepositMethod>>? GetAll();
+		Task<DepositMethod>? Details(int? id);
 
 		List<SelectListItem>? PaymentMethodExtendInclude();
 
-		Task Inset(PaymentMethod? paymentMethod);
+		Task Inset(DepositMethod? paymentMethod);
 
-		Task Edit(PaymentMethod? paymentMethod);
+		Task Edit(DepositMethod? paymentMethod);
 
 		Task Delete(int? id);
 

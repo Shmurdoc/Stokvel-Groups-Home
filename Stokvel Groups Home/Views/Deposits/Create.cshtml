@@ -50,6 +50,8 @@
                                     @Html.Hidden("membershipRank", (object)@ViewBag.MembershipRank)
                                     @Html.Hidden("memberTarget", (object)@ViewBag.MemberTarget)
                                     @Html.Hidden("MemberAmount", (object)@ViewBag.MemberAmount)
+                                    @Html.Hidden("prePaymentId", (object)@ViewBag.PrepaymentId)
+                                    @Html.Hidden("preDepoAmount", (object)@ViewBag.PreDepoAmount)
                                     @if (@ViewBag.MemberAmount != 0)
                                     {
                                         <p> Remember to not deposit beyond the Target Amount  </p>
@@ -63,17 +65,24 @@
                                             <label class="control-label"> Wallet Amount</label>
                                             <input value="@ViewBag.MemberAmount" disabled class="form-control" />
                                         </div>
-
-
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            <label class="control-label"> PreDeposit</label>
+                                            <input id="memberTarget" value="@(ViewBag.MemberTarget - ViewBag.PreDepoAmount)" disabled class="form-control" />
+                                            <p id="preDepoAmount" hidden>ViewBag.PreDepoAmount</p>
+                                            <p id="groupStatus" hidden>@ViewBag.GroupStatus</p>
+                                        </div>
                                     }
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                             <div class="form-group">
-                                                <label asp-for="DepositAmount" class="control-label"></label>
-                                                <input asp-for="DepositAmount" class="form-control" />
+                                        <label asp-for="DepositAmount" id="depositAmountName" class="control-label"></label>
+                                                <input asp-for="DepositAmount" id="depositAmount" class="form-control" />
                                                 <span asp-validation-for="DepositAmount" class="text-danger"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input type="submit" value="Create" class="btn btn-primary" />
+                                                <input type="submit" value="Deposit" class="btn btn-primary" />
                                             </div>
                                         </form>
                                     </div>
@@ -94,4 +103,24 @@
                 </div>
     </div>
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+        var memberTarget = document.getElementById('memberTarget');
+        var groupStatus = document.getElementById('groupStatus').innerHTML;
+        var depositAmount = document.getElementById('depositAmount');
+        var depositAmountName = document.getElementById('depositAmountName');
+        var preDepoAmount = document.getElementById('preDepoAmount');
+        var totalPaid = memberTarget.value - preDepoAmount.value;
+        var status = "False";
+
+        if (totalPaid === 0 && groupStatus === status) {
+            depositAmount.style.display = 'none';
+            depositAmountName.style.display = 'none';
+        }
+    });
+</script>
                     

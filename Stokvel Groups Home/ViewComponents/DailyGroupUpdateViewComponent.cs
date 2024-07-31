@@ -21,8 +21,8 @@ namespace Stokvel_Groups_Home.ViewComponents
 			var displayDisplayRecentDeposit = await _homeRequestService.DisplayRecentDeposit();
 			if (groupId.Count > 0)
 			{
-				displayDisplayRecentDeposit = displayDisplayRecentDeposit.Where(x => x.GroupMembers.GroupId == groupId[0]).Take(5).ToList();
-				return await Task.FromResult<IViewComponentResult>(View(displayDisplayRecentDeposit));
+				displayDisplayRecentDeposit = displayDisplayRecentDeposit.Where(x => x.GroupMembers.GroupId == groupId[0]).OrderBy(x => x.Deposit.DepositDate).Take(12).ToList();
+                return await Task.FromResult<IViewComponentResult>(View(displayDisplayRecentDeposit));
 			}
 			return View();
 		}

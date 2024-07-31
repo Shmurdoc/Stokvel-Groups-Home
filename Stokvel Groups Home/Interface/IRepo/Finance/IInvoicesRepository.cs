@@ -2,7 +2,7 @@
 
 namespace Stokvel_Groups_Home.Interface.IRepo.Finance
 {
-	public interface IInvoicesRepository
+    public interface IInvoicesRepository
 	{
 		// GetAll or GetById
 		Task<List<Invoice>>? GetAll();

@@ -1,4 +1,7 @@
 ﻿  <!-- Sidebar  -->
+
+
+
 <nav id="sidebar">
     <div class="sidebar_blog_1">
         <div class="sidebar-header">
@@ -10,7 +13,13 @@
         <div class="sidebar_user_info">
             <div class="icon_setting"></div>
             <div class="user_profle_side">
-                <div class="user_img"><img class="img-responsive" src="@Url.Content("~/images/layout_img/user_img.jpg")" alt="#" /></div>
+
+                @if (await Component.InvokeAsync("LargeImage") != null)
+                {
+                    @await Component.InvokeAsync("LargeImage")
+                }
+                
+                
                 <div class="user_info">
                     <h6></h6>
                     <p><span class="online_animation"></span> Online</p>

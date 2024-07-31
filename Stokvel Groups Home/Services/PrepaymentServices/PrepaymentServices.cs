@@ -19,7 +19,7 @@ namespace Stokvel_Groups_Home.Services.PrepaymentsServices
 		public async Task<decimal> PrepaymentDeposit(int? accountId)
 		{
 
-			List<Prepayment> prepayments = await _prepaymentsRepository.GetAll();
+			List<PreDeposit> prepayments = await _prepaymentsRepository.GetAll();
 			var prepaymentId = prepayments.Where(x => x.AccountId == accountId).Select(x => x.PrepaymentId).FirstOrDefault();
 			decimal result = prepayments.Where(x => x.PrepaymentId == prepaymentId).Select(x => x.Amount).FirstOrDefault();
 
@@ -32,9 +32,9 @@ namespace Stokvel_Groups_Home.Services.PrepaymentsServices
 
 			var groupTotalPayout = groups.Where(x => x.GroupId == groupId).Select(x => x.AccountTarget).FirstOrDefault();
 			var numberOfGroupMembers = groups.Where(x => x.GroupId == groupId).Select(x => x.TotalGroupMembers).FirstOrDefault();
-			decimal TotalAmount = numberOfGroupMembers;
+			decimal TotalMemberes = numberOfGroupMembers;
 
-			var result = ((1 / TotalAmount) * groupTotalPayout);
+			var result = (groupTotalPayout / (TotalMemberes-1));
 			return result;
 		}
 	}

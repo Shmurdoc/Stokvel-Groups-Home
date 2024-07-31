@@ -19,6 +19,6 @@ namespace Stokvel_Groups_Home.Interface.IRepo.Finance
 
 		bool DepositExists(int? id);
 
-		Task<List<DepositSystem>> Profile();
+	
 	}
 }

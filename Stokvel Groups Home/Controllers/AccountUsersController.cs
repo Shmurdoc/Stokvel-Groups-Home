@@ -13,11 +13,11 @@ namespace Stokvel_Groups_Home.Controllers
 	public class AccountUsersController : Controller
 	{
 
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly IInputFoldersRepository _unitOfWork;
 		private readonly IAccountUserCRUDService _accountUserCRUDService;
 		private readonly IAccountUserRequestServices _accountUserRequestServices;
 
-		public AccountUsersController(IUnitOfWork unitOfWork, IAccountUserCRUDService accountUserCRUDService, IAccountUserRequestServices accountUserRequestServices)
+		public AccountUsersController(IInputFoldersRepository unitOfWork, IAccountUserCRUDService accountUserCRUDService, IAccountUserRequestServices accountUserRequestServices)
 		{
 
 			_unitOfWork = unitOfWork;
@@ -146,12 +146,14 @@ namespace Stokvel_Groups_Home.Controllers
 		// GET: AccountUsers/Edit/5
 		public async Task<IActionResult> Edit(string id)
 		{
+			
 			var accountUser = await _accountUserCRUDService.GetById(id);
 			if (id == null || accountUser == null)
 			{
 				return NotFound();
 			}
-			return View(accountUser);
+
+            return View(accountUser);
 		}
 
 		// POST: AccountUsers/Edit/5
@@ -170,7 +172,10 @@ namespace Stokvel_Groups_Home.Controllers
 			{
 				try
 				{
-					_accountUserCRUDService.Edit(accountUser);
+                   
+                    accountUser.Date = DateTime.Now;
+                    accountUser.MemberPhotoPath = "~/wwwroot/images/Profile";
+                    _accountUserCRUDService.Edit(accountUser);
 					await _accountUserCRUDService.SaveAsync();
 				}
 				catch (DbUpdateConcurrencyException)

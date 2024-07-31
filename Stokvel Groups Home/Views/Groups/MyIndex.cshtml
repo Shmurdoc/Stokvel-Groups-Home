@@ -83,7 +83,14 @@
                                         </div>
                                         <div class="right">
                                             <div class="profile_contacts">
-                                                <img class="img-responsive" src="images/layout_img/msg2.png" alt="#" />
+                                                    @if (@ViewBag.image != @ViewBag.MemberPhotoPath)
+                                                    {
+                                                        <img src="@Url.Content("~/images/MemberProfile/" + @item.GroupImage)" height="75px" width="75px" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@Url.Content("~/images/Profile/" + @item.GroupImage)" height="75px" width="75px" />
+                                                    }
                                             </div>
                                         </div>
                                         <div class="bottom_list">
@@ -103,15 +110,15 @@
                                                 </button>
 
                                                 <p class="mb-0 text-uppercase mt-2">
-                                                    <a href="#myModall" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-user"> </i> join Here</a>
-                                                </p>
+                                                        <a href="#myModal @item.VerifyKey"  class="btn btn-primary btn-xs disabled" data-toggle="modal"><i class="fa fa-user"> </i> join Here</a>
+                                                    </p>
 
                                                 <div class="d-flex justify-content-between text-center mt-2 mb-2">
                                                     <div>
                                                         <a asp-action="Details" asp-route-id="@item.GroupId">Details</a>
                                                     </div>
                                                     <div>
-                                                        <a href="#myModal" class="" data-toggle="modal">Delete</a>
+                                                            <a href="#myModal @item.VerifyKey" class="btn btn-danger btn-xs" data-toggle="modal">Delete</a>
 
                                                     </div>
                                                 </div>
@@ -119,7 +126,7 @@
                                         </div>
                                     </div>
                                     <!--popup waring box danger-->
-                                    <div id="myModal" class="modal fade">
+                                        <div id="myModal @item.VerifyKey" class="modal fade">
                                         <div class="modal-dialog modal-confirm">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -148,7 +155,7 @@
                                 </div>
 
                                 <!--popup waring box success join group-->
-                                <div id="myModall" class="modal fade">
+                                    <div id="myModal @item.VerifyKey" class="modal fade">
                                     <div class="modal-dialog modal-confirm">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -168,7 +175,7 @@
                                                 <div class="col-md-6 text-center">
                                                     @using (Html.BeginForm("JoinGroup", "Accounts", FormMethod.Get))
                                                     {
-
+                                                            @item.VerifyKey
                                                         @Html.Hidden("GroupVerifyKey", (object)item.VerifyKey)
                                                         <button type="submit" class="btn btn-primary btn-lg w-100"> Yes</button>
                                                     }

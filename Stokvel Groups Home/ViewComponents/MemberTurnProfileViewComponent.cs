@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices.IAccountRequestService;
 using Stokvel_Groups_Home.Models;
@@ -30,20 +31,51 @@ public class MemberTurnProfileViewComponent : ViewComponent
 
 		// Display the next member turn profile
 		var memberTurn = await _accountRequestService.DisplayMemberTurnProfile();
-		var groupTargetAmount = profileL.Where(x => x.GroupMembers.GroupId == groupId).Select(x => x.GroupMembers.Group.AccountTarget).FirstOrDefault();
+		
+        var groupTargetAmount = profileL.Where(x => x.GroupMembers.GroupId == groupId).Select(x => x.GroupMembers.Group.AccountTarget).FirstOrDefault();
 		decimal numberOfMembers = profileL.Where(x => x.GroupMembers.GroupId == groupId).Count() - 1;
 		var namesInDb = memberTurn.Where(x => x.GroupMembers.GroupId == groupId)
-			.Where(x => x.Account.AccountQueueStart.Month == DateTime.Now.Month + 1).ToList();
+			.Where(x => x.Account.AccountQueueStart.Month == DateTime.Now.Month).FirstOrDefault();
+
+		if(namesInDb == null)
+		{
+            namesInDb = memberTurn.Where(x => x.GroupMembers.GroupId == groupId)
+            .Where(x => x.Account.AccountQueueStart.Month == DateTime.Now.Month + 1).FirstOrDefault();
+
+        }
 
 		if (memberTurn.Any(x => x.GroupMembers.Group.Active == true))
 		{
-			var firstName = memberTurn.Select(x => x.AccountUser.FirstName).FirstOrDefault().ToString();
-			var lastName = memberTurn.Select(x => x.AccountUser.LastName).FirstOrDefault().ToString();
+			List<DateTime> memberDateTimes = new();
+            
+
+
+
+            var firstName = namesInDb.AccountUser.FirstName;
+			var lastName = namesInDb.AccountUser.LastName;
 
 			var memberNames = firstName + " " + lastName;
 			var memberNumber = memberTurn.Where(x => x.Account.AccountQueueStart.Month == DateTime.Now.Month + 1).Select(x => x.Account.AccountQueue).FirstOrDefault();
 
-			ViewBag.MemberTurnProfileNames = memberNames;
+
+            var memberDepositList = memberTurn.Where(x => x.GroupMembers.GroupId == groupId && x.Deposit.DepositReference == "deposit").ToList();
+
+			var memberDateList = memberDepositList.Select(x => x.Deposit.DepositDate).DistinctBy(x => x.Date.ToString("yyyy-MM-dd")).OrderBy(x => x.Date.ToString("yyyy-MM-dd")).ToList();
+
+			foreach(var dateFormat in memberDateList)
+			{
+                memberDateTimes.Add(dateFormat);
+            }
+
+            
+
+            ViewBag.MemberDateList = memberDateTimes;
+            ViewBag.image = "~/wwwroot/images/Profile";
+            ViewBag.MemberPhotoPath = memberTurn.Select(x=>x.AccountUser.MemberPhotoPath).FirstOrDefault();
+            ViewBag.MemberFileName = memberTurn.Select(x => x.AccountUser.MemberFileName).FirstOrDefault();
+
+            ViewBag.MemberTurnProfileNames = memberNames;
+			ViewBag.FirstName = firstName;
 			ViewBag.MemberNames = memberNames;
 
 			Deposited = memberTurn.Where(x => x.Deposit.DepositDate.Month == DateTime.Now.Month && x.Deposit.DepositReference == firstName).Sum(x => x.Deposit.DepositAmount) * -1;
@@ -58,14 +90,16 @@ public class MemberTurnProfileViewComponent : ViewComponent
 			}
 			ViewBag.OutstandingAmount = outstandingAmount;
 			ViewBag.GroupTargetAmount = groupTargetAmount;
-		}
+
+            memberTurn = memberTurn.Where(x => x.GroupMembers.GroupId == groupId && x.Deposit.DepositReference == "deposit").ToList();
+        }
 		else
 		{
 			ViewBag.MemberNames = null;
 			return View();
 		}
 
-		return await Task.FromResult<IViewComponentResult>(View(profileL));
+		return await Task.FromResult<IViewComponentResult>(View(memberTurn));
 	}
 
 }

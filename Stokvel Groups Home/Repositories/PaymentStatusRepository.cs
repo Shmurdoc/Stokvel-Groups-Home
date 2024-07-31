@@ -16,37 +16,37 @@ namespace Stokvel_Groups_Home.Repositories
 			_context = context;
 		}
 
-		public async Task<List<PaymentStatus>>? GetAll()
+		public async Task<List<DepositStatus>>? GetAll()
 		{
-			var allInvoices = await _context.PaymentStatuses.ToListAsync();
+			var allInvoices = await _context.DepositStatus.ToListAsync();
 			return allInvoices;
 
 		}
 
 		public List<SelectListItem>? PaymentStatusExtendInclude()
 		{
-			var extend = new SelectList(_context.PaymentStatuses, "PaymentStatusId", "PaymentStatusId").ToList();
+			var extend = new SelectList(_context.DepositStatus, "PaymentStatusId", "PaymentStatusId").ToList();
 			return extend;
 		}
 
-		public async Task<PaymentStatus>? Details(int? id)
+		public async Task<DepositStatus>? Details(int? id)
 		{
-			return await _context.PaymentStatuses.FirstOrDefaultAsync(m => m.PaymentStatusId == id);
+			return await _context.DepositStatus.FirstOrDefaultAsync(m => m.PaymentStatusId == id);
 		}
 
-		public async Task? Inset(PaymentStatus? paymentStatus)
+		public async Task? Inset(DepositStatus? paymentStatus)
 		{
-			await _context.PaymentStatuses.AddAsync(paymentStatus);
+			await _context.DepositStatus.AddAsync(paymentStatus);
 		}
 
-		public async Task? Edit(PaymentStatus? paymentStatus)
+		public async Task? Edit(DepositStatus? paymentStatus)
 		{
 			_context.Update(paymentStatus);
 		}
 		public async Task? Delete(int? id)
 		{
 			var prepayment = await this.Details(id);
-			_context.PaymentStatuses.Remove(prepayment);
+			_context.DepositStatus.Remove(prepayment);
 
 		}
 
@@ -59,7 +59,7 @@ namespace Stokvel_Groups_Home.Repositories
 
 		public bool PaymentStatusesExists(int? id)
 		{
-			return (_context.PaymentStatuses?.Any(e => e.PaymentStatusId == id)).GetValueOrDefault();
+			return (_context.DepositStatus?.Any(e => e.PaymentStatusId == id)).GetValueOrDefault();
 		}
 
 

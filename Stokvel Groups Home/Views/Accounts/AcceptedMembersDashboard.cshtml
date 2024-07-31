@@ -119,6 +119,8 @@
                                                         </i> <i class="fa fa-comments-o"></i>
                                                     </button>
                                                 }
+                                                <br />
+                                                <a class="btn btn-info btn-rounded btn-lg text-white" asp-controller="Calendars" asp-action="Index" asp-route-groupId="@item.Group.GroupId">Calendar Events</a>
                                             }
                                             else
                                             {
@@ -139,6 +141,10 @@
                                                                 <i class="fa fa-user">
                                                                 </i> <i class="fa fa-comments-o"></i>
                                                             </button>
+
+                                                            <br />
+                                                            <br />
+                                                            <a class="btn btn-info btn-rounded btn-lg text-white disabled" asp-route-groupId="@item.Group.GroupId">Calendar Events</a>
                                                         }
                                                     }
                                                     else
@@ -157,6 +163,9 @@
                                                                 </i> <i class="fa fa-comments-o"></i>
                                                             </button>
                                                         }
+                                                       
+                                                    <br />
+                                                        <a class="btn btn-info btn-rounded btn-lg text-white disabled" asp-controller="Calendars" asp-action="Index" asp-route-groupId="@item.Group.GroupId">Calendar Events</a>
                                                     }
 
                                                 }
@@ -179,6 +188,11 @@
                                                             <i class="fa fa-user">
                                                             </i> <i class="fa fa-comments-o"></i>
                                                         </button>
+
+                                                        <br />
+                                                        <br />
+                                                        <a class="btn btn-info btn-rounded btn-lg text-white" asp-route-groupId="@item.Group.GroupId">Calendar Events</a>
+
                                                     }
                                                 }
                                                 else
@@ -197,6 +211,10 @@
                                                             </i> <i class="fa fa-comments-o"></i>
                                                         </button>
                                                     }
+
+                                                    <br />
+                                                    <br />
+                                                    <a class="btn btn-info btn-rounded btn-lg text-white" asp-route-groupId="@item.Group.GroupId">Calendar Events</a>
                                                 }}
 
                                                        </p>
@@ -204,7 +222,7 @@
                                                         <div>
                                                             <p class="mb-2 h5">5</p>
                                                             <p class="text-muted mb-0">Groups Joind</p>
-                                                           <a asp-controller="InvoiceDetails" asp-action="Payment" class="btn btn-outline-primary  btn-rounded btn-sm " asp-route-id="@item.GroupMembers.AccountId" asp-route-name="@item.Group.GroupId">Payments</a>
+                                                           <a asp-controller="InvoiceDetails" asp-action="Payment" class="btn btn-outline-primary  btn-rounded btn-sm " asp-route-id="@item.GroupMembers.AccountId" asp-route-groupId="@item.Group.GroupId">Payments</a>
                                                         </div>
                                            
                                                 <div class="px-3">
@@ -318,7 +336,7 @@
                 </div>
             </div>
    }
-
+                 
 
 
 

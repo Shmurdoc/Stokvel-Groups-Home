@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Stokvel_Groups_Home.Data;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices.IAccountRequestService;
 using Stokvel_Groups_Home.Interface.IServices.IAccountUserServices;
+using Stokvel_Groups_Home.Interface.IServices.IMessageServices;
 using Stokvel_Groups_Home.Models;
 using System.Diagnostics;
 
@@ -17,31 +19,52 @@ namespace Stokvel_Groups_Home.Controllers
 		public readonly UserManager<IdentityUser> _userManager;
 		public readonly IAccountRequestService _accountRequestService;
 		public readonly IAccountUserCRUDService _accountUserCRUDService;
+		public readonly IMessageRequestService _messageRequestService;
 
-		public MessagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IAccountRequestService accountRequestService, IAccountUserCRUDService accountUserCRUDService)
+		public MessagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IAccountRequestService accountRequestService, IAccountUserCRUDService accountUserCRUDService, IMessageRequestService messageRequestService)
 		{
 			_context = context;
 			_userManager = userManager;
 			_accountRequestService = accountRequestService;
             _accountUserCRUDService = accountUserCRUDService;
+			_messageRequestService = messageRequestService;
 
         }
 
 		// GET: Messages
-		public async Task<IActionResult> Index(int Id, int groupId)
+		public async Task<IActionResult> Index(int Id, int groupId, string userIdEx)
 		{
-
-
-            
+			string? status;
 
             TempData["groupId"] = groupId;
             TempData.Keep("groupId");
-            var members = await _accountRequestService.PendingMembersInGroup();
+			var userId = await _userManager.GetUserAsync(User);
+			var members = await _accountRequestService.PendingMembersInGroup();
+			var details = await _accountUserCRUDService.GetById(userId.Id);
 
-			var memberName = members.Where(x => x.Account.AccountId == Id).Select(x => x.AccountUser.FirstName).FirstOrDefault() +" "+
-				members.Where(x => x.Account.AccountId == Id).Select(x => x.AccountUser.LastName).FirstOrDefault();
+			var managerId = members.Where(x => x.Group.GroupId == groupId).Select(x => x.Group.ManagerId).FirstOrDefault();
+			var memberId = members.Where(x => x.AccountUser.Id == userId.Id).Select(x => x.AccountUser.Id).FirstOrDefault();
 
-            if (User.IsInRole("Admin"))
+
+			var memberName = details.FirstName+" "+details.LastName;
+
+
+			var memberImageName = details.MemberFileName;
+			var memberImagePath = details.MemberPhotoPath;
+
+
+			if(userIdEx == null)
+			{
+				ViewBag.MemberId = managerId;
+				ViewBag.ManagerId = memberId;
+			}
+			else
+			{
+				ViewBag.MemberId = userIdEx;
+			}
+			
+
+			if (User.IsInRole("Admin"))
             {
 				var adminId = await _userManager.GetUserAsync(User);
 
@@ -51,21 +74,28 @@ namespace Stokvel_Groups_Home.Controllers
                 ViewBag.MemberName = admin.FirstName +" "+admin.LastName;
                 ViewBag.FileName = admin.MemberFileName;
                 ViewBag.PathName = admin.MemberPhotoPath;
-                ViewBag.image = "/wwwroot/images/Profile";
             }
 			else
 			{
-                var memberImageName = members.Where(x => x.Account.AccountId == Id).Select(x => x.AccountUser.MemberFileName).FirstOrDefault();
-                var memberImagePath = members.Where(x => x.Account.AccountId == Id).Select(x => x.AccountUser.MemberPhotoPath).FirstOrDefault();
-
-
                 ViewBag.GroupId = groupId;
                 ViewBag.CurrentUser = await _userManager.GetUserAsync(User);
                 ViewBag.MemberName = memberName;
                 ViewBag.FileName = memberImageName;
                 ViewBag.PathName = memberImagePath;
-                ViewBag.image = "/wwwroot/images/Profile";
-            }
+                ViewBag.image = "~/wwwroot/images/Profile";
+				ViewBag.Status = "PrivateGroup";
+				ViewBag.AccountId = Id;
+			}
+
+
+            if(Id > 0)
+            {
+                ViewBag.Option = "memberMessages";
+			}
+			else
+			{
+				ViewBag.Option = "userMessages";
+			}
             
 
 			var currentUser = await _userManager.GetUserAsync(User);
@@ -73,23 +103,25 @@ namespace Stokvel_Groups_Home.Controllers
 			{
 				ViewBag.CurrentUserName = currentUser.UserName;
 			}
-			var messages = await _context.Messages.ToListAsync();
 
-			messages = messages.Where(x=>x.Group == groupId.ToString()).ToList();
-			return View(messages);
-		}
+			// check if member of group or just a user
+			status = _messageRequestService.Status(Id);
 
-		// GET: Messages
-		public async Task<IActionResult> chats()
-		{
-			var currentUser = await _userManager.GetUserAsync(User);
-			if (User.Identity.IsAuthenticated)
+			// display user or member data
+			if(status == "userMessages")
 			{
-				ViewBag.CurrentUserName = currentUser.UserName;
+				var userMessages = await _messageRequestService.UserMessages(userId.Id, managerId, groupId);
+				return View(userMessages);
 			}
-			var messages = await _context.Messages.ToListAsync();
-			return View(messages);
+			else if(status == "memberMessages")
+			{
+				var memberMessages = await _messageRequestService.MemberMessages(userId.Id, managerId, groupId);
+				return View(memberMessages);
+			}
+
+			return View();
 		}
+
 
 		// POST: Messages/Create
 		// To protect from overposting attacks, enable the specific properties you want to bind to.

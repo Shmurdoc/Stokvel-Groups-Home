@@ -5,6 +5,7 @@ using Stokvel_Groups_Home.common.Alert.TempData;
 using Stokvel_Groups_Home.Data;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices;
 using Stokvel_Groups_Home.Interface.IServices.IAccountServices.IAccountRequestService;
+using Stokvel_Groups_Home.Interface.IServices.IAccountUserServices;
 using Stokvel_Groups_Home.Interface.IServices.IGroupMembersServices;
 using Stokvel_Groups_Home.Interface.IServices.IGroupServices;
 using Stokvel_Groups_Home.Models;
@@ -20,17 +21,30 @@ namespace Stokvel_Groups_Home.Controllers
 		private readonly IGroupMembersRequestServices _groupMembersRequestServices;
 		private readonly IGroupRequestServices _groupGroupRequestServices;
 		private readonly IGroupsCRUDService _groupsCRUDService;
+		private readonly IAccountUserCRUDService _accountUserCRUDService;
 
 		private readonly IAccountRequestService _accountRequestService;
 
-		public GroupsController(ApplicationDbContext context, IGroupRequestServices groupRequestServices, IAccountsCRUDService accountsCRUDService, IGroupMembersCRUDService groupMembersCRUDService, IAccountRequestService accountRequestService, IGroupsCRUDService groupsCRUDService, IGroupMembersRequestServices groupMembersRequestServices)
+		public GroupsController(ApplicationDbContext context,
+			IGroupRequestServices groupRequestServices,
+			IAccountsCRUDService accountsCRUDService,
+			IGroupMembersCRUDService groupMembersCRUDService,
+			IAccountRequestService accountRequestService,
+			IGroupsCRUDService groupsCRUDService,
+			IGroupMembersRequestServices groupMembersRequestServices,
+            IAccountUserCRUDService accountUserCRUDService
+
+            )
 		{
+
+
 			_groupGroupRequestServices = groupRequestServices;
 			_accountsCRUDService = accountsCRUDService;
 			_groupMembersCRUDService = groupMembersCRUDService;
 			_accountRequestService = accountRequestService;
 			_groupsCRUDService = groupsCRUDService;
 			_groupMembersRequestServices = groupMembersRequestServices;
+            _accountUserCRUDService = accountUserCRUDService;
 		}
 
 		// GET: Groups
@@ -66,11 +80,31 @@ namespace Stokvel_Groups_Home.Controllers
 		[HttpGet]
 		public async Task<IActionResult> MyIndex(string sortOrder, string currentFilter, string searchString, int? page)
 		{
-			var userId = User.Identity.GetUserId();
-			var groupIdlist = await _groupMembersRequestServices.GroupIdList(userId);
-			ViewBag.GroupIdList = groupIdlist;
+            var members = await _accountRequestService.PendingMembersInGroup();
 
-			ViewBag.CurrentSort = sortOrder;
+            
+
+            var userId = User.Identity.GetUserId();
+            var accountUser = await _accountUserCRUDService.GetById(userId);
+            var byId = await _accountRequestService.accountIdList(userId);
+			var groupMember = await _groupMembersCRUDService.GetAll();
+            var accountIdList = await _groupMembersRequestServices.GroupIdList(userId);
+
+			List<int> groupIdList = new();
+			
+
+
+
+            foreach(var id in accountIdList)
+			{
+				var memberAccountId = groupMember.Where(x => x.AccountId == id).Select(x => x.GroupId).FirstOrDefault();
+				groupIdList.Add(memberAccountId);
+            }
+
+            ViewBag.image = "~/wwwroot/images/Profile";
+            ViewBag.MemberPhotoPath = accountUser.MemberPhotoPath;
+            ViewBag.GroupIdList = groupIdList;
+            ViewBag.CurrentSort = sortOrder;
 			ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 			ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
@@ -87,6 +121,7 @@ namespace Stokvel_Groups_Home.Controllers
 			ViewBag.CurrentFilter = searchString;
 
 			var accountUsers = await _groupGroupRequestServices.FilterAccountUsers(sortOrder, currentFilter, searchString, page);
+			
 
 
 			return View(accountUsers.ToPagedList());
@@ -95,9 +130,17 @@ namespace Stokvel_Groups_Home.Controllers
 		[HttpGet]
 		public async Task<IActionResult> PrivateIndex(string sortOrder, string currentFilter, string searchString, int? page)
 		{
-			ViewBag.CurrentSort = sortOrder;
+			var userId = User.Identity.GetUserId();
+
+
+            var accountUser = await _accountUserCRUDService.GetById(userId);
+
+            ViewBag.image = "~/wwwroot/images/Profile";
+            ViewBag.MemberPhotoPath = accountUser.MemberPhotoPath;
+            ViewBag.CurrentSort = sortOrder;
 			ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 			ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+			ViewBag.UserId = userId;
 
 			if (searchString != null)
 			{
@@ -122,6 +165,7 @@ namespace Stokvel_Groups_Home.Controllers
 			var groups = await _accountsCRUDService.GetByUserId(userId);
 			var groupsInDb = await _groupMembersCRUDService.GetAll();
 			var allGroupsCreated = await _groupsCRUDService.GetAll();
+            var accountUser = await _accountUserCRUDService.GetById(userId);
 			List<int> groupIdList = new();
 
 			foreach (var item in groups)
@@ -130,7 +174,9 @@ namespace Stokvel_Groups_Home.Controllers
 				groupIdList.Add(result);
 
 			}
-			ViewBag.GroupIdList = groupIdList;
+            ViewBag.image = "~/wwwroot/images/Profile";
+			ViewBag.MemberPhotoPath = accountUser.MemberPhotoPath;
+            ViewBag.GroupIdList = groupIdList;
 
 			return View(allGroupsCreated);
 		}
@@ -165,7 +211,7 @@ namespace Stokvel_Groups_Home.Controllers
 		{
 			var userId = User.Identity.GetUserId();
 			var groupProfile = await _accountRequestService.PendingMembersInGroup();
-			@group.ManagerId = userId;
+			var accountUser = await _accountUserCRUDService.GetById(userId);
 
 			var groupExists = groupProfile.Any(x => x.GroupMembers.Group.VerifyKey == @group.VerifyKey || x.GroupMembers.Group.GroupName == @group.GroupName);
 
@@ -193,10 +239,12 @@ namespace Stokvel_Groups_Home.Controllers
 
 					if (MemberList.Count < 2)
 					{
-						// Create Group
-						@group.GroupDate = DateTime.Now;
+                        // Create Group
+                        @group.ManagerId = userId;
+                        @group.GroupDate = DateTime.Now;
 						@group.Private = true;
-						@group.GroupStatus = true;
+						@group.GroupImage = accountUser.MemberFileName;
+                        @group.GroupStatus = true;
                         await _groupsCRUDService.Inset(@group);
 						await _groupsCRUDService.SaveAsync();
 
@@ -274,7 +322,14 @@ namespace Stokvel_Groups_Home.Controllers
 			{
 				try
 				{
-					await _groupsCRUDService.Edit(group);
+					var userId = User.Identity.GetUserId();
+                    var accountUser = await _accountUserCRUDService.GetById(userId);
+                    @group.ManagerId = userId;
+                    @group.GroupDate = DateTime.Now;
+                    @group.Private = true;
+                    @group.GroupImage = accountUser.MemberFileName;
+                    @group.GroupStatus = true;
+                    await _groupsCRUDService.Edit(group);
 					await _groupsCRUDService.SaveAsync();
 					string status = "Success!";
 					this.AddAlertSuccess($"{status} You have successfuly updated a document.");

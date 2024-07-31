@@ -17,7 +17,7 @@ namespace Stokvel_Groups_Home.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.30")
+                .HasAnnotation("ProductVersion", "6.0.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -277,9 +277,6 @@ namespace Stokvel_Groups_Home.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountProfileId"), 1L, 1);
 
-                    b.Property<string>("AdminAccountUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("EmergencyCancel")
                         .HasColumnType("int");
 
@@ -308,8 +305,6 @@ namespace Stokvel_Groups_Home.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.HasKey("AccountProfileId");
-
-                    b.HasIndex("AdminAccountUserId");
 
                     b.HasIndex("Id");
 
@@ -362,52 +357,6 @@ namespace Stokvel_Groups_Home.Migrations
                     b.ToTable("AccountUsers");
                 });
 
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.AdminAccountUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("FirstName");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("MemberFileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MemberPhotoPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Zip")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdminAccountUsers");
-                });
-
             modelBuilder.Entity("Stokvel_Groups_Home.Models.BankDetails", b =>
                 {
                     b.Property<int>("BankDetailId")
@@ -436,6 +385,45 @@ namespace Stokvel_Groups_Home.Migrations
                     b.HasIndex("DepositId");
 
                     b.ToTable("BankDetails");
+                });
+
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.Calendar", b =>
+                {
+                    b.Property<int>("CalendarId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalendarId"), 1L, 1);
+
+                    b.Property<bool>("AllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ClassName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Private")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("CalendarId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Calendar");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Deposit", b =>
@@ -476,6 +464,68 @@ namespace Stokvel_Groups_Home.Migrations
                     b.ToTable("Deposits");
                 });
 
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.DepositLog", b =>
+                {
+                    b.Property<int>("LogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LogId"), 1L, 1);
+
+                    b.Property<int>("DepositId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LogMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("LogId");
+
+                    b.HasIndex("DepositId");
+
+                    b.ToTable("DepositLog");
+                });
+
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.DepositMethod", b =>
+                {
+                    b.Property<int>("MethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MethodId"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MethodName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MethodId");
+
+                    b.ToTable("DepositMethod");
+                });
+
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.DepositStatus", b =>
+                {
+                    b.Property<int>("PaymentStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentStatusId"), 1L, 1);
+
+                    b.Property<string>("PaymentStatesDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatusName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentStatusId");
+
+                    b.ToTable("DepositStatus");
+                });
+
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Group", b =>
                 {
                     b.Property<int>("GroupId")
@@ -498,6 +548,9 @@ namespace Stokvel_Groups_Home.Migrations
 
                     b.Property<DateTime>("GroupDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("GroupImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GroupName")
                         .HasColumnType("nvarchar(max)");
@@ -565,41 +618,6 @@ namespace Stokvel_Groups_Home.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.InvoiceDetails", b =>
-                {
-                    b.Property<int>("DetailedId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetailedId"), 1L, 1);
-
-                    b.Property<decimal>("CreditAmount")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime?>("CreditedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PenaltyFeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TaxID")
-                        .HasColumnType("int");
-
-                    b.HasKey("DetailedId");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.HasIndex("PenaltyFeeId");
-
-                    b.ToTable("InvoiceDetails");
-                });
-
             modelBuilder.Entity("Stokvel_Groups_Home.Models.MemberInvoice", b =>
                 {
                     b.Property<int>("AccountId")
@@ -635,6 +653,9 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Property<string>("MemberIdPath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -654,68 +675,6 @@ namespace Stokvel_Groups_Home.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.PaymentLog", b =>
-                {
-                    b.Property<int>("LogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LogId"), 1L, 1);
-
-                    b.Property<int>("DepositId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LogMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("LogId");
-
-                    b.HasIndex("DepositId");
-
-                    b.ToTable("PaymentLog");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.PaymentMethod", b =>
-                {
-                    b.Property<int>("MethodId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MethodId"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MethodName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MethodId");
-
-                    b.ToTable("PaymentMethods");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.PaymentStatus", b =>
-                {
-                    b.Property<int>("PaymentStatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentStatusId"), 1L, 1);
-
-                    b.Property<string>("PaymentStatesDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentStatusName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PaymentStatusId");
-
-                    b.ToTable("PaymentStatuses");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.PenaltyFee", b =>
@@ -740,7 +699,7 @@ namespace Stokvel_Groups_Home.Migrations
                     b.ToTable("PenaltyFees");
                 });
 
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.Prepayment", b =>
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.PreDeposit", b =>
                 {
                     b.Property<int>("PrepaymentId")
                         .ValueGeneratedOnAdd()
@@ -767,7 +726,7 @@ namespace Stokvel_Groups_Home.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Prepayments");
+                    b.ToTable("PreDeposit");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Wallet", b =>
@@ -789,6 +748,41 @@ namespace Stokvel_Groups_Home.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.WithdrawDetails", b =>
+                {
+                    b.Property<int>("DetailedId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetailedId"), 1L, 1);
+
+                    b.Property<decimal>("CreditAmount")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime?>("CreditedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PenaltyFeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaxID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DetailedId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("PenaltyFeeId");
+
+                    b.ToTable("WithdrawDetails");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.ApplicationUser", b =>
@@ -876,10 +870,6 @@ namespace Stokvel_Groups_Home.Migrations
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.AccountProfile", b =>
                 {
-                    b.HasOne("Stokvel_Groups_Home.Models.AdminAccountUser", null)
-                        .WithMany("AccountProfiles")
-                        .HasForeignKey("AdminAccountUserId");
-
                     b.HasOne("Stokvel_Groups_Home.Models.AccountUser", "AccountUser")
                         .WithMany("AccountProfiles")
                         .HasForeignKey("Id");
@@ -896,6 +886,17 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("Deposit");
                 });
 
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.Calendar", b =>
+                {
+                    b.HasOne("Stokvel_Groups_Home.Models.Group", "Group")
+                        .WithMany("Calendars")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Deposit", b =>
                 {
                     b.HasOne("Stokvel_Groups_Home.Models.Invoice", "Invoice")
@@ -904,13 +905,13 @@ namespace Stokvel_Groups_Home.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Stokvel_Groups_Home.Models.PaymentMethod", "PaymentMethod")
+                    b.HasOne("Stokvel_Groups_Home.Models.DepositMethod", "PaymentMethod")
                         .WithMany("Deposits")
                         .HasForeignKey("MethodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Stokvel_Groups_Home.Models.PaymentStatus", "PaymentStatus")
+                    b.HasOne("Stokvel_Groups_Home.Models.DepositStatus", "PaymentStatus")
                         .WithMany("Deposits")
                         .HasForeignKey("PaymentStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -921,6 +922,17 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("PaymentMethod");
 
                     b.Navigation("PaymentStatus");
+                });
+
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.DepositLog", b =>
+                {
+                    b.HasOne("Stokvel_Groups_Home.Models.Deposit", "Deposit")
+                        .WithMany("PaymentLogs")
+                        .HasForeignKey("DepositId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deposit");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.GroupMembers", b =>
@@ -940,25 +952,6 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.InvoiceDetails", b =>
-                {
-                    b.HasOne("Stokvel_Groups_Home.Models.Invoice", "Invoice")
-                        .WithMany("InvoiceDetails")
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Stokvel_Groups_Home.Models.PenaltyFee", "PenaltyFee")
-                        .WithMany("InvoiceDetails")
-                        .HasForeignKey("PenaltyFeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Invoice");
-
-                    b.Navigation("PenaltyFee");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.MemberInvoice", b =>
@@ -989,18 +982,7 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.PaymentLog", b =>
-                {
-                    b.HasOne("Stokvel_Groups_Home.Models.Deposit", "Deposit")
-                        .WithMany("PaymentLogs")
-                        .HasForeignKey("DepositId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Deposit");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.Prepayment", b =>
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.PreDeposit", b =>
                 {
                     b.HasOne("Stokvel_Groups_Home.Models.Account", "Account")
                         .WithMany("Prepayments")
@@ -1022,6 +1004,25 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.WithdrawDetails", b =>
+                {
+                    b.HasOne("Stokvel_Groups_Home.Models.Invoice", "Invoice")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Stokvel_Groups_Home.Models.PenaltyFee", "PenaltyFee")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("PenaltyFeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("PenaltyFee");
+                });
+
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Account", b =>
                 {
                     b.Navigation("GroupMembers");
@@ -1040,11 +1041,6 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("UserAccounts");
                 });
 
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.AdminAccountUser", b =>
-                {
-                    b.Navigation("AccountProfiles");
-                });
-
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Deposit", b =>
                 {
                     b.Navigation("BankDetails");
@@ -1052,8 +1048,20 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("PaymentLogs");
                 });
 
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.DepositMethod", b =>
+                {
+                    b.Navigation("Deposits");
+                });
+
+            modelBuilder.Entity("Stokvel_Groups_Home.Models.DepositStatus", b =>
+                {
+                    b.Navigation("Deposits");
+                });
+
             modelBuilder.Entity("Stokvel_Groups_Home.Models.Group", b =>
                 {
+                    b.Navigation("Calendars");
+
                     b.Navigation("GroupMembers");
                 });
 
@@ -1064,16 +1072,6 @@ namespace Stokvel_Groups_Home.Migrations
                     b.Navigation("InvoiceDetails");
 
                     b.Navigation("MemberInvoices");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.PaymentMethod", b =>
-                {
-                    b.Navigation("Deposits");
-                });
-
-            modelBuilder.Entity("Stokvel_Groups_Home.Models.PaymentStatus", b =>
-                {
-                    b.Navigation("Deposits");
                 });
 
             modelBuilder.Entity("Stokvel_Groups_Home.Models.PenaltyFee", b =>

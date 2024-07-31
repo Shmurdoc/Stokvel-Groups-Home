@@ -9,12 +9,19 @@
 // userName is declared in razor page.
 const username = userName;
 const textInput = document.getElementById('messageText');
-const groupId = "Private"+document.getElementById('groupId').value;
+const groupId = "Private" + document.getElementById('groupId').value;
+const Status = document.getElementById('status').value;
+const id = document.getElementById('id').innerHTML;
 const memberIdFileName = document.getElementById('memberIdFileName');
 const MemberIdPath = document.getElementById('memberIdPath');
 const whenInput = document.getElementById('when');
 const chat = document.getElementById('chat');
 const messagesQueue = [];
+
+var ImagePathAva = "/images/MemberProfile/";
+var ImagePath = "/images/Profile/";
+var Image = "~/wwwroot/images/Profile";
+
 
 document.getElementById('submitButton').addEventListener('click', () => {
     var currentdate = new Date();
@@ -32,18 +39,14 @@ function clearInputField() {
 
 function sendMessage() {
 
-    if (groupId !== "Private") {
+    if (Status === "memberMessages") {
         SendMessageToGroup();
         return;
-    }
-    /*let text = messagesQueue.shift() || "";
-    if (text.trim() === "") return;
 
-    let when = new Date();
-    let message = new Message(username, text);
-    connection.invoke("SendMessage", message).catch(function (err) {
-        return console.error(err.toString());
-    });*/
+    } else if (Status === "userMessages") {
+        SendPrivateMessage();
+        return;
+    } 
 }
 
 function SendMessageToGroup() {
@@ -53,7 +56,43 @@ function SendMessageToGroup() {
     var PrivateGroup = groupId;
     let when = new Date();
     let message = new Message(username, text);
+    message.MemberIdPath = ImagePath;
+    message.MemberIdFileName = memberIdFileName.value;
+
     connection.invoke("SendMessageToGroup", PrivateGroup, message).catch(function (err) {
+        return console.error(err.toString())
+    });
+}
+
+function SendPrivateMessage() {
+    let text = messagesQueue.shift() || "";
+    if (text.trim() === "") return;
+
+    let when = new Date();
+    let message = new Message(username, text,null,MemberIdPath,memberIdFileName);
+    var groupV = id;
+
+    message.MemberIdPath = ImagePath;
+    message.MemberIdFileName = memberIdFileName.value;
+
+    connection.invoke("SendPrivateMessage", groupV, message).catch(function (err) {
+   
+        return console.error(err.toString())
+    });
+}
+
+function SendMessageToCaller() {
+    let text = messagesQueue.shift() || "";
+    if (text.trim() === "") return;
+
+    let when = new Date();
+    let message = new Message(username, text);
+    var groupV = id;
+
+    message.MemberIdPath = ImagePath;
+    message.MemberIdFileName = memberIdFileName.value;
+
+    connection.invoke("SendMessageToCaller", message).catch(function (err) {
         return console.error(err.toString());
     });
 }
@@ -68,17 +107,17 @@ function addMessageToChat(message) {
 
     var divImage = document.createElement("div");
     var img = document.createElement("img");
-
-    img.src = "/images/Profile/" + memberIdFileName.value;
+    if (MemberIdPath.value !== ("~"+ImagePath)) {
+        img.src = message.memberIdPath + message.memberIdFileName;
+    } else {
+        img.src = message.MemberIdPath + message.memberIdFileName;
+    }
+    
     img.className = isCurrentUserMessage ? "rounded-circle mr-1" : "rounded-circle mr-1";
     img.style.width = '40px';
     img.style.height = '40px';
     img.id = "picture";
 
-    
-
-
-    
 
     let when = document.createElement('div');
     when.className = isCurrentUserMessage ? "text-muted small text-nowrap mt-2" : "text-muted small text-nowrap mt-2";

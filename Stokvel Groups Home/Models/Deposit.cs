@@ -26,13 +26,13 @@ namespace Stokvel_Groups_Home.Models
 
 		[ForeignKey("PaymentMethod")]
 		public int MethodId { get; set; }
-		public PaymentMethod? PaymentMethod { get; set; }
+		public DepositMethod? PaymentMethod { get; set; }
 
 
 
 
 		public int PaymentStatusId { get; set; }
-		public PaymentStatus? PaymentStatus { get; set; }
+		public DepositStatus? PaymentStatus { get; set; }
 
 
 		[StringLength(50)]
@@ -40,7 +40,7 @@ namespace Stokvel_Groups_Home.Models
 		[StringLength(50)]
 
 
-		public virtual ICollection<PaymentLog>? PaymentLogs { get; set; }
+		public virtual ICollection<DepositLog>? PaymentLogs { get; set; }
 
 		public virtual ICollection<BankDetails>? BankDetails { get; set; }
 

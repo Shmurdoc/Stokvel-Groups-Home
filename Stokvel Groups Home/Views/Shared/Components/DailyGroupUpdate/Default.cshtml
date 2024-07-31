@@ -15,7 +15,7 @@
 
                     @foreach (var member in Model)
                     {
-                        <li><a href="#">@member.AccountUser.FirstName @member.AccountUser.LastName ,Has Deposited R @member.Deposit.DepositAmount.ToString("0.00") To Group</a><br><strong> @member.Deposit.DepositDate.Date</strong></li>
+                        <li><a href="#">@member.AccountUser.FirstName @member.AccountUser.LastName ,Has Deposited R @member.Deposit.DepositAmount.ToString("0.00") To Group</a><br><strong> @member.Deposit.DepositDate</strong></li>
                     }
                 </ul>
             </div>

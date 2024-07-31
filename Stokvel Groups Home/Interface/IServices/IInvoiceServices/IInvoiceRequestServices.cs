@@ -2,7 +2,7 @@
 
 namespace Stokvel_Groups_Home.Services.InvoiceServices
 {
-	public interface IInvoiceRequestServices
+    public interface IInvoiceRequestServices
 	{
 		Task<PagedList.IPagedList<InvoiceGroupDetails>> FilterAccountUsers(string? sortOrder, string? currentFilter, string? searchString, int? page);
 

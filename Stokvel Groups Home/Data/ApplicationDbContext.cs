@@ -41,7 +41,7 @@ namespace Stokvel_Groups_Home.Data
 				.OnDelete(DeleteBehavior.Cascade);
 
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<Prepayment>()
+			modelBuilder.Entity<PreDeposit>()
 				.Property(p => p.Amount)
 				.HasColumnType("decimal(18,4)");
 
@@ -128,7 +128,7 @@ namespace Stokvel_Groups_Home.Data
 
 
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<InvoiceDetails>()
+			modelBuilder.Entity<WithdrawDetails>()
 				.Property(p => p.CreditAmount)
 				.HasColumnType("decimal(18,4)");
 
@@ -142,23 +142,24 @@ namespace Stokvel_Groups_Home.Data
 		public virtual DbSet<AccountProfile> AccountProfiles { get; set; }
 		public virtual DbSet<AccountUser>? AccountUsers { get; set; }
 		/*public virtual DbSet<AccountUserPersonal>? AccountUserPersonals { get; set; }*/
-		public virtual DbSet<AdminAccountUser>? AdminAccountUsers { get; set; }
+
 		public virtual DbSet<Group>? Groups { get; set; }
 		public virtual DbSet<GroupMembers>? GroupMembers { get; set; }
 		public virtual DbSet<Account>? Accounts { get; set; }
 		public virtual DbSet<Invoice>? Invoices { get; set; }
 		public virtual DbSet<MemberInvoice>? MemberInvoices { get; set; }
-		public virtual DbSet<InvoiceDetails>? InvoiceDetails { get; set; }
+		public virtual DbSet<WithdrawDetails>? WithdrawDetails { get; set; }
 		public virtual DbSet<PenaltyFee>? PenaltyFees { get; set; }
 		public virtual DbSet<Deposit>? Deposits { get; set; }
-		public virtual DbSet<Prepayment>? Prepayments { get; set; }
-		public virtual DbSet<PaymentStatus>? PaymentStatuses { get; set; }
-		public virtual DbSet<PaymentLog>? PaymentLog { get; set; }
-		public virtual DbSet<PaymentMethod>? PaymentMethods { get; set; }
+		public virtual DbSet<PreDeposit>? PreDeposit { get; set; }
+		public virtual DbSet<DepositStatus>? DepositStatus { get; set; }
+		public virtual DbSet<DepositLog>? DepositLog { get; set; }
+		public virtual DbSet<DepositMethod>? DepositMethod { get; set; }
 		public virtual DbSet<BankDetails>? BankDetails { get; set; }
 		public virtual DbSet<Wallet>? Wallets { get; set; }
 		public virtual DbSet<ApplicationUser>? ApplicationUser { get; set; }
 		public virtual DbSet<Message>? Messages { get; set; }
+		public virtual DbSet<Calendar>? Calendar { get; set; }
 
 	}
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Stokvel_Groups_Home.Interface.IRepo.Finance;
 using Stokvel_Groups_Home.Interface.IServices.IPrepaymentServices;
 using Stokvel_Groups_Home.Models;
@@ -18,27 +19,24 @@ namespace Stokvel_Groups_Home.Services.PrepaymentServices
 			throw new NotImplementedException();
 		}
 
-		public Task<Prepayment>? Detail(int? id)
+		public Task<PreDeposit>? Detail(int? id)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<Prepayment>? GetById(int? id)
+		public async Task<PreDeposit>? GetById(int? id)
 		{
 			var result = await _prepaymentsRepository.GetById(id);
 			return result;
 		}
-		public Task Edit(Prepayment? prepayment)
+		public Task Edit(PreDeposit? prepayment)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<List<Prepayment>>? GetAll()
-		{
-			throw new NotImplementedException();
-		}
+		public async Task<List<PreDeposit>>? GetAll() => await _prepaymentsRepository.GetAll();
 
-		public Task Inset(Prepayment? prepayment)
+        public Task Inset(PreDeposit? prepayment)
 		{
 			throw new NotImplementedException();
 		}

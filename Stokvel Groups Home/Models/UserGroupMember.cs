@@ -4,9 +4,9 @@ public class UserGroupMember
 {
 
 
-	public AccountUser? AccountUser { get; set; }
-	public Account? Account { get; set; }
-	public GroupMembers? GroupMembers { get; set; }
-	public Group? Group { get; set; }
+    public AccountUser? AccountUser { get; set; }
+    public Account? Account { get; set; }
+    public GroupMembers? GroupMembers { get; set; }
+    public Group? Group { get; set; }
 }
 

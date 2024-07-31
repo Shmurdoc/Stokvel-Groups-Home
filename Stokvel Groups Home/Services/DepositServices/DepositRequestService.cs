@@ -21,29 +21,30 @@ public class DepositRequestService : IDepositRequestService
 	}
 
 	//make monthly deposits  
-	public async Task MemberDepositMade(int id, string? userId, Deposit deposit, int accountProfileId, int membershipRank, decimal totalAmountDeposit, MemberStatuses statusRank)
+	public async Task MemberDepositMade(int id, string? userId, Deposit deposit, int accountProfileId, int membershipRank, decimal totalAmountDeposit, MemberStatuses statusRank, decimal preDepoAmount)
 	{
 		//get deposit amount form (Deposit deposit) and filter to see if excess exists. return  excess
-		deposit.DepositAmount = await this.DepositMonthly(id, deposit.DepositAmount);
+		deposit.DepositAmount = await this.DepositMonthly(id, deposit.DepositAmount, preDepoAmount);
 		await _depositServices.MemeberDepositMade(id, userId, deposit, accountProfileId, membershipRank, totalAmountDeposit, statusRank);
 	}
 
 	public async Task<AccountProfile> Details(int accountProfileId) => await _depositServices.Details(accountProfileId);
 
-	public async Task<Deposit> MembersFirstPreDeposit(int id, Prepayment userPrepaymentDeposit, decimal depositAmount)
+	public async Task<PreDeposit> MembersFirstPreDeposit(int id, int prePaymentId, decimal preDepoAmount, decimal depositAmount)
 	{
-		Deposit deposit = new();
-		var depositAmountUpdate = await this.DepositMonthly(id, depositAmount);
-		var result = await _depositServices.MemebersFirstPreDeposit(id, userPrepaymentDeposit, depositAmountUpdate);
+		
+        PreDeposit preDeposit = new();
+		var depositAmountUpdate = await this.DepositMonthly(id, depositAmount, preDepoAmount);
+		var result = await _depositServices.MemebersFirstPreDeposit(id, prePaymentId, preDepoAmount, depositAmountUpdate);
 
-		deposit.DepositId = result;
-		deposit.DepositAmount = depositAmountUpdate;
-		return deposit;
+		preDeposit.PrepaymentId = result;
+        preDeposit.Amount = depositAmountUpdate;
+		return preDeposit;
 	}
 
-	public async Task<decimal> DepositMonthly(int accountId, decimal deposit)
+	public async Task<decimal> DepositMonthly(int accountId,  decimal preDepoAmount , decimal deposit)
 	{
-		var toDeposit = await _depositServices.MonthlyDeposit(accountId, deposit);
+		var toDeposit = await _depositServices.MonthlyDeposit(accountId, preDepoAmount, deposit);
 		return toDeposit;
 	}
 
@@ -58,24 +59,34 @@ public class DepositRequestService : IDepositRequestService
 		var groupId = await _withdrawServices.groupId(accountId);
 		membersInDb = membersInDb.Where(x => x.GroupMembers.GroupId == groupId).DistinctBy(x => x.GroupMembers.GroupId).ToList();
 		int dateIncrement = 0;
-		var depositExists = members.Any(x => x.Deposit.DepositAmount == x.Deposit.DepositAmount);
+		var preDeposit = await _depositServices.PreDeposit(accountId);	
+
+        var depositExists = members.Any(x => x.Deposit.DepositReference == "deposit");
+		
 
 	// get this months deposit member name
 	depo:
 		if (depositExists)
 		{
-			referenceName = membersInDb.Where(x => x.Account.AccountQueueStart.Month == DateTime.Now.Month + dateIncrement).Select(x => x.AccountUser.FirstName).FirstOrDefault();
-		}
-		else
-		{
-			referenceName = "deposit";
-		}
-		if (referenceName == null)
-		{
+                referenceName = membersInDb.Where(x => x.Account.AccountQueueStart.Month == DateTime.Now.Month + dateIncrement).Select(x => x.AccountUser.FirstName).FirstOrDefault();
+           
+			if(referenceName == null)
+			{
+                referenceName = "deposit";
+            }
+			return referenceName;
+        }
+        if (dateIncrement == 0)
+        {
 			dateIncrement = dateIncrement + 1;
 			goto depo;
-		}
-		return referenceName;
+		}else
+        {
+            referenceName = "deposit";
+        }
+        return referenceName;
 	}
+
+	public async Task<List<PreDeposit>> PreDeposit(int accountId) => await _depositServices.PreDeposit(accountId);
 
 }

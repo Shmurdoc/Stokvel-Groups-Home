@@ -15,7 +15,16 @@
                     @foreach (var member2 in Model)
                     {
                                 <li>
-                                    <span><img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp" class="img-responsive" alt="#" /></span>
+                            <span>
+                                @if (@ViewBag.image != @ViewBag.MemberPhotoPath)
+                                {
+                                    <img src="@Url.Content("~/images/MemberProfile/" + @member2.AccountUser.MemberFileName)" height="60px" width="60px" />
+                                }
+                                else
+                                {
+                                    <img src="@Url.Content("~/images/Profile/" + @member2.AccountUser.MemberFileName)" height="60px" width="60px" />
+                                }
+                            </span>
                                     <span>
                                 <span class="name_user">@member2.AccountUser.FirstName @member2.AccountUser.LastName</span>
                                 <span class="msg_user">Position Number: @member2.Account.AccountQueue </span>

@@ -6,14 +6,14 @@ namespace Stokvel_Groups_Home.Interface.IRepo.Finance
 	public interface IPaymentStatusRepository
 	{
 
-		Task<List<PaymentStatus>>? GetAll();
-		Task<PaymentStatus>? Details(int? id);
+		Task<List<DepositStatus>>? GetAll();
+		Task<DepositStatus>? Details(int? id);
 
 		List<SelectListItem>? PaymentStatusExtendInclude();
 
-		Task Inset(PaymentStatus? paymentStatus);
+		Task Inset(DepositStatus? paymentStatus);
 
-		Task Edit(PaymentStatus? paymentStatus);
+		Task Edit(DepositStatus? paymentStatus);
 
 		Task Delete(int? id);
 

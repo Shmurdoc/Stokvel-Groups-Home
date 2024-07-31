@@ -10,11 +10,15 @@ public class Calendar
 	public int CalendarId { get; set; }
 
 	[Required]
-	[StringLength(30)]
+	[StringLength(50)]
 	public string? Title { get; set; }
 	public DateTime Start { get; set; }
 	public DateTime End { get; set; }
 	public Boolean AllDay { get; set; }
-	[StringLength(30)]
+	[StringLength(50)]
 	public string? ClassName { get; set; }
+	public Boolean Private { get; set; }
+
+	public int GroupId { get; set; }
+	public Group? Group { get; set; }
 }

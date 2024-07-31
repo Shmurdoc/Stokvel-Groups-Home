@@ -5,7 +5,7 @@ using Stokvel_Groups_Home.Models;
 
 namespace Stokvel_Groups_Home.Repositories
 {
-	public class InvoicesRepository : IInvoicesRepository
+    public class InvoicesRepository : IInvoicesRepository
 	{
 		private readonly ApplicationDbContext _context;
 		public InvoicesRepository(ApplicationDbContext context)

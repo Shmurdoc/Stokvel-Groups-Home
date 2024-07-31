@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Stokvel_Groups_Home.Models.Calendar>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- row -->
+<div class="midde_cont">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Calendar</h2>
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+    <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                    <a class="btn btn-outline-danger" asp-action="Create">Create New</a>
+                
+
+            </div>
+            <div class="col-md-6">
+
+                
+
+            </div>
+
+            <alerts></alerts>
+
+        </div>
+    </nav>
+
+    <!-- row -->
+    <div class="row column1">
+        <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+                <div class="full graph_head">
+                    <div class="heading1 margin_0">
+                        <h2>List of Events</h2>
+                    </div>
+                </div>
+                <div class="full price_table padding_infor_info">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Title)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Start)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.End)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AllDay)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ClassName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Private)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        @foreach (var item in Model) {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Start)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.End)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AllDay)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ClassName)
+                                    </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Private)
+                                        </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.CalendarId">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.CalendarId">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.CalendarId">Delete</a>
+                                    </td>
+                                </tr>
+                        }
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

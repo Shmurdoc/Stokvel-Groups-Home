@@ -2,11 +2,11 @@
 
 namespace Stokvel_Groups_Home.Interface.IServices.IWithdrawServices
 {
-	public interface IWithdrawRequestService
+    public interface IWithdrawRequestService
 	{
 		Task<List<DisplayPaidMember>> PaidMember();
 		Task<List<int>> accountIdList(int accountId);
-		void CreditMember(InvoiceDetails invoiceDetails);
+		void CreditMember(WithdrawDetails invoiceDetails);
 		Task<List<DisplayMemberTurn>> ListOfPaidMembers(int accountId);
 	}
 }

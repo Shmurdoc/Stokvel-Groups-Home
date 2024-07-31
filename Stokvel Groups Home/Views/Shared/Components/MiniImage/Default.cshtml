@@ -1,0 +1,25 @@
+﻿@model List<AccountUser>
+
+
+
+
+
+@foreach(var profileImage in Model){
+    @if (profileImage != null)
+    {
+        @if (profileImage.MemberPhotoPath != @ViewBag.image)
+        {
+            <img class="img-responsive rounded-circle" src="@Url.Content("~/images/MemberProfile/" + profileImage.MemberFileName)
+            " asp-area="Identity" asp-page="/Account/Manage/Index" />
+        }
+        else
+
+        {
+            <img class="img-responsive rounded-circle" src="@Url.Content("~/images/Profile/" + profileImage.MemberFileName)" asp-area="Identity" asp-page="/Account/Manage/Index" />
+        }
+
+    }
+}
+
+
+

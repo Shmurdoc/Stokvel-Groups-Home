@@ -1,0 +1,24 @@
+﻿@model List<AccountUser>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@foreach(var profileImage in Model){
+    @if (profileImage != null)
+    {
+    @if (profileImage.MemberPhotoPath != @ViewBag.image)
+{
+        <div class="user_img"><img class="img-responsive" src="@Url.Content("~/images/MemberProfile/" + profileImage.MemberFileName)" alt="#" /></div>
+}
+else
+{
+    <div class="user_img">
+            <img class="img-responsive" src="@Url.Content("~/images/Profile/" + profileImage.MemberFileName)" alt="#" />
+    </div>
+}
+    }
+    else
+    {
+
+    }
+}

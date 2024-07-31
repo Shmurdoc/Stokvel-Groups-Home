@@ -23,5 +23,5 @@ public class Invoice
 
 	public virtual ICollection<Deposit>? Deposits { get; set; }
 
-	public virtual ICollection<InvoiceDetails>? InvoiceDetails { get; set; }
+	public virtual ICollection<WithdrawDetails>? InvoiceDetails { get; set; }
 }

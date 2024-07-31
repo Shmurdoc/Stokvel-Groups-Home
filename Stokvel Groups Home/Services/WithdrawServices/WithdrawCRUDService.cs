@@ -15,11 +15,11 @@ namespace Stokvel_Groups_Home.Services.WithdrawServices
 
 		public async Task Delete(int? id) => await _withdrawRepository.Delete(id);
 
-		public async Task Edit(InvoiceDetails? invoiceDetails) => _withdrawRepository.Edit(invoiceDetails);
+		public async Task Edit(WithdrawDetails? invoiceDetails) => _withdrawRepository.Edit(invoiceDetails);
 
-		public async Task Insert(InvoiceDetails? invoiceDetails) => _withdrawRepository.Insert(invoiceDetails);
+		public async Task Insert(WithdrawDetails? invoiceDetails) => _withdrawRepository.Insert(invoiceDetails);
 
-		public async Task<List<InvoiceDetails>>? GetAll() => await _withdrawRepository.GetAll();
+		public async Task<List<WithdrawDetails>>? GetAll() => await _withdrawRepository.GetAll();
 		public bool InvoiceDetailsExists(int? id) => _withdrawRepository.InvoiceDetailsExists(id);
 	}
 }

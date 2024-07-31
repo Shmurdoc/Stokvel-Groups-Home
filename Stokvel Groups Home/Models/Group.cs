@@ -13,6 +13,7 @@ public class Group
 
 	public string? ManagerId { get; set; }
 
+	public string? GroupImage { get; set; }
 
 	public string? GroupName { get; set; }
 
@@ -46,6 +47,6 @@ public class Group
 
 
 	public virtual ICollection<GroupMembers>? GroupMembers { get; set; }
-
+	public virtual ICollection<Calendar>? Calendars { get; set; }
 
 }

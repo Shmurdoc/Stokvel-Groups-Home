@@ -15,7 +15,7 @@ namespace Stokvel_Groups_Home.Models
 
 
 
-		public virtual ICollection<InvoiceDetails>? InvoiceDetails { get; set; }
+		public virtual ICollection<WithdrawDetails>? InvoiceDetails { get; set; }
 
 	}
 }

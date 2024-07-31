@@ -4,7 +4,7 @@ using Stokvel_Groups_Home.Models;
 
 namespace Stokvel_Groups_Home.Services.InvoiceServices
 {
-	public class InvoiceServices : IInvoiceServices
+    public class InvoiceServices : IInvoiceServices
 	{
 		private readonly IInvoicesRepository _invoicesRepository;
 

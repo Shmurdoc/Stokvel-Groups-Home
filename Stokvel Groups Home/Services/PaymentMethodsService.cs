@@ -11,22 +11,22 @@ namespace Stokvel_Groups_Home.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<PaymentMethod>? Details(int? id)
+		public Task<DepositMethod>? Details(int? id)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task Edit(PaymentMethod? paymentMethod)
+		public Task Edit(DepositMethod? paymentMethod)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<List<PaymentMethod>>? GetAll()
+		public Task<List<DepositMethod>>? GetAll()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task Inset(PaymentMethod? paymentMethod)
+		public Task Inset(DepositMethod? paymentMethod)
 		{
 			throw new NotImplementedException();
 		}

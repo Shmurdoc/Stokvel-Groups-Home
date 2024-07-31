@@ -18,34 +18,34 @@ namespace Stokvel_Groups_Home.Repositories
 		{
 			var delPrepayInDB = await this.Detail(id);
 
-			_context.Prepayments.Remove(delPrepayInDB);
+			_context.PreDeposit.Remove(delPrepayInDB);
 
 		}
 
-		public async Task<Prepayment> Detail(int? id)
+		public async Task<PreDeposit> Detail(int? id)
 		{
-			return await _context.Prepayments.FirstOrDefaultAsync(m => m.PrepaymentId == id);
+			return await _context.PreDeposit.FirstOrDefaultAsync(m => m.PrepaymentId == id);
 		}
 
-		public async Task<Prepayment>? GetById(int? id)
+		public async Task<PreDeposit>? GetById(int? id)
 		{
-			return await _context.Prepayments.FirstOrDefaultAsync(m => m.AccountId == id);
+			return await _context.PreDeposit.FirstOrDefaultAsync(m => m.AccountId == id);
 		}
 
-		public async Task Edit(Prepayment? prepayment)
+		public async Task Edit(PreDeposit? prepayment)
 		{
-			_context.Prepayments.Update(prepayment);
+            _context.PreDeposit.Update(prepayment);
 		}
 
-		public async Task<List<Prepayment>>? GetAll()
+		public async Task<List<PreDeposit>>? GetAll()
 		{
-			var allPrepayment = await _context.Prepayments.ToListAsync();
+			var allPrepayment = await _context.PreDeposit.ToListAsync();
 			return allPrepayment;
 		}
 
-		public async Task Inset(Prepayment? prepayment)
+		public async Task Inset(PreDeposit? prepayment)
 		{
-			await _context.Prepayments.AddAsync(prepayment);
+			await _context.PreDeposit.AddAsync(prepayment);
 		}
 
 
@@ -57,7 +57,7 @@ namespace Stokvel_Groups_Home.Repositories
 
 		public bool PrepaymentExists(int? id)
 		{
-			return (_context.Prepayments?.Any(e => e.PrepaymentId == id)).GetValueOrDefault();
+			return (_context.PreDeposit?.Any(e => e.PrepaymentId == id)).GetValueOrDefault();
 		}
 
 

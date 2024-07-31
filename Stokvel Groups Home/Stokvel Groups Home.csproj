@@ -15,54 +15,63 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js - Copy\addMessageToChat.js" />
-    <Content Remove="wwwroot\js - Copy\Alert.js" />
-    <Content Remove="wwwroot\js - Copy\analyser.js" />
-    <Content Remove="wwwroot\js - Copy\animate.js" />
-    <Content Remove="wwwroot\js - Copy\bootstrap-select.js" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.bundle.js" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.bundle.js.map" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.bundle.min.js" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.bundle.min.js.map" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.js" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.js.map" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.min.js" />
-    <Content Remove="wwwroot\js - Copy\bootstrap.min.js.map" />
-    <Content Remove="wwwroot\js - Copy\calendar.js" />
-    <Content Remove="wwwroot\js - Copy\calendar.min.js" />
-    <Content Remove="wwwroot\js - Copy\Chart.bundle.js" />
-    <Content Remove="wwwroot\js - Copy\Chart.bundle.min.js" />
-    <Content Remove="wwwroot\js - Copy\Chart.js" />
-    <Content Remove="wwwroot\js - Copy\Chart.min.js" />
-    <Content Remove="wwwroot\js - Copy\ChartAction.bundle.js" />
-    <Content Remove="wwwroot\js - Copy\ChartAction.bundle.min.js" />
-    <Content Remove="wwwroot\js - Copy\chartAction.js" />
-    <Content Remove="wwwroot\js - Copy\ChartAction.min.js" />
-    <Content Remove="wwwroot\js - Copy\chart_custom_style1.js" />
-    <Content Remove="wwwroot\js - Copy\chart_custom_style2.js" />
-    <Content Remove="wwwroot\js - Copy\chat.js" />
-    <Content Remove="wwwroot\js - Copy\chat.min.js" />
-    <Content Remove="wwwroot\js - Copy\chatApp.js" />
-    <Content Remove="wwwroot\js - Copy\chatApp.min.js" />
-    <Content Remove="wwwroot\js - Copy\custom.js" />
-    <Content Remove="wwwroot\js - Copy\custom_chart.js" />
-    <Content Remove="wwwroot\js - Copy\drop-zone.js" />
-    <Content Remove="wwwroot\js - Copy\imagery.js" />
-    <Content Remove="wwwroot\js - Copy\index1.js" />
-    <Content Remove="wwwroot\js - Copy\jquery-3.3.1.min.js" />
-    <Content Remove="wwwroot\js - Copy\jquery.fancybox.js" />
-    <Content Remove="wwwroot\js - Copy\jquery.fancybox.min.js" />
-    <Content Remove="wwwroot\js - Copy\jquery.min.js" />
-    <Content Remove="wwwroot\js - Copy\owl.carousel.js" />
-    <Content Remove="wwwroot\js - Copy\perfect-scrollbar.min.js" />
-    <Content Remove="wwwroot\js - Copy\popper.min.js" />
-    <Content Remove="wwwroot\js - Copy\previewImg.js" />
-    <Content Remove="wwwroot\js - Copy\range.js" />
-    <Content Remove="wwwroot\js - Copy\semantic.min.js" />
-    <Content Remove="wwwroot\js - Copy\site.js" />
-    <Content Remove="wwwroot\js - Copy\site.min.js" />
-    <Content Remove="wwwroot\js - Copy\utils.js" />
-    <Content Remove="wwwroot\js - Copy\verifydeposit.js" />
+    <Content Remove="wwwroot\css\bootstrap-grid.css.map" />
+    <Content Remove="wwwroot\css\bootstrap-grid.min.css.map" />
+    <Content Remove="wwwroot\css\bootstrap-reboot.css.map" />
+    <Content Remove="wwwroot\css\bootstrap-reboot.min.css.map" />
+    <Content Remove="wwwroot\css\bootstrap.css.map" />
+    <Content Remove="wwwroot\css\bootstrap.min.css.map" />
+    <Content Remove="wwwroot\js\addMessageToChat.js" />
+    <Content Remove="wwwroot\js\Alert.js" />
+    <Content Remove="wwwroot\js\analyser.js" />
+    <Content Remove="wwwroot\js\animate.js" />
+    <Content Remove="wwwroot\js\bootstrap-select.js" />
+    <Content Remove="wwwroot\js\bootstrap.bundle.js" />
+    <Content Remove="wwwroot\js\bootstrap.bundle.js.map" />
+    <Content Remove="wwwroot\js\bootstrap.bundle.min.js" />
+    <Content Remove="wwwroot\js\bootstrap.bundle.min.js.map" />
+    <Content Remove="wwwroot\js\bootstrap.js" />
+    <Content Remove="wwwroot\js\bootstrap.js.map" />
+    <Content Remove="wwwroot\js\bootstrap.min.js" />
+    <Content Remove="wwwroot\js\bootstrap.min.js.map" />
+    <Content Remove="wwwroot\js\calendar.js" />
+    <Content Remove="wwwroot\js\calendar.min.js" />
+    <Content Remove="wwwroot\js\Chart.bundle.js" />
+    <Content Remove="wwwroot\js\Chart.bundle.min.js" />
+    <Content Remove="wwwroot\js\Chart.js" />
+    <Content Remove="wwwroot\js\Chart.min.js" />
+    <Content Remove="wwwroot\js\ChartAction.bundle.js" />
+    <Content Remove="wwwroot\js\ChartAction.bundle.min.js" />
+    <Content Remove="wwwroot\js\chartAction.js" />
+    <Content Remove="wwwroot\js\ChartAction.min.js" />
+    <Content Remove="wwwroot\js\chart_custom_style1.js" />
+    <Content Remove="wwwroot\js\chart_custom_style2.js" />
+    <Content Remove="wwwroot\js\chat.js" />
+    <Content Remove="wwwroot\js\chat.min.js" />
+    <Content Remove="wwwroot\js\chatApp.js" />
+    <Content Remove="wwwroot\js\chatApp.min.js" />
+    <Content Remove="wwwroot\js\custom.js" />
+    <Content Remove="wwwroot\js\custom_chart.js" />
+    <Content Remove="wwwroot\js\drop-zone.js" />
+    <Content Remove="wwwroot\js\imagery.js" />
+    <Content Remove="wwwroot\js\index1.js" />
+    <Content Remove="wwwroot\js\jquery-3.3.1.min.js" />
+    <Content Remove="wwwroot\js\jquery.fancybox.js" />
+    <Content Remove="wwwroot\js\jquery.fancybox.min.js" />
+    <Content Remove="wwwroot\js\jquery.min.js" />
+    <Content Remove="wwwroot\js\owl.carousel.js" />
+    <Content Remove="wwwroot\js\perfect-scrollbar.min.js" />
+    <Content Remove="wwwroot\js\popper.min.js" />
+    <Content Remove="wwwroot\js\previewImg.js" />
+    <Content Remove="wwwroot\js\range.js" />
+    <Content Remove="wwwroot\js\semantic.min.js" />
+    <Content Remove="wwwroot\js\signalrReqHandler.js" />
+    <Content Remove="wwwroot\js\signalrReqHandler.min.js" />
+    <Content Remove="wwwroot\js\signrReqHandler.js" />
+    <Content Remove="wwwroot\js\site.js" />
+    <Content Remove="wwwroot\js\site.min.js" />
+    <Content Remove="wwwroot\js\utils.js" />
+    <Content Remove="wwwroot\js\verifydeposit.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,54 +96,6 @@
     <None Include="wwwroot\jquery-validation\dist\jquery.validate.js" />
     <None Include="wwwroot\jquery-validation\dist\jquery.validate.min.js" />
     <None Include="wwwroot\jquery-validation\LICENSE.md" />
-    <None Include="wwwroot\js - Copy\addMessageToChat.js" />
-    <None Include="wwwroot\js - Copy\Alert.js" />
-    <None Include="wwwroot\js - Copy\analyser.js" />
-    <None Include="wwwroot\js - Copy\animate.js" />
-    <None Include="wwwroot\js - Copy\bootstrap-select.js" />
-    <None Include="wwwroot\js - Copy\bootstrap.bundle.js" />
-    <None Include="wwwroot\js - Copy\bootstrap.bundle.js.map" />
-    <None Include="wwwroot\js - Copy\bootstrap.bundle.min.js" />
-    <None Include="wwwroot\js - Copy\bootstrap.bundle.min.js.map" />
-    <None Include="wwwroot\js - Copy\bootstrap.js" />
-    <None Include="wwwroot\js - Copy\bootstrap.js.map" />
-    <None Include="wwwroot\js - Copy\bootstrap.min.js" />
-    <None Include="wwwroot\js - Copy\bootstrap.min.js.map" />
-    <None Include="wwwroot\js - Copy\calendar.js" />
-    <None Include="wwwroot\js - Copy\calendar.min.js" />
-    <None Include="wwwroot\js - Copy\Chart.bundle.js" />
-    <None Include="wwwroot\js - Copy\Chart.bundle.min.js" />
-    <None Include="wwwroot\js - Copy\Chart.js" />
-    <None Include="wwwroot\js - Copy\Chart.min.js" />
-    <None Include="wwwroot\js - Copy\ChartAction.bundle.js" />
-    <None Include="wwwroot\js - Copy\ChartAction.bundle.min.js" />
-    <None Include="wwwroot\js - Copy\chartAction.js" />
-    <None Include="wwwroot\js - Copy\ChartAction.min.js" />
-    <None Include="wwwroot\js - Copy\chart_custom_style1.js" />
-    <None Include="wwwroot\js - Copy\chart_custom_style2.js" />
-    <None Include="wwwroot\js - Copy\chat.js" />
-    <None Include="wwwroot\js - Copy\chat.min.js" />
-    <None Include="wwwroot\js - Copy\chatApp.js" />
-    <None Include="wwwroot\js - Copy\chatApp.min.js" />
-    <None Include="wwwroot\js - Copy\custom.js" />
-    <None Include="wwwroot\js - Copy\custom_chart.js" />
-    <None Include="wwwroot\js - Copy\drop-zone.js" />
-    <None Include="wwwroot\js - Copy\imagery.js" />
-    <None Include="wwwroot\js - Copy\index1.js" />
-    <None Include="wwwroot\js - Copy\jquery-3.3.1.min.js" />
-    <None Include="wwwroot\js - Copy\jquery.fancybox.js" />
-    <None Include="wwwroot\js - Copy\jquery.fancybox.min.js" />
-    <None Include="wwwroot\js - Copy\jquery.min.js" />
-    <None Include="wwwroot\js - Copy\owl.carousel.js" />
-    <None Include="wwwroot\js - Copy\perfect-scrollbar.min.js" />
-    <None Include="wwwroot\js - Copy\popper.min.js" />
-    <None Include="wwwroot\js - Copy\previewImg.js" />
-    <None Include="wwwroot\js - Copy\range.js" />
-    <None Include="wwwroot\js - Copy\semantic.min.js" />
-    <None Include="wwwroot\js - Copy\site.js" />
-    <None Include="wwwroot\js - Copy\site.min.js" />
-    <None Include="wwwroot\js - Copy\utils.js" />
-    <None Include="wwwroot\js - Copy\verifydeposit.js" />
     <None Include="wwwroot\js\addMessageToChat.js" />
     <None Include="wwwroot\js\Alert.js" />
     <None Include="wwwroot\js\analyser.js" />
@@ -150,14 +111,14 @@
     <None Include="wwwroot\js\bootstrap.min.js.map" />
     <None Include="wwwroot\js\calendar.js" />
     <None Include="wwwroot\js\calendar.min.js" />
-    <None Include="wwwroot\js\ChartAction.bundle.js" />
-    <None Include="wwwroot\js\ChartAction.bundle.min.js" />
-    <None Include="wwwroot\js\chartAction.js" />
-    <None Include="wwwroot\js\ChartAction.min.js" />
     <None Include="wwwroot\js\Chart.bundle.js" />
     <None Include="wwwroot\js\Chart.bundle.min.js" />
     <None Include="wwwroot\js\Chart.js" />
     <None Include="wwwroot\js\Chart.min.js" />
+    <None Include="wwwroot\js\ChartAction.bundle.js" />
+    <None Include="wwwroot\js\ChartAction.bundle.min.js" />
+    <None Include="wwwroot\js\chartAction.js" />
+    <None Include="wwwroot\js\ChartAction.min.js" />
     <None Include="wwwroot\js\chart_custom_style1.js" />
     <None Include="wwwroot\js\chart_custom_style2.js" />
     <None Include="wwwroot\js\chat.js" />
@@ -481,10 +442,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\NewFolder\" />
-    <Folder Include="Controllers\Users\" />
-    <Folder Include="Controllers\Super User\" />
-    <Folder Include="Controllers\Admin\" />
+    <Folder Include="Models\Tables\" />
     <Folder Include="Repositories\Pages\" />
     <Folder Include="Services\PenaltyFeeServices\" />
     <Folder Include="wwwroot\images\loader\" />
@@ -494,14 +452,14 @@
   <ItemGroup>
     <PackageReference Include="jQuery" Version="3.7.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.30" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.29" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.30" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.32" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.32" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.32" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="9.0.0-preview.5.24306.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.30" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.29" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.30" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.30">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.32">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -510,12 +468,135 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
     <PackageReference Include="PagedList" Version="1.17.0" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
     <PackageReference Include="X.PagedList" Version="9.1.2" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="9.1.2" />
     <PackageReference Include="X.PagedList.Web.Common" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\animate.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\baguetteBox.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap-grid.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap-grid.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap-reboot.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap-reboot.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap-select.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\calendar.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\calendar.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\chat.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\color_2.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\custom.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\date-slide-history.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\drop-zone.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\flaticon.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\font-awesome.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\font-awesome.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\imagery.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\jquery.fancybox.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\jquery.fancybox.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\owl.carousel.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\perfect-scrollbar.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\progress-Info.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\range.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\responsive.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\semantic.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\site.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\timeline.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

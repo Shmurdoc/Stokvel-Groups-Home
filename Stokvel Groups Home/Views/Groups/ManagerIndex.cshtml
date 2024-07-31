@@ -62,7 +62,14 @@
                                             </div>
                                             <div class="right">
                                                 <div class="profile_contacts">
-                                                    <img class="img-responsive" src="images/layout_img/msg2.png" alt="#" />
+                                                @if (ViewBag.MemberPhotoPath != ViewBag.image)
+                                                {
+                                                    <img src="@Url.Content("~/images/MemberProfile/" + @item.GroupImage)" height="95px" width="95px" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@Url.Content("~/images/Profile/" + @item.GroupName)" height="95px" width="95px" />
+                                                }
                                                 </div>
                                             </div>
                                             <div class="bottom_list">
